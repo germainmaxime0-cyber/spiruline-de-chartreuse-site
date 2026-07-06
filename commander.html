@@ -704,6 +704,13 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
     return;
   }
 
+  const phoneDigits = address.telephone.replace(/\D/g, '');
+  if (phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) {
+    errorEl.textContent = 'Le numéro de téléphone doit contenir 10 chiffres (ex. 06 12 34 56 78).';
+    errorEl.style.display = 'block';
+    return;
+  }
+
   let pickupPointCode = null;
   if (shipping === 'relais') {
     if (relayPointSelect.style.display === 'none' || !relayPointSelect.value) {
