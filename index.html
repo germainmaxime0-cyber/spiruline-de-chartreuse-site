@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Spiruline de Chartreuse &mdash; Vitalit&eacute; des Alpes</title>
+<meta name="description" content="Producteurs artisanaux de spiruline bio au pied du massif de la Chartreuse, Is&egrave;re. Vente directe, paillettes, comprim&eacute;s, poudre.">
+<link rel="canonical" href="https://www.spirulinedechartreuse.com/index.html">
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<!-- Open Graph (partage Facebook / Instagram / WhatsApp) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Spiruline de Chartreuse &mdash; Vitalit&eacute; des Alpes">
+<meta property="og:description" content="Producteurs artisanaux de spiruline bio au pied du massif de la Chartreuse, Is&egrave;re. Vente directe, paillettes, comprim&eacute;s, poudre.">
+<meta property="og:image" content="https://www.spirulinedechartreuse.com/images/hero-produits.jpg">
+<meta property="og:image:width" content="900">
+<meta property="og:image:height" content="600">
+<meta property="og:url" content="https://www.spirulinedechartreuse.com/index.html">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Spiruline de Chartreuse">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="images/hero-maxime-renaud-bassins.jpg" fetchpriority="high">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.skip-link{position:absolute;left:-9999px;top:0;background:#1e4d20;color:white;padding:12px 20px;z-index:3000;font-family:'Lato',sans-serif;font-weight:700;}
+.skip-link:focus{left:0;}
+body{font-family:'Lato',sans-serif;font-weight:400;background:#F0EBE0;color:#2d2d2d;font-size:16px;line-height:1.6;}
+img{max-width:100%;}
+a{text-decoration:none;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:1000;background:#F0EBE0;border-bottom:1px solid #d8cfc2;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:90px;gap:1rem;}
+.nav-lw{display:flex;align-items:center;gap:8px;min-width:0;}
+.nav-lw img.nav-logo{height:78px;width:auto;aspect-ratio:515/502;flex-shrink:0;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:17px;color:#2d5a27;line-height:1.2;min-width:0;}
+.nav-brand-sub{display:block;font-family:'Lato',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#7a9e76;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-menu{display:flex;list-style:none;flex-shrink:1;min-width:0;}
+.nav-menu > li{position:relative;}
+.nav-menu > li > a{display:block;padding:0 0.9rem;height:90px;line-height:90px;font-size:14px;font-weight:700;color:#333;transition:color 0.2s;white-space:nowrap;}
+.nav-menu > li > a:hover{color:#2d5a27;}
+.nav-menu > li > a .arr{font-size:9px;margin-left:2px;color:#bbb;font-weight:400;}
+.dropdown{display:none;position:absolute;top:90px;left:0;background:white;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,0.1);border-top:2px solid #2d5a27;z-index:999;}
+.nav-menu > li:hover .dropdown,.nav-menu > li:focus-within .dropdown{display:block;}
+:focus-visible{outline:2px solid #2d5a27;outline-offset:2px;}
+.dropdown a{display:block;padding:0.85rem 1.2rem;font-size:13px;font-weight:500;color:#444;border-bottom:1px solid #f5f5f5;transition:background 0.2s;}
+.dropdown a:hover{background:#f0f7ee;color:#2d5a27;}
+.nav-right{display:flex;align-items:center;flex-shrink:0;}
+.nav-cta{background:#1e4d20;color:white;padding:11px 22px;border-radius:25px;font-size:13px;font-weight:700;letter-spacing:0.04em;transition:background 0.2s;white-space:nowrap;}
+.nav-cta:hover{background:#142e12;}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;flex-shrink:0;}
+.burger span{display:block;width:24px;height:2px;background:#2d5a27;border-radius:2px;}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;background:white;z-index:2000;flex-direction:column;padding:2rem;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #e8e4d9;}
+.mobile-menu-close{background:none;border:none;font-size:28px;cursor:pointer;color:#2d5a27;}
+.mobile-nav-item{border-bottom:1px solid #f0f0f0;}
+.mobile-nav-item > a{display:block;padding:1rem 0;font-size:17px;font-weight:700;color:#333;}
+.mobile-submenu{padding:0.5rem 0 1rem 1rem;display:flex;flex-direction:column;gap:0.5rem;}
+.mobile-submenu a{font-size:15px;font-weight:500;color:#666;padding:0.4rem 0;display:block;}
+.mobile-cta{background:#1e4d20;color:white;padding:16px;border-radius:12px;font-size:16px;font-weight:700;text-align:center;margin-top:2rem;display:block;}
+
+/* SLIDER */
+.slider{position:relative;height:580px;overflow:hidden;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 0.9s ease;}
+.slide.active{opacity:1;}
+.slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.65) 100%);}
+.slide-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+.slide-content h1,.slide-content .slide-title{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:white;line-height:1.1;margin-bottom:1rem;text-shadow:0 2px 20px rgba(0,0,0,0.6);}
+.slide-content h1 em,.slide-content .slide-title em{font-style:italic;color:#a8d8a0;}
+.slide-content p{font-family:'Merriweather',serif;font-size:16px;font-weight:400;color:white;max-width:540px;line-height:1.8;margin-bottom:2rem;text-shadow:0 1px 10px rgba(0,0,0,0.6);}
+.slide-btn{background:#2d7a35;color:white;padding:14px 34px;border-radius:25px;font-size:15px;font-weight:700;display:inline-block;transition:all 0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+.slide-btn:hover{background:#1e5224;}
+.slider-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer;border:none;transition:background 0.3s;padding:0;}
+.dot.active{background:white;}
+.slider-prev,.slider-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);color:white;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;z-index:10;transition:background 0.2s;}
+.slider-prev{left:1.5rem;}
+.slider-next{right:1.5rem;}
+.slider-pause{position:absolute;bottom:1.5rem;right:1.5rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.3);color:white;width:34px;height:34px;border-radius:50%;font-size:11px;cursor:pointer;z-index:10;transition:background 0.2s;}
+.slider-pause:hover{background:rgba(255,255,255,0.3);}
+
+/* BANDEAU */
+.bandeau{background:#2d5a27;padding:1.4rem 2rem;display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap;}
+.band-item{display:flex;align-items:center;gap:0.7rem;color:white;font-size:14px;font-weight:600;letter-spacing:0.04em;}
+.band-sep{color:rgba(255,255,255,0.25);font-size:20px;}
+
+/* PRODUITS — fond crème #F0EBE0 */
+.prod-section{background:#F0EBE0;padding:4rem 3rem;}
+.section-hd{text-align:center;margin-bottom:1.5rem;}
+.section-hd h2{font-family:'Playfair Display',serif;font-size:36px;color:#2d2d2d;margin-bottom:0.7rem;}
+.section-hd p{font-family:'Merriweather',serif;font-size:15px;color:#777;max-width:500px;margin:0 auto;line-height:1.8;}
+.section-bio{display:flex;justify-content:center;margin-bottom:2rem;}
+.section-bio img{height:52px;width:auto;aspect-ratio:562/306;}
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2rem;}
+.prod-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.07);transition:transform 0.25s,box-shadow 0.25s;display:flex;flex-direction:column;}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.12);}
+.prod-card-img{height:220px;overflow:hidden;flex-shrink:0;}
+.prod-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s;}
+.prod-card:hover .prod-card-img img{transform:scale(1.04);}
+.prod-card-body{padding:1.4rem;display:flex;flex-direction:column;flex:1;text-align:center;}
+.prod-card-cat{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#7a9e76;margin-bottom:0.4rem;font-weight:700;}
+.prod-card-name{font-family:'Playfair Display',serif;font-size:21px;margin-bottom:0.5rem;color:#1a1a1a;}
+.prod-card-desc{font-family:'Merriweather',serif;font-size:13px;color:#666;line-height:1.7;margin-bottom:0.7rem;flex:1;}
+.prod-card-footer{display:flex;flex-direction:column;gap:0.6rem;border-top:1px solid #e8e4d9;padding-top:0.9rem;margin-top:auto;}
+.prod-card-price{font-family:'Playfair Display',serif;font-size:20px;color:#2d5a27;font-weight:700;white-space:nowrap;line-height:1;}
+.prod-card-price .unit{font-size:12px;font-family:'Lato',sans-serif;color:#999;font-weight:500;display:block;margin-top:2px;}
+.prod-card-btn{background:#1e4d20;color:white;border:none;padding:11px 0;border-radius:20px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;width:100%;text-align:center;}
+.prod-card-btn:hover{background:#142e12;}
+.prod-center{text-align:center;}
+.btn-outline{display:inline-block;border:2px solid #1e4d20;color:#1e4d20;padding:12px 32px;border-radius:25px;font-size:15px;font-weight:700;transition:all 0.2s;}
+.btn-outline:hover{background:#1e4d20;color:white;}
+
+/* AVIS — fond blanc */
+.avis-section{background:white;padding:4rem 3rem;border-top:1px solid #d8cfc2;}
+.avis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
+.avis-card{background:#F0EBE0;border-radius:14px;padding:1.8rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);border-top:3px solid #2d5a27;text-align:center;}
+.avis-stars{display:flex;gap:3px;margin-bottom:0.8rem;justify-content:center;}
+.avis-text{font-family:'Merriweather',serif;font-size:14px;color:#2d2d2d;line-height:1.8;font-style:italic;margin-bottom:1rem;}
+.avis-author{font-size:13px;font-weight:700;color:#2d5a27;letter-spacing:0.05em;text-transform:uppercase;}
+.avis-source{font-size:12px;font-weight:500;color:#999;margin-top:3px;}
+
+/* ENGAGEMENTS
+   Espace A (haut section → titre) = Espace C (bas pastilles → bas section)
+   Obtenu avec padding:3rem haut et bas, et margin-top sur la grille = margin-bottom implicite
+   Espace B (sous-titre → pastilles) géré par margin-top:2rem sur la grille
+*/
+.engage-section{background:#2d5a27;padding:3rem 3rem;}
+.engage-section .section-hd h2{color:white;margin-bottom:0.5rem;}
+.engage-section .section-hd p{color:rgba(255,255,255,0.75);}
+.engage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;
+  /* margin-top = espace B (sous-titre vers pastilles) */
+  margin-top:2rem;
+  /* margin-bottom:0 pour que le padding bas de la section = espace C */
+  margin-bottom:0;}
+.engage-card{background:rgba(255,255,255,0.07);border-radius:16px;padding:2rem 1.5rem;text-align:center;border:1px solid rgba(255,255,255,0.12);}
+.engage-icon{width:56px;height:56px;border:1.5px solid rgba(255,255,255,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;}
+.engage-title{color:white;font-family:'Lato',sans-serif;font-size:16px;font-weight:700;margin-bottom:0.7rem;}
+.engage-desc{color:rgba(255,255,255,0.75);font-size:14px;line-height:1.75;}
+
+/* HISTOIRE — fond crème */
+.histoire-section{padding:4rem 3rem;background:#F0EBE0;}
+.histoire-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;margin:0 auto;}
+.histoire-imgs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.histoire-imgs img{width:100%;border-radius:12px;object-fit:cover;display:block;}
+.histoire-imgs img.main{grid-column:1/-1;height:260px;}
+.histoire-imgs img.sub{height:160px;}
+.histoire-tag{display:inline-block;background:#d4e8d0;color:#2d5a27;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:6px 16px;border-radius:12px;margin-bottom:1.2rem;}
+.histoire-content h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;line-height:1.3;margin-bottom:1.2rem;}
+.histoire-content h2 em{font-style:italic;color:#2d5a27;}
+.histoire-content p{font-family:'Merriweather',serif;font-size:15px;color:#444;line-height:2;margin-bottom:1.1rem;}
+.histoire-content strong{color:#2d5a27;font-weight:700;font-style:normal;}
+.histoire-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #d8cfc2;}
+.hstat{text-align:center;}
+.hstat-num{font-family:'Playfair Display',serif;font-size:36px;color:#2d5a27;display:block;line-height:1;}
+.hstat-num .sup{font-size:0.45em;vertical-align:super;}
+.hstat-label{font-size:11px;font-weight:600;color:#aaa;letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;display:block;}
+
+/* FOOTER */
+.footer{background:#1e3e1b;padding:1rem 2rem;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:1.2rem;align-items:start;}
+.foot-lw{display:flex;align-items:flex-end;gap:4px;margin-bottom:0.4rem;}
+.foot-logo{height:36px;width:auto;aspect-ratio:515/502;display:block;flex-shrink:0;}
+.foot-brand{font-family:'Playfair Display',serif;font-size:14px;color:white;}
+.foot-p{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.7;}
+.foot-p a{color:rgba(255,255,255,0.65);}
+.foot-p a:hover{color:white;}
+.foot-bottom-row{display:flex;align-items:center;gap:0.6rem;margin-top:0.6rem;flex-wrap:wrap;}
+.foot-bio img{height:26px;width:auto;aspect-ratio:562/306;}
+.foot-social{display:flex;gap:0.5rem;}
+.foot-social a{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.foot-social a:hover{background:#2d5a27;}
+.foot-h{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;}
+.foot-li{display:block;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:0.35rem;transition:color 0.2s;}
+.foot-li:hover{color:white;}
+.foot-bottom{background:#142e12;padding:0.5rem 2rem;text-align:center;}
+.foot-bottom p{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.5;}
+
+/* NAV — bascule en menu burger dès 1200px pour éviter le chevauchement
+   entre les liens du menu (Blog, Contact, etc.) et le bouton Commander
+   quand la largeur de fenêtre devient intermédiaire (ex: petit laptop, tablette paysage) */
+@media (max-width:1200px){
+  .nav-menu,.nav-right{display:none;}
+  .burger{display:flex;}
+}
+
+/* RESPONSIVE TABLETTE */
+@media (max-width:900px){
+  .nav-brand{font-size:15px;}
+  .nav-brand-sub{display:none;}
+  .slider{height:420px;}
+  .slide-content h1,.slide-content .slide-title{font-size:38px;}
+  .slide-content p{font-size:15px;}
+  .bandeau{gap:1rem;padding:1.2rem 1.5rem;}
+  .band-sep{display:none;}
+  .prod-section{padding:3rem 1.5rem;}
+  .prod-grid{grid-template-columns:1fr 1fr;gap:1rem;}
+  .avis-section{padding:3rem 1.5rem;}
+  .avis-grid{grid-template-columns:1fr 1fr;gap:1rem;}
+  .engage-section{padding:2.5rem 1.5rem;}
+  .engage-grid{grid-template-columns:1fr 1fr;gap:1rem;}
+  .histoire-section{padding:3rem 1.5rem;}
+  .histoire-inner{grid-template-columns:1fr;gap:2rem;}
+  .histoire-imgs{display:none;}
+  .footer{grid-template-columns:1fr 1fr;gap:1rem;padding:1rem 1.5rem;}
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width:480px){
+  .nav{height:68px;padding:0 1rem;gap:0.5rem;}
+  .nav-lw img.nav-logo{height:52px;}
+  .nav-brand{font-size:13px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nav-brand-sub{display:none;}
+  .slider{height:360px;}
+  .slide-content{padding:1.2rem;}
+  .slide-content h1,.slide-content .slide-title{font-size:30px;margin-bottom:0.7rem;}
+  .slide-content p{font-size:14px;max-width:100%;margin-bottom:1.4rem;}
+  .slide-btn{padding:12px 22px;font-size:14px;}
+  .slider-prev,.slider-next{width:34px;height:34px;font-size:17px;}
+  .bandeau{padding:1rem 1.2rem;gap:0.7rem;flex-direction:column;align-items:flex-start;}
+  .band-item{font-size:13px;}
+  .prod-section{padding:2.5rem 1.2rem;}
+  .section-hd h2{font-size:26px;}
+  .section-hd p{font-size:14px;}
+  .section-bio img{height:36px;}
+  .prod-grid{grid-template-columns:1fr;gap:1.2rem;}
+  .prod-card-img{height:200px;}
+  .avis-section{padding:2.5rem 1.2rem;}
+  .avis-grid{grid-template-columns:1fr;gap:1rem;}
+  .engage-section{padding:2rem 1.2rem;}
+  .engage-grid{grid-template-columns:1fr 1fr;gap:0.8rem;}
+  .engage-card{padding:1.3rem 0.8rem;}
+  .engage-title{font-size:13px;}
+  .engage-desc{font-size:12px;}
+  .histoire-section{padding:2.5rem 1.2rem;}
+  .histoire-content h2{font-size:22px;}
+  .histoire-content p{font-size:14px;}
+  .histoire-stats{gap:0.8rem;flex-wrap:wrap;}
+  .hstat-num{font-size:26px;}
+  .footer{grid-template-columns:1fr;gap:0.8rem;padding:1rem 1.2rem;}
+  .foot-bottom{padding:0.5rem 1.2rem;}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "GAEC Char'Algue &mdash; Spiruline de Chartreuse",
+  "image": "https://www.spirulinedechartreuse.com/images/hero-maxime-renaud-bassins.jpg",
+  "url": "https://www.spirulinedechartreuse.com/",
+  "telephone": "+33659799633",
+  "email": "contact@spirulinedechartreuse.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "458 Rue de la Grande Terre",
+    "addressLocality": "Le Touvet",
+    "postalCode": "38660",
+    "addressCountry": "FR"
+  },
+  "sameAs": [
+    "https://www.facebook.com/p/Spiruline-de-chartreuse-100051054500871/",
+    "https://www.instagram.com/spiruline_de_chartreuse/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Spiruline en paillettes",
+      "image": "https://www.spirulinedechartreuse.com/images/produit-paillettes.jpg",
+      "description": "Spiruline bio déshydratée à basse température, en paillettes.",
+      "brand": "Spiruline de Chartreuse",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "EUR",
+        "price": "16",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Spiruline en comprimés",
+      "image": "https://www.spirulinedechartreuse.com/images/produit-comprimes.jpg",
+      "description": "Spiruline bio en comprimés, dosage précis pour une cure quotidienne.",
+      "brand": "Spiruline de Chartreuse",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "EUR",
+        "price": "19",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Spiruline en poudre",
+      "image": "https://www.spirulinedechartreuse.com/images/produit-poudre.jpg",
+      "description": "Spiruline bio en poudre fine, se dissout facilement dans l'eau et les jus.",
+      "brand": "Spiruline de Chartreuse",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "EUR",
+        "price": "17",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+<nav class="nav">
+  <div class="nav-lw">
+    <img class="nav-logo" src="images/logo.png" width="515" height="502" alt="Logo Spiruline de Chartreuse">
+    <div class="nav-brand">Spiruline de Chartreuse<span class="nav-brand-sub">Le Touvet &middot; Is&egrave;re &middot; France</span></div>
+  </div>
+  <ul class="nav-menu">
+    <li><a href="spiruline.html">La spiruline <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="spiruline.html#histoire">Son histoire</a><a href="spiruline.html#bienfaits">Les bienfaits</a><a href="spiruline.html#mode-emploi">Mode d'emploi</a></div>
+    </li>
+    <li><a href="notre-spiruline.html">Notre&nbsp;spiruline <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="notre-spiruline.html#notre-spiru">Ce qui nous distingue</a><a href="notre-spiruline.html#recolte">La r&eacute;colte</a><a href="notre-spiruline.html#ferme">La ferme</a></div>
+    </li>
+    <li><a href="visites.html">Visites <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="visites.html#comment-visiter">Comment visiter</a><a href="visites.html#portes-ouvertes">Portes ouvertes</a><a href="visites.html#partenariat">Partenariat</a><a href="visites.html#presse">M&eacute;dia</a></div>
+    </li>
+    <li><a href="contact.html">Contact <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="contact.html#points-de-vente">Points de vente</a><a href="contact.html#nous-contacter">Nous contacter</a><a href="contact.html#faq">FAQ</a></div>
+    </li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right"><a class="nav-cta" href="commander.html">Commander &rarr;</a></div>
+  <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="images/logo.png" width="515" height="502" alt="Logo" style="height:50px;width:auto;aspect-ratio:515/502;">
+    <button class="mobile-menu-close" aria-label="Fermer le menu">&times;</button>
+  </div>
+  <div class="mobile-nav-item"><a href="spiruline.html">La spiruline</a>
+    <div class="mobile-submenu"><a href="spiruline.html#histoire">Son histoire</a><a href="spiruline.html#bienfaits">Les bienfaits</a><a href="spiruline.html#mode-emploi">Mode d'emploi</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="notre-spiruline.html">Notre spiruline</a>
+    <div class="mobile-submenu"><a href="notre-spiruline.html#notre-spiru">Ce qui nous distingue</a><a href="notre-spiruline.html#recolte">La r&eacute;colte</a><a href="notre-spiruline.html#ferme">La ferme</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="visites.html">Visites</a>
+    <div class="mobile-submenu"><a href="visites.html#comment-visiter">Comment visiter</a><a href="visites.html#portes-ouvertes">Portes ouvertes</a><a href="visites.html#partenariat">Partenariat</a><a href="visites.html#presse">M&eacute;dia</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="contact.html">Contact</a>
+    <div class="mobile-submenu"><a href="contact.html#points-de-vente">Points de vente</a><a href="contact.html#nous-contacter">Nous contacter</a><a href="contact.html#faq">FAQ</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="blog.html">Blog</a></div>
+  <a class="mobile-cta" href="commander.html">Commander &rarr;</a>
+</div>
+
+<section class="slider" id="main-content">
+  <h1 class="sr-only">Spiruline de Chartreuse &mdash; Producteur artisanal de spiruline bio en Is&egrave;re</h1>
+  <div class="slide active">
+    <img src="images/hero-maxime-renaud-bassins.jpg" width="456" height="263" alt="Maxime et Renaud devant les bassins" fetchpriority="high">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-title">La <em>Vitalit&eacute;</em><br>des Alpes</p>
+      <p>Une ferme de spiruline artisanale au pied du massif de la Chartreuse, &agrave; 30 minutes de Grenoble et Chamb&eacute;ry.</p>
+      <a class="slide-btn" href="commander.html">D&eacute;couvrir nos produits</a>
+    </div>
+  </div>
+  <div class="slide">
+    <img src="images/hero-ferme-chartreuse.jpg" width="1600" height="1064" alt="La ferme avec la Chartreuse" loading="lazy">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-title">Au pied<br>de la <em>Chartreuse</em></p>
+      <p>Notre exploitation artisanale dans la vall&eacute;e du Gr&eacute;sivaudan, entre plaine fertile et falaises alpines.</p>
+      <a class="slide-btn" href="notre-spiruline.html">Notre exploitation</a>
+    </div>
+  </div>
+  <div class="slide">
+    <img src="images/hero-produits.jpg" width="900" height="600" alt="Produits Spiruline de Chartreuse" loading="lazy">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-title">Du bassin<br>&agrave; votre <em>table</em></p>
+      <p>Paillettes, comprim&eacute;s, poudre &mdash; trois formes pour int&eacute;grer la spiruline dans votre quotidien.</p>
+      <a class="slide-btn" href="commander.html">Nos produits</a>
+    </div>
+  </div>
+  <div class="slide">
+    <img src="images/hero-recolte-artisanale.jpg" width="900" height="600" alt="R&eacute;colte artisanale" loading="lazy">
+    <div class="slide-overlay"></div>
+    <div class="slide-content">
+      <p class="slide-title">Une r&eacute;colte<br><em>artisanale</em><br>chaque matin</p>
+      <p>&Agrave; la main, dans le respect du vivant, pour vous offrir une spiruline au sommet de sa fra&icirc;cheur.</p>
+      <a class="slide-btn" href="notre-spiruline.html#recolte">La r&eacute;colte</a>
+    </div>
+  </div>
+  <button class="slider-prev" onclick="changeSlide(-1)" aria-label="Diapositive pr&eacute;c&eacute;dente">&#8249;</button>
+  <button class="slider-next" onclick="changeSlide(1)" aria-label="Diapositive suivante">&#8250;</button>
+  <button class="slider-pause" id="sliderPause" onclick="toggleAutoplay()" aria-label="Mettre en pause le d&eacute;filement automatique" aria-pressed="false">&#10074;&#10074;</button>
+  <div class="slider-dots">
+    <button class="dot active" onclick="goToSlide(0)" aria-label="Aller &agrave; la diapositive 1"></button>
+    <button class="dot" onclick="goToSlide(1)" aria-label="Aller &agrave; la diapositive 2"></button>
+    <button class="dot" onclick="goToSlide(2)" aria-label="Aller &agrave; la diapositive 3"></button>
+    <button class="dot" onclick="goToSlide(3)" aria-label="Aller &agrave; la diapositive 4"></button>
+  </div>
+</section>
+
+<div class="bandeau">
+  <div class="band-item"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4H4a2 2 0 000 4c0 2.5 2 4.5 5 5"/><path d="M17 4h3a2 2 0 010 4c0 2.5-2 4.5-5 5"/><path d="M7 4h10v6a5 5 0 01-10 0V4z"/></svg><span>10 ans d'exp&eacute;rience</span></div>
+  <div class="band-sep">&middot;</div>
+  <div class="band-item"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 7 4 3 5c0 5 3 8 9 7"/><path d="M12 12c0-5 5-8 9-7 0 5-3 8-9 7"/></svg><span>Spiruline certifi&eacute;e bio AB</span></div>
+  <div class="band-sep">&middot;</div>
+  <div class="band-item"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0"/><path d="M14 10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2v0a2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg><span>Production artisanale</span></div>
+  <div class="band-sep">&middot;</div>
+  <div class="band-item"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 8 5-5 5 15H2L8 3z"/></svg><span>Local &amp; ancr&eacute; au territoire</span></div>
+  <div class="band-sep">&middot;</div>
+  <div class="band-item"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span>Exp&eacute;dition sous 48h</span></div>
+</div>
+
+<section class="prod-section">
+  <div class="section-hd">
+    <h2>Nos produits</h2>
+    <p>Trois formes pour s'adapter &agrave; votre quotidien, une seule origine&nbsp;: nos bassins au pied de la Chartreuse.</p>
+  </div>
+  <div class="section-bio"><img src="images/logo-bio-ab.png" width="562" height="306" alt="Certifi&eacute; Agriculture Biologique AB et UE" loading="lazy"></div>
+  <div class="prod-grid">
+    <div class="prod-card">
+      <div class="prod-card-img"><img src="images/produit-paillettes.jpg" width="324" height="324" alt="Spiruline en paillettes" loading="lazy"></div>
+      <div class="prod-card-body">
+        <p class="prod-card-cat">Paillettes s&eacute;ch&eacute;es</p>
+        <h3 class="prod-card-name">Spiruline en paillettes</h3>
+        <p class="prod-card-desc">D&eacute;shydrat&eacute;e &agrave; basse temp&eacute;rature pour conserver tous les nutriments. &Agrave; saupoudrer sur vos plats, smoothies et yaourts.</p>
+        <div class="prod-card-footer">
+          <div class="prod-card-price">&Agrave; partir de 16&nbsp;&euro;<span class="unit">/ sachet</span></div>
+          <button class="prod-card-btn">Commander</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card-img"><img src="images/produit-comprimes.jpg" width="324" height="324" alt="Spiruline en comprim&eacute;s" loading="lazy"></div>
+      <div class="prod-card-body">
+        <p class="prod-card-cat">Comprim&eacute;s</p>
+        <h3 class="prod-card-name">Spiruline en comprim&eacute;s</h3>
+        <p class="prod-card-desc">La solution pratique pour une cure quotidienne. Dosage pr&eacute;cis, facile &agrave; emporter, conservation longue dur&eacute;e.</p>
+        <div class="prod-card-footer">
+          <div class="prod-card-price">&Agrave; partir de 19&nbsp;&euro;<span class="unit">/ sachet</span></div>
+          <button class="prod-card-btn">Commander</button>
+        </div>
+      </div>
+    </div>
+    <div class="prod-card">
+      <div class="prod-card-img"><img src="images/produit-poudre.jpg" width="324" height="324" alt="Spiruline en poudre" loading="lazy"></div>
+      <div class="prod-card-body">
+        <p class="prod-card-cat">Poudre fine</p>
+        <h3 class="prod-card-name">Spiruline en poudre</h3>
+        <p class="prod-card-desc">Se dissout facilement dans l'eau et les jus. Id&eacute;ale pour vos pr&eacute;parations culinaires.</p>
+        <div class="prod-card-footer">
+          <div class="prod-card-price">&Agrave; partir de 17&nbsp;&euro;<span class="unit">/ sachet</span></div>
+          <button class="prod-card-btn">Commander</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="prod-center"><a class="btn-outline" href="commander.html">Voir toute notre boutique &rarr;</a></div>
+</section>
+
+<section class="avis-section">
+  <div class="section-hd">
+    <h2>Ce que disent nos clients</h2>
+    <p>Des avis authentiques collect&eacute;s sur Google.</p>
+  </div>
+  <div class="avis-grid">
+    <div class="avis-card">
+      <div class="avis-stars"><span class="sr-only">Note : 5 étoiles sur 5</span><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+      <p class="avis-text">&laquo;&nbsp;Elle est de tr&egrave;s bonne qualit&eacute;, les envois sont rapides. Je ne regrette pas mon choix et je continue d'en commander r&eacute;guli&egrave;rement.&nbsp;&raquo;</p>
+      <div class="avis-author">Isabelle M.</div>
+      <div class="avis-source">Google &mdash; Commande en ligne</div>
+    </div>
+    <div class="avis-card">
+      <div class="avis-stars"><span class="sr-only">Note : 5 étoiles sur 5</span><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+      <p class="avis-text">&laquo;&nbsp;Apr&egrave;s plusieurs visites d'entreprises de spiruline, la Spiruline de Chartreuse est la meilleure &mdash; go&ucirc;t, odeur, visuel. Je valide et je vous la conseille.&nbsp;&raquo;</p>
+      <div class="avis-author">Sophie L.</div>
+      <div class="avis-source">Google &mdash; Qualit&eacute; produit</div>
+    </div>
+    <div class="avis-card">
+      <div class="avis-stars"><span class="sr-only">Note : 5 étoiles sur 5</span><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+      <p class="avis-text">&laquo;&nbsp;La meilleure spiruline que j'ai go&ucirc;t&eacute;e. J'ajoute les paillettes sur ma salade, c'est top&nbsp;! Je suis pass&eacute; &agrave; la ferme, explication et petite visite bien instructive.&nbsp;&raquo;</p>
+      <div class="avis-author">C&eacute;sar Lachaize</div>
+      <div class="avis-source">Google &mdash; Avis client</div>
+    </div>
+    <div class="avis-card">
+      <div class="avis-stars"><span class="sr-only">Note : 5 étoiles sur 5</span><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#f5a623" aria-hidden="true" stroke="#f5a623" stroke-width="1"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+      <p class="avis-text">&laquo;&nbsp;Tr&egrave;s belle d&eacute;couverte, des petits producteurs qui expliquent tr&egrave;s bien leur production et le produit qu'ils exploitent et qu'ils surveillent par divers contr&ocirc;les. Soucieux de leur impact &eacute;cologique, ils continuent de d&eacute;velopper leurs moyens en ce sens. Producteurs &agrave; recommander&nbsp;+++&nbsp;&raquo;</p>
+      <div class="avis-author">Nicolas Jaouen</div>
+      <div class="avis-source">Google &mdash; Local Guide</div>
+    </div>
+  </div>
+</section>
+
+<section class="engage-section">
+  <div class="section-hd">
+    <h2>Nos engagements</h2>
+    <p>Ce qui nous distingue, au-del&agrave; du produit.</p>
+  </div>
+  <div class="engage-grid">
+    <div class="engage-card">
+      <div class="engage-icon"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8c-2.5 0-4 2-4 4s1.5 4 4 4c1.5 0 3-1 3.5-2.5"/><path d="M16 8l-4 4"/></svg></div>
+      <h3 class="engage-title">&Eacute;cologique</h3>
+      <p class="engage-desc">Spiruline certifi&eacute;e bio, r&eacute;duction &eacute;nerg&eacute;tique et des intrants, sans pesticides ni OGM, en eau douce potable de Chartreuse.</p>
+    </div>
+    <div class="engage-card">
+      <div class="engage-icon"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <h3 class="engage-title">Proches de vous</h3>
+      <p class="engage-desc">Visites, circuit court, vente directe &agrave; la ferme, march&eacute;s locaux. Du producteur au consommateur, sans interm&eacute;diaire.</p>
+    </div>
+    <div class="engage-card">
+      <div class="engage-icon"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0"/><path d="M14 10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v2"/><path d="M10 10.5V6a2 2 0 00-2-2v0a2 2 0 00-2 2v8"/><path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 012.83-2.82L7 15"/></svg></div>
+      <h3 class="engage-title">R&eacute;colte artisanale</h3>
+      <p class="engage-desc">R&eacute;colt&eacute;e &agrave; la main chaque matin, s&eacute;ch&eacute;e &agrave; basse temp&eacute;rature. Chaque &eacute;tape ma&icirc;tris&eacute;e sur place.</p>
+    </div>
+    <div class="engage-card">
+      <div class="engage-icon"><svg width="28" height="28" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 9l10 6 10-6-10-6z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+      <h3 class="engage-title">Ancr&eacute;s au territoire</h3>
+      <p class="engage-desc">Accueil scolaire, &eacute;v&eacute;nements, vie associative. Nous cultivons des liens avec notre territoire et ses habitants.</p>
+    </div>
+  </div>
+</section>
+
+<section class="histoire-section">
+  <div class="histoire-inner">
+    <div class="histoire-imgs">
+      <img class="main" src="images/histoire-bassins-principal.jpg" width="900" height="900" alt="Maxime et Renaud dans les bassins" loading="lazy">
+      <img class="sub" src="images/histoire-bassins-culture.jpg" width="500" height="332" alt="Bassins de culture de la spiruline" loading="lazy">
+      <img class="sub" src="images/histoire-vue-aerienne.jpg" width="900" height="506" alt="Vue a&eacute;rienne de l'exploitation" loading="lazy">
+    </div>
+    <div class="histoire-content">
+      <span class="histoire-tag">Notre histoire</span>
+      <h2>Deux amis,<br>un projet <em>commun</em></h2>
+      <p><strong>Maxime</strong>, passionn&eacute; d'auto-construction, et <strong>Renaud</strong>, docteur en biologie et passionn&eacute; du vivant, se connaissent depuis l'enfance. En 2016, ils r&eacute;unissent leurs comp&eacute;tences autour d'un m&ecirc;me projet&nbsp;: cr&eacute;er une ferme de spiruline au pied de la Chartreuse.</p>
+      <p>Leur ambition&nbsp;: produire une spiruline de qualit&eacute; irr&eacute;prochable, construire une ferme &eacute;cologique et innover pour r&eacute;duire au maximum leur impact environnemental.</p>
+      <div class="histoire-stats">
+        <div class="hstat"><span class="hstat-num">2016</span><span class="hstat-label">Cr&eacute;ation</span></div>
+        <div class="hstat"><span class="hstat-num">100%</span><span class="hstat-label">Artisanal</span></div>
+        <div class="hstat"><span class="hstat-num">1<span class="sup">&egrave;re</span></span><span class="hstat-label">Spiruline bio en Is&egrave;re</span></div>
+      </div>
+      <a class="btn-outline" href="notre-spiruline.html" style="margin-top:1.5rem;display:inline-block;">D&eacute;couvrir notre ferme &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>
+    <div class="foot-lw">
+      <img class="foot-logo" src="images/logo.png" width="515" height="502" alt="Logo" loading="lazy">
+      <span class="foot-brand">Spiruline de Chartreuse</span>
+    </div>
+    <p class="foot-p">GAEC Char'Algue &mdash; 458 Rue de la Grande Terre, 38660 Le Touvet<br><a href="tel:+33659799633">06&nbsp;59&nbsp;79&nbsp;96&nbsp;33</a> / <a href="tel:+33781793810">07&nbsp;81&nbsp;79&nbsp;38&nbsp;10</a> &mdash; <a href="mailto:contact@spirulinedechartreuse.com">contact@spirulinedechartreuse.com</a></p>
+    <div class="foot-bottom-row">
+      <div class="foot-bio"><img src="images/logo-bio-ab.png" width="562" height="306" alt="AB Bio" loading="lazy"></div>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/p/Spiruline-de-chartreuse-100051054500871/" target="_blank" title="Facebook" aria-label="Suivez-nous sur Facebook (nouvel onglet)" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.instagram.com/spiruline_de_chartreuse/" target="_blank" title="Instagram" aria-label="Suivez-nous sur Instagram (nouvel onglet)" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="foot-h">La spiruline</p>
+    <a class="foot-li" href="spiruline.html#histoire">Son histoire</a>
+    <a class="foot-li" href="spiruline.html#bienfaits">Les bienfaits</a>
+    <a class="foot-li" href="spiruline.html#mode-emploi">Mode d'emploi</a>
+  </div>
+  <div>
+    <p class="foot-h">Notre spiruline</p>
+    <a class="foot-li" href="notre-spiruline.html#recolte">La r&eacute;colte</a>
+    <a class="foot-li" href="notre-spiruline.html#la-ferme">La ferme</a>
+    <a class="foot-li" href="visites.html">Visites</a>
+    <a class="foot-li" href="blog.html">Blog</a>
+  </div>
+  <div>
+    <p class="foot-h">Informations</p>
+    <a class="foot-li" href="contact.html#points-de-vente">Points de vente</a>
+    <a class="foot-li" href="contact.html#nous-contacter">Nous contacter</a>
+    <a class="foot-li" href="contact.html#faq">FAQ</a>
+    <a class="foot-li" href="mentions-legales.html">Mentions l&eacute;gales</a>
+    <a class="foot-li" href="cgv.html">CGV</a>
+    <a class="foot-li" href="confidentialite.html">Confidentialit&eacute;</a>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <p>&copy; 2025 GAEC Char'Algue &mdash; Spiruline de Chartreuse &mdash; SIRET 83044121800013 &mdash; TVA FR13830441218 &mdash; H&eacute;bergeur&nbsp;: OVH SAS, 2 rue Kellermann, 59100 Roubaix</p>
+</div>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+function goToSlide(n) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+}
+function changeSlide(dir) { goToSlide(current + dir); }
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let autoplayTimer = null;
+const pauseBtn = document.getElementById('sliderPause');
+
+function startAutoplay() {
+  if (autoplayTimer) return;
+  autoplayTimer = setInterval(() => changeSlide(1), 5500);
+  pauseBtn.setAttribute('aria-pressed', 'false');
+  pauseBtn.setAttribute('aria-label', 'Mettre en pause le d\u00e9filement automatique');
+  pauseBtn.innerHTML = '&#10074;&#10074;';
+}
+function stopAutoplay() {
+  clearInterval(autoplayTimer);
+  autoplayTimer = null;
+  pauseBtn.setAttribute('aria-pressed', 'true');
+  pauseBtn.setAttribute('aria-label', 'Relancer le d\u00e9filement automatique');
+  pauseBtn.innerHTML = '&#9654;';
+}
+function toggleAutoplay() {
+  if (autoplayTimer) stopAutoplay(); else startAutoplay();
+}
+
+// Respecte la pr\u00e9f\u00e9rence "mouvement r\u00e9duit" de l'utilisateur : pas de d\u00e9filement auto
+if (!prefersReducedMotion) {
+  startAutoplay();
+} else {
+  stopAutoplay();
+}
+
+const burger = document.querySelector('.burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', function() {
+  mobileMenu.classList.add('open');
+  burger.setAttribute('aria-expanded', 'true');
+});
+document.querySelector('.mobile-menu-close').addEventListener('click', function() {
+  mobileMenu.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+});
+mobileMenu.addEventListener('click', function(e) {
+  if(e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+</script>
+</body>
+</html>

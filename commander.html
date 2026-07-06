@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Commander notre spiruline &mdash; Spiruline de Chartreuse</title>
+<meta name="description" content="Commandez notre spiruline bio en paillettes, comprim&eacute;s ou poudre, directement du producteur. Exp&eacute;dition sous 48h.">
+<link rel="canonical" href="https://www.spirulinedechartreuse.com/commander.html">
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Commander notre spiruline &mdash; Spiruline de Chartreuse">
+<meta property="og:description" content="Commandez notre spiruline bio en paillettes, comprim&eacute;s ou poudre, directement du producteur. Exp&eacute;dition sous 48h.">
+<meta property="og:image" content="https://www.spirulinedechartreuse.com/images/hero-produits.jpg">
+<meta property="og:url" content="https://www.spirulinedechartreuse.com/commander.html">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Spiruline de Chartreuse">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.skip-link{position:absolute;left:-9999px;top:0;background:#1e4d20;color:white;padding:12px 20px;z-index:3000;font-family:'Lato',sans-serif;font-weight:700;}
+.skip-link:focus{left:0;}
+body{font-family:'Lato',sans-serif;font-weight:400;background:#F0EBE0;color:#2d2d2d;font-size:16px;line-height:1.6;}
+img{max-width:100%;}
+a{text-decoration:none;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:1000;background:#F0EBE0;border-bottom:1px solid #d8cfc2;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:90px;gap:1rem;}
+.nav-lw{display:flex;align-items:center;gap:8px;min-width:0;}
+.nav-lw img.nav-logo{height:78px;width:auto;aspect-ratio:515/502;flex-shrink:0;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:17px;color:#2d5a27;line-height:1.2;min-width:0;}
+.nav-brand-sub{display:block;font-family:'Lato',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#7a9e76;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-menu{display:flex;list-style:none;flex-shrink:1;min-width:0;}
+.nav-menu > li{position:relative;}
+.nav-menu > li > a{display:block;padding:0 0.9rem;height:90px;line-height:90px;font-size:14px;font-weight:700;color:#333;transition:color 0.2s;white-space:nowrap;}
+.nav-menu > li > a.active,.nav-menu > li > a:hover{color:#2d5a27;}
+.nav-menu > li > a .arr{font-size:9px;margin-left:2px;color:#bbb;}
+.dropdown{display:none;position:absolute;top:90px;left:0;background:white;min-width:210px;box-shadow:0 8px 30px rgba(0,0,0,0.1);border-top:2px solid #2d5a27;z-index:999;}
+.nav-menu > li:hover .dropdown,.nav-menu > li:focus-within .dropdown{display:block;}
+:focus-visible{outline:2px solid #2d5a27;outline-offset:2px;}
+.dropdown a{display:block;padding:0.85rem 1.2rem;font-size:13px;font-weight:500;color:#444;border-bottom:1px solid #f5f5f5;transition:background 0.2s;}
+.dropdown a:hover{background:#f0f7ee;color:#2d5a27;}
+.nav-right{display:flex;align-items:center;gap:0.8rem;flex-shrink:0;}
+.nav-cta{background:#1e4d20;color:white;padding:11px 22px;border-radius:25px;font-size:13px;font-weight:700;transition:background 0.2s;white-space:nowrap;}
+.nav-cta:hover{background:#142e12;}
+.cart-btn{position:relative;background:none;border:2px solid #1e4d20;color:#1e4d20;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cart-count{position:absolute;top:-6px;right:-6px;background:#1e4d20;color:white;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;flex-shrink:0;}
+.burger span{display:block;width:24px;height:2px;background:#2d5a27;border-radius:2px;}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;background:white;z-index:2000;flex-direction:column;padding:2rem;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #e8e4d9;}
+.mobile-menu-close{background:none;border:none;font-size:28px;cursor:pointer;color:#2d5a27;}
+.mobile-nav-item{border-bottom:1px solid #f0f0f0;}
+.mobile-nav-item > a{display:block;padding:1rem 0;font-size:17px;font-weight:700;color:#333;}
+.mobile-submenu{padding:0.5rem 0 1rem 1rem;display:flex;flex-direction:column;gap:0.5rem;}
+.mobile-submenu a{font-size:15px;font-weight:500;color:#666;padding:0.4rem 0;display:block;}
+.mobile-cta{background:#1e4d20;color:white;padding:16px;border-radius:12px;font-size:16px;font-weight:700;text-align:center;margin-top:2rem;display:block;}
+
+/* HERO */
+.hero{background:white;padding:3.5rem 3rem 2.5rem;text-align:center;}
+.hero h1{font-family:'Playfair Display',serif;font-size:42px;color:#2d2d2d;margin-bottom:0.6rem;}
+.hero h1 em{font-style:italic;color:#2d5a27;}
+.hero p{font-family:'Merriweather',serif;font-size:15px;color:#777;max-width:520px;margin:0 auto;}
+.hero-badges{display:flex;justify-content:center;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;}
+.hero-badges span{font-size:13px;font-weight:700;color:#2d5a27;display:flex;align-items:center;gap:0.4rem;}
+.hero-badges span::before{content:'✓';}
+
+/* CATALOGUE */
+.shop-section{padding:3rem 3rem 1rem;max-width:1100px;margin:0 auto;}
+.shop-group-title{font-family:'Playfair Display',serif;font-size:26px;color:#2d2d2d;margin-bottom:1.2rem;text-align:center;}
+.shop-group-title em{font-style:italic;color:#2d5a27;}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-bottom:3rem;}
+.product-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.06);display:flex;flex-direction:column;}
+.product-card-img{height:190px;overflow:hidden;background:white;display:flex;align-items:center;justify-content:center;}
+.product-card-img img{width:100%;height:100%;object-fit:contain;display:block;}
+.product-card-body{padding:1.2rem 1.3rem;display:flex;flex-direction:column;flex:1;text-align:center;}
+.product-card-cat{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#7a9e76;margin-bottom:0.3rem;font-weight:700;}
+.product-card-name{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:0.6rem;color:#1a1a1a;line-height:1.25;}
+.product-card-price{font-family:'Playfair Display',serif;font-size:19px;color:#2d5a27;font-weight:700;margin-bottom:0.9rem;}
+.product-card-pop .product-card-img{height:180px;padding:26px 26px 0;}
+.product-card-pop .product-card-img img{width:130px;height:130px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,0.12);border:1px solid #ece4d6;}
+.product-select{width:100%;padding:9px 10px;border-radius:10px;border:1px solid #e0d8cc;background:#F0EBE0;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;color:#2d5a27;margin-bottom:0.9rem;}
+.product-controls{display:flex;gap:0.6rem;align-items:center;justify-content:center;margin-top:auto;}
+.qty-control{display:flex;align-items:center;border:1px solid #e0d8cc;border-radius:10px;overflow:hidden;flex-shrink:0;}
+.qty-control button{background:#F0EBE0;border:none;width:32px;height:38px;font-size:15px;cursor:pointer;color:#2d5a27;font-weight:700;}
+.qty-control input{width:36px;height:38px;border:none;text-align:center;font-size:13px;font-weight:700;color:#2d2d2d;}
+.add-cart-btn{flex:1;background:#1e4d20;color:white;border:none;padding:10px 8px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;}
+.add-cart-btn:hover{background:#142e12;}
+.add-cart-btn.added{background:#2d7a35;}
+
+/* PANIER (drawer) */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2900;}
+.cart-overlay.open{display:block;}
+.cart-drawer{position:fixed;top:0;right:-420px;width:400px;max-width:90vw;height:100%;background:white;z-index:3000;transition:right 0.3s ease;display:flex;flex-direction:column;box-shadow:-8px 0 30px rgba(0,0,0,0.15);}
+.cart-drawer.open{right:0;}
+.cart-header{padding:1.5rem;border-bottom:1px solid #e8e4d9;display:flex;justify-content:space-between;align-items:center;}
+.cart-header h2{font-family:'Playfair Display',serif;font-size:22px;}
+.cart-close{background:none;border:none;font-size:26px;cursor:pointer;color:#2d5a27;}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem;}
+.cart-item{display:flex;gap:0.9rem;padding:1rem 0;border-bottom:1px solid #f0f0f0;align-items:center;}
+.cart-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-size:13px;font-weight:700;color:#2d2d2d;}
+.cart-item-weight{font-size:12px;color:#999;}
+.cart-item-qty{font-size:12px;color:#666;margin-top:2px;}
+.cart-item-price{font-family:'Playfair Display',serif;font-size:14px;color:#2d5a27;font-weight:700;white-space:nowrap;}
+.cart-item-remove{background:none;border:none;color:#c0392b;font-size:12px;cursor:pointer;margin-left:0.5rem;}
+.cart-empty{text-align:center;color:#999;font-family:'Merriweather',serif;font-style:italic;padding:3rem 1rem;}
+.cart-footer{padding:1.5rem;border-top:1px solid #e8e4d9;}
+.shipping-options{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
+.shipping-option{display:flex;align-items:center;gap:0.6rem;padding:0.7rem 0.9rem;border:1px solid #e0d8cc;border-radius:10px;font-size:13px;cursor:pointer;}
+.shipping-option input{accent-color:#2d5a27;}
+.shipping-option span{flex:1;}
+.shipping-option strong{color:#2d5a27;}
+.shipping-free-note{font-size:12px;color:#2d5a27;font-weight:700;text-align:center;margin-bottom:0.8rem;}
+.address-form{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
+.address-form-title{font-family:'Playfair Display',serif;font-size:14px;color:#2d2d2d;margin-bottom:0.2rem;}
+.address-form input{padding:9px 10px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:13px;color:#2d2d2d;width:100%;}
+.address-row{display:flex;gap:0.5rem;}
+.address-row input{flex:1;min-width:0;}
+.relay-point-picker{display:flex;flex-direction:column;gap:0.4rem;}
+.search-relay-btn{padding:9px 10px;border-radius:8px;border:1px solid #2d5a27;background:white;color:#2d5a27;font-size:12px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
+.search-relay-btn:hover{background:#eef4ec;}
+.relay-point-error{font-size:11px;color:#b23b3b;margin:0;}
+.cart-totals{display:flex;justify-content:space-between;font-size:14px;margin-bottom:0.4rem;color:#555;}
+.cart-total-final{display:flex;justify-content:space-between;font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin:0.8rem 0;padding-top:0.8rem;border-top:1px solid #e8e4d9;}
+.checkout-btn{display:block;width:100%;background:#1e4d20;color:white;border:none;padding:15px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;}
+.checkout-btn:hover{background:#142e12;}
+.checkout-btn:disabled{background:#ccc;cursor:not-allowed;}
+.checkout-note{font-size:11px;color:#999;text-align:center;margin-top:0.8rem;}
+.checkout-error{display:none;background:#f8e3e0;color:#a13d2f;font-size:12px;padding:0.7rem;border-radius:8px;margin-top:0.8rem;text-align:center;}
+
+/* FOOTER */
+.footer{background:#1e3e1b;padding:1rem 2rem;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:1.2rem;align-items:start;}
+.foot-lw{display:flex;align-items:flex-end;gap:4px;margin-bottom:0.4rem;}
+.foot-logo{height:36px;width:auto;aspect-ratio:515/502;display:block;flex-shrink:0;}
+.foot-brand{font-family:'Playfair Display',serif;font-size:14px;color:white;}
+.foot-p{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.7;}
+.foot-p a{color:rgba(255,255,255,0.65);}
+.foot-p a:hover{color:white;}
+.foot-bottom-row{display:flex;align-items:center;gap:0.6rem;margin-top:0.6rem;flex-wrap:wrap;}
+.foot-bio img{height:26px;width:auto;aspect-ratio:562/306;}
+.foot-social{display:flex;gap:0.5rem;}
+.foot-social a{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.foot-social a:hover{background:#2d5a27;}
+.foot-h{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;}
+.foot-li{display:block;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:0.35rem;transition:color 0.2s;}
+.foot-li:hover{color:white;}
+.foot-bottom{background:#142e12;padding:0.5rem 2rem;text-align:center;}
+.foot-bottom p{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.5;}
+
+@media (max-width:1200px){
+  .nav-menu{display:none;}
+  .burger{display:flex;}
+}
+
+@media (max-width:900px){
+  .nav-brand-sub{display:none;}
+  .hero{padding:2.5rem 1.5rem 2rem;}
+  .hero h1{font-size:32px;}
+  .shop-section{padding:2rem 1.2rem 1rem;}
+  .product-grid{grid-template-columns:1fr 1fr;gap:1rem;}
+  .footer{grid-template-columns:1fr 1fr;gap:1rem;padding:1rem 1.5rem;}
+}
+
+@media (max-width:480px){
+  .nav{height:68px;padding:0 1rem;}
+  .nav-lw img.nav-logo{height:52px;}
+  .nav-brand{font-size:13px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nav-cta{display:none;}
+  .hero h1{font-size:26px;}
+  .product-grid{grid-template-columns:1fr;}
+  .cart-drawer{width:100vw;max-width:100vw;}
+  .footer{grid-template-columns:1fr;gap:0.8rem;padding:1rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+<nav class="nav">
+  <div class="nav-lw">
+    <img class="nav-logo" src="images/logo.png" width="515" height="502" alt="Logo Spiruline de Chartreuse">
+    <div class="nav-brand">Spiruline de Chartreuse<span class="nav-brand-sub">Le Touvet &middot; Is&egrave;re &middot; France</span></div>
+  </div>
+  <ul class="nav-menu">
+    <li><a href="spiruline.html">La spiruline <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="spiruline.html#histoire">Son histoire</a><a href="spiruline.html#bienfaits">Les bienfaits</a><a href="spiruline.html#composition">Composition</a><a href="spiruline.html#mode-emploi">Mode d'emploi</a></div>
+    </li>
+    <li><a href="notre-spiruline.html">Notre&nbsp;spiruline <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="notre-spiruline.html#notre-spiru">Ce qui nous distingue</a><a href="notre-spiruline.html#recolte">La r&eacute;colte</a><a href="notre-spiruline.html#ferme">La ferme</a></div>
+    </li>
+    <li><a href="visites.html">Visites <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="visites.html#comment-visiter">Comment visiter</a><a href="visites.html#portes-ouvertes">Portes ouvertes</a><a href="visites.html#partenariat">Partenariat</a><a href="visites.html#presse">M&eacute;dia</a></div>
+    </li>
+    <li><a href="contact.html">Contact <span class="arr">&#9662;</span></a>
+      <div class="dropdown"><a href="contact.html#points-de-vente">Points de vente</a><a href="contact.html#nous-contacter">Nous contacter</a><a href="contact.html#faq">FAQ</a></div>
+    </li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" id="cartToggle" aria-label="Voir le panier">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+  <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="images/logo.png" width="515" height="502" alt="Logo" style="height:50px;width:auto;aspect-ratio:515/502;">
+    <button class="mobile-menu-close" aria-label="Fermer le menu">&times;</button>
+  </div>
+  <div class="mobile-nav-item"><a href="spiruline.html">La spiruline</a>
+    <div class="mobile-submenu"><a href="spiruline.html#histoire">Son histoire</a><a href="spiruline.html#bienfaits">Les bienfaits</a><a href="spiruline.html#composition">Composition</a><a href="spiruline.html#mode-emploi">Mode d'emploi</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="notre-spiruline.html">Notre spiruline</a>
+    <div class="mobile-submenu"><a href="notre-spiruline.html#notre-spiru">Ce qui nous distingue</a><a href="notre-spiruline.html#recolte">La r&eacute;colte</a><a href="notre-spiruline.html#ferme">La ferme</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="visites.html">Visites</a>
+    <div class="mobile-submenu"><a href="visites.html#comment-visiter">Comment visiter</a><a href="visites.html#portes-ouvertes">Portes ouvertes</a><a href="visites.html#partenariat">Partenariat</a><a href="visites.html#presse">M&eacute;dia</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="contact.html">Contact</a>
+    <div class="mobile-submenu"><a href="contact.html#points-de-vente">Points de vente</a><a href="contact.html#nous-contacter">Nous contacter</a><a href="contact.html#faq">FAQ</a></div>
+  </div>
+  <div class="mobile-nav-item"><a href="blog.html">Blog</a></div>
+  <a class="mobile-cta" href="commander.html">Commander &rarr;</a>
+</div>
+
+<section class="hero" id="main-content">
+  <h1>Commander notre <em>spiruline</em></h1>
+  <p>Bio, artisanale, r&eacute;colt&eacute;e &agrave; la main au pied de la Chartreuse &mdash; directement du producteur &agrave; votre table.</p>
+  <div class="hero-badges">
+    <span>Certifi&eacute;e bio AB</span>
+    <span>Exp&eacute;dition sous 48h</span>
+    <span>Livraison offerte d&egrave;s 100&nbsp;&euro;</span>
+  </div>
+</section>
+
+<section class="shop-section" id="produits">
+
+  <h2 class="shop-group-title">Nos <em>sachets</em> 100g</h2>
+  <div class="product-grid">
+    <div class="product-card product-card-pop" data-product="sachet-paillettes">
+      <div class="product-card-img"><img src="images/shop-sachet-paillettes.jpg" width="324" height="324" alt="Sachet 100g de spiruline en paillettes" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Paillettes</p>
+        <h3 class="product-card-name">Sachet 100g</h3>
+        <p class="product-card-price">16&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card product-card-pop" data-product="sachet-poudre">
+      <div class="product-card-img"><img src="images/shop-sachet-poudre.jpg" width="324" height="324" alt="Sachet 100g de spiruline en poudre" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Poudre</p>
+        <h3 class="product-card-name">Sachet 100g</h3>
+        <p class="product-card-price">17&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card product-card-pop" data-product="sachet-comprimes">
+      <div class="product-card-img"><img src="images/shop-sachet-comprimes.jpg" width="324" height="324" alt="Sachet 100g de spiruline en comprim&eacute;s" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Comprim&eacute;s</p>
+        <h3 class="product-card-name">Sachet 100g</h3>
+        <p class="product-card-price">19&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="shop-group-title">Nos <em>bo&icirc;tes</em></h2>
+  <div class="product-grid">
+    <div class="product-card product-card-pop" data-product="boite-paillettes">
+      <div class="product-card-img"><img src="images/shop-boite-paillettes.jpg" width="324" height="324" alt="Bo&icirc;te 400g de spiruline en paillettes" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Paillettes</p>
+        <h3 class="product-card-name">Bo&icirc;te 400g</h3>
+        <p class="product-card-price">59&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card product-card-pop" data-product="boite-poudre">
+      <div class="product-card-img"><img src="images/shop-boite-poudre.jpg" width="324" height="324" alt="Bo&icirc;te 500g de spiruline en poudre" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Poudre</p>
+        <h3 class="product-card-name">Bo&icirc;te 500g</h3>
+        <p class="product-card-price">79&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card product-card-pop" data-product="boite-comprimes">
+      <div class="product-card-img"><img src="images/shop-boite-comprimes.jpg" width="324" height="324" alt="Bo&icirc;te 500g de spiruline en comprim&eacute;s" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Comprim&eacute;s</p>
+        <h3 class="product-card-name">Bo&icirc;te 500g</h3>
+        <p class="product-card-price">89&nbsp;&euro;</p>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="shop-group-title">Nos formats <em>vrac</em></h2>
+  <div class="product-grid">
+    <div class="product-card" data-product="vrac-paillettes">
+      <div class="product-card-img"><img src="images/shop-vrac-paillettes.jpg" width="300" height="300" alt="Spiruline en paillettes en vrac" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Paillettes</p>
+        <h3 class="product-card-name">Vrac</h3>
+        <select class="product-select" data-variant-select>
+          <option value="0">400g &mdash; 59&nbsp;&euro;</option>
+          <option value="1">600g &mdash; 88,50&nbsp;&euro;</option>
+          <option value="2">1kg &mdash; 145&nbsp;&euro;</option>
+          <option value="3">1,5kg &mdash; 214&nbsp;&euro;</option>
+          <option value="4">2kg &mdash; 280&nbsp;&euro;</option>
+        </select>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-product="vrac-comprimes">
+      <div class="product-card-img"><img src="images/shop-vrac-comprimes.jpg" width="300" height="300" alt="Spiruline en comprim&eacute;s en vrac" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Comprim&eacute;s</p>
+        <h3 class="product-card-name">Vrac</h3>
+        <select class="product-select" data-variant-select>
+          <option value="0">500g &mdash; 89&nbsp;&euro;</option>
+          <option value="1">600g &mdash; 106,80&nbsp;&euro;</option>
+          <option value="2">800g &mdash; 142,40&nbsp;&euro;</option>
+          <option value="3">1kg &mdash; 175&nbsp;&euro;</option>
+          <option value="4">1,5kg &mdash; 258&nbsp;&euro;</option>
+          <option value="5">2kg &mdash; 340&nbsp;&euro;</option>
+        </select>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-product="vrac-poudre">
+      <div class="product-card-img"><img src="images/shop-vrac-poudre.jpg" width="300" height="300" alt="Spiruline en poudre en vrac" loading="lazy"></div>
+      <div class="product-card-body">
+        <p class="product-card-cat">Poudre</p>
+        <h3 class="product-card-name">Vrac</h3>
+        <select class="product-select" data-variant-select>
+          <option value="0">500g &mdash; 79&nbsp;&euro;</option>
+          <option value="1">600g &mdash; 94,80&nbsp;&euro;</option>
+          <option value="2">800g &mdash; 126,40&nbsp;&euro;</option>
+          <option value="3">1kg &mdash; 155&nbsp;&euro;</option>
+          <option value="4">1,5kg &mdash; 228&nbsp;&euro;</option>
+          <option value="5">2kg &mdash; 300&nbsp;&euro;</option>
+        </select>
+        <div class="product-controls">
+          <div class="qty-control"><button type="button" data-qty-minus aria-label="Diminuer">&minus;</button><input type="number" value="1" min="1" data-qty-input aria-label="Quantit&eacute;"><button type="button" data-qty-plus aria-label="Augmenter">+</button></div>
+          <button class="add-cart-btn" data-add-to-cart>Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- PANIER -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h2>Votre panier</h2>
+    <button class="cart-close" id="cartClose" aria-label="Fermer le panier">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Votre panier est vide.</p>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <p class="shipping-free-note" id="shippingFreeNote" style="display:none;">&#127881; Livraison offerte&nbsp;!</p>
+    <div class="shipping-options" id="shippingOptions">
+      <label class="shipping-option"><input type="radio" name="shipping" value="relais" checked><span>Point relais</span><strong>4,60&nbsp;&euro;</strong></label>
+      <label class="shipping-option"><input type="radio" name="shipping" value="domicile"><span>Domicile (Colissimo)</span><strong>9,90&nbsp;&euro;</strong></label>
+    </div>
+    <div class="address-form" id="addressForm">
+      <p class="address-form-title">Vos coordonn&eacute;es de livraison</p>
+      <div class="address-row">
+        <input type="text" id="addrPrenom" placeholder="Pr&eacute;nom" autocomplete="given-name">
+        <input type="text" id="addrNom" placeholder="Nom" autocomplete="family-name">
+      </div>
+      <input type="email" id="addrEmail" placeholder="Email" autocomplete="email">
+      <input type="tel" id="addrTel" placeholder="T&eacute;l&eacute;phone" autocomplete="tel">
+      <input type="text" id="addrRue" placeholder="Adresse (num&eacute;ro et rue)" autocomplete="street-address">
+      <div class="address-row">
+        <input type="text" id="addrCp" placeholder="Code postal" autocomplete="postal-code">
+        <input type="text" id="addrVille" placeholder="Ville" autocomplete="address-level2">
+      </div>
+      <div class="relay-point-picker" id="relayPointPicker">
+        <button type="button" class="search-relay-btn" id="searchRelayBtn">Chercher un point relais</button>
+        <select id="relayPointSelect" style="display:none;"></select>
+        <p class="relay-point-error" id="relayPointError" style="display:none;"></p>
+      </div>
+    </div>
+    <div class="cart-totals"><span>Sous-total</span><span id="cartSubtotal">0&nbsp;&euro;</span></div>
+    <div class="cart-totals"><span>Livraison</span><span id="cartShippingCost">0&nbsp;&euro;</span></div>
+    <div class="cart-total-final"><span>Total</span><span id="cartTotal">0&nbsp;&euro;</span></div>
+    <button class="checkout-btn" id="checkoutBtn">Passer au paiement &rarr;</button>
+    <p class="checkout-note">Paiement s&eacute;curis&eacute; par carte bancaire (Stripe)</p>
+    <p class="checkout-error" id="checkoutError">Une erreur est survenue. Merci de r&eacute;essayer ou de nous contacter.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>
+    <div class="foot-lw">
+      <img class="foot-logo" src="images/logo.png" width="515" height="502" alt="Logo" loading="lazy">
+      <span class="foot-brand">Spiruline de Chartreuse</span>
+    </div>
+    <p class="foot-p">GAEC Char'Algue &mdash; 458 Rue de la Grande Terre, 38660 Le Touvet<br><a href="tel:+33659799633">06&nbsp;59&nbsp;79&nbsp;96&nbsp;33</a> / <a href="tel:+33781793810">07&nbsp;81&nbsp;79&nbsp;38&nbsp;10</a> &mdash; <a href="mailto:contact@spirulinedechartreuse.com">contact@spirulinedechartreuse.com</a></p>
+    <div class="foot-bottom-row">
+      <div class="foot-bio"><img src="images/logo-bio-ab.png" width="562" height="306" alt="AB Bio" loading="lazy"></div>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/p/Spiruline-de-chartreuse-100051054500871/" target="_blank" title="Facebook" aria-label="Suivez-nous sur Facebook (nouvel onglet)" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        <a href="https://www.instagram.com/spiruline_de_chartreuse/" target="_blank" title="Instagram" aria-label="Suivez-nous sur Instagram (nouvel onglet)" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p class="foot-h">La spiruline</p>
+    <a class="foot-li" href="spiruline.html#histoire">Son histoire</a>
+    <a class="foot-li" href="spiruline.html#bienfaits">Les bienfaits</a>
+    <a class="foot-li" href="spiruline.html#mode-emploi">Mode d'emploi</a>
+  </div>
+  <div>
+    <p class="foot-h">Notre spiruline</p>
+    <a class="foot-li" href="notre-spiruline.html#recolte">La r&eacute;colte</a>
+    <a class="foot-li" href="notre-spiruline.html#ferme">La ferme</a>
+    <a class="foot-li" href="visites.html">Visites</a>
+    <a class="foot-li" href="blog.html">Blog</a>
+  </div>
+  <div>
+    <p class="foot-h">Informations</p>
+    <a class="foot-li" href="contact.html#points-de-vente">Points de vente</a>
+    <a class="foot-li" href="contact.html#nous-contacter">Nous contacter</a>
+    <a class="foot-li" href="contact.html#faq">FAQ</a>
+    <a class="foot-li" href="mentions-legales.html">Mentions l&eacute;gales</a>
+    <a class="foot-li" href="cgv.html">CGV</a>
+    <a class="foot-li" href="confidentialite.html">Confidentialit&eacute;</a>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <p>&copy; 2025 GAEC Char'Algue &mdash; Spiruline de Chartreuse &mdash; SIRET 83044121800013 &mdash; TVA FR13830441218 &mdash; H&eacute;bergeur&nbsp;: OVH SAS, 2 rue Kellermann, 59100 Roubaix</p>
+</div>
+
+<script>
+// Catalogue (doit rester identique au catalogue côté serveur dans /api/create-checkout-session.js)
+const CATALOG = {
+  'sachet-paillettes': { name: 'Spiruline en paillettes — Sachet', image: 'images/shop-sachet-paillettes.jpg', variants: [{weight:'100g', price:16}] },
+  'sachet-poudre':     { name: 'Spiruline en poudre — Sachet',     image: 'images/shop-sachet-poudre.jpg',     variants: [{weight:'100g', price:17}] },
+  'sachet-comprimes':  { name: 'Spiruline en comprimés — Sachet',  image: 'images/shop-sachet-comprimes.jpg',  variants: [{weight:'100g', price:19}] },
+  'boite-paillettes':  { name: 'Spiruline en paillettes — Boîte',  image: 'images/shop-boite-paillettes.jpg',  variants: [{weight:'400g', price:59}] },
+  'boite-poudre':      { name: 'Spiruline en poudre — Boîte',      image: 'images/shop-boite-poudre.jpg',      variants: [{weight:'500g', price:79}] },
+  'boite-comprimes':   { name: 'Spiruline en comprimés — Boîte',   image: 'images/shop-boite-comprimes.jpg',   variants: [{weight:'500g', price:89}] },
+  'vrac-paillettes': {
+    name: 'Spiruline en paillettes — Vrac', image: 'images/shop-vrac-paillettes.jpg',
+    variants: [
+      {weight:'400g', price:59}, {weight:'600g', price:88.5}, {weight:'1kg', price:145},
+      {weight:'1.5kg', price:214}, {weight:'2kg', price:280}
+    ]
+  },
+  'vrac-comprimes': {
+    name: 'Spiruline en comprimés — Vrac', image: 'images/shop-vrac-comprimes.jpg',
+    variants: [
+      {weight:'500g', price:89}, {weight:'600g', price:106.8}, {weight:'800g', price:142.4},
+      {weight:'1kg', price:175}, {weight:'1.5kg', price:258}, {weight:'2kg', price:340}
+    ]
+  },
+  'vrac-poudre': {
+    name: 'Spiruline en poudre — Vrac', image: 'images/shop-vrac-poudre.jpg',
+    variants: [
+      {weight:'500g', price:79}, {weight:'600g', price:94.8}, {weight:'800g', price:126.4},
+      {weight:'1kg', price:155}, {weight:'1.5kg', price:228}, {weight:'2kg', price:300}
+    ]
+  }
+};
+
+const FREE_SHIPPING_THRESHOLD = 100;
+const SHIPPING_RATES = { relais: 4.6, domicile: 9.9 };
+
+function formatPrice(n) {
+  return n.toLocaleString('fr-FR', {minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2}) + ' €';
+}
+
+function loadCart() {
+  try { return JSON.parse(localStorage.getItem('spirulineCart')) || []; } catch(e) { return []; }
+}
+function saveCart(cart) {
+  localStorage.setItem('spirulineCart', JSON.stringify(cart));
+}
+
+let cart = loadCart();
+
+document.querySelectorAll('.product-card').forEach(card => {
+  const qtyInput = card.querySelector('[data-qty-input]');
+  card.querySelector('[data-qty-minus]').addEventListener('click', () => {
+    qtyInput.value = Math.max(1, parseInt(qtyInput.value || 1) - 1);
+  });
+  card.querySelector('[data-qty-plus]').addEventListener('click', () => {
+    qtyInput.value = parseInt(qtyInput.value || 1) + 1;
+  });
+
+  card.querySelector('[data-add-to-cart]').addEventListener('click', function() {
+    const productId = card.getAttribute('data-product');
+    const variantSelect = card.querySelector('[data-variant-select]');
+    const variantIndex = variantSelect ? parseInt(variantSelect.value) : 0;
+    const quantity = Math.max(1, parseInt(qtyInput.value || 1));
+    const existing = cart.find(i => i.productId === productId && i.variantIndex === variantIndex);
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      cart.push({ productId, variantIndex, quantity });
+    }
+    saveCart(cart);
+    renderCart();
+    const btn = this;
+    const originalText = btn.textContent;
+    btn.textContent = 'Ajouté ✓';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = originalText; btn.classList.remove('added'); }, 1200);
+    openCart();
+  });
+});
+
+function computeSubtotal() {
+  return cart.reduce((sum, item) => {
+    const product = CATALOG[item.productId];
+    const variant = product && product.variants[item.variantIndex];
+    return sum + (variant ? variant.price * item.quantity : 0);
+  }, 0);
+}
+
+function renderCart() {
+  const itemsEl = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+  const countEl = document.getElementById('cartCount');
+  const totalItems = cart.reduce((s, i) => s + i.quantity, 0);
+  countEl.textContent = totalItems;
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = '<p class="cart-empty">Votre panier est vide.</p>';
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  footerEl.style.display = 'block';
+  itemsEl.innerHTML = cart.map((item, index) => {
+    const product = CATALOG[item.productId];
+    const variant = product.variants[item.variantIndex];
+    return `<div class="cart-item">
+      <img src="${product.image}" alt="${product.name}">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${product.name}</div>
+        <div class="cart-item-weight">${variant.weight}</div>
+        <div class="cart-item-qty">Qt&eacute; : ${item.quantity}</div>
+      </div>
+      <div class="cart-item-price">${formatPrice(variant.price * item.quantity)}</div>
+      <button class="cart-item-remove" data-remove="${index}" aria-label="Retirer">&times;</button>
+    </div>`;
+  }).join('');
+
+  itemsEl.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      cart.splice(parseInt(btn.getAttribute('data-remove')), 1);
+      saveCart(cart);
+      renderCart();
+    });
+  });
+
+  updateTotals();
+}
+
+function updateTotals() {
+  const subtotal = computeSubtotal();
+  const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
+  const shippingCost = freeShipping ? 0 : SHIPPING_RATES[selectedShipping];
+
+  document.getElementById('shippingFreeNote').style.display = freeShipping ? 'block' : 'none';
+  document.getElementById('shippingOptions').style.display = freeShipping ? 'none' : 'flex';
+  document.getElementById('cartSubtotal').textContent = formatPrice(subtotal);
+  document.getElementById('cartShippingCost').textContent = shippingCost === 0 ? 'Gratuite' : formatPrice(shippingCost);
+  document.getElementById('cartTotal').textContent = formatPrice(subtotal + shippingCost);
+}
+
+function updateRelayPickerVisibility() {
+  const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
+  document.getElementById('relayPointPicker').style.display = selectedShipping === 'relais' ? 'flex' : 'none';
+}
+
+document.querySelectorAll('input[name="shipping"]').forEach(r => r.addEventListener('change', () => {
+  updateTotals();
+  updateRelayPickerVisibility();
+}));
+updateRelayPickerVisibility();
+
+const relayPointSelect = document.getElementById('relayPointSelect');
+const relayPointError = document.getElementById('relayPointError');
+
+document.getElementById('searchRelayBtn').addEventListener('click', async function() {
+  const btn = this;
+  const cp = document.getElementById('addrCp').value.trim();
+  const ville = document.getElementById('addrVille').value.trim();
+  const rue = document.getElementById('addrRue').value.trim();
+  relayPointError.style.display = 'none';
+
+  if (!cp || !ville) {
+    relayPointError.textContent = 'Renseignez le code postal et la ville avant de chercher un point relais.';
+    relayPointError.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Recherche...';
+  try {
+    const params = new URLSearchParams({ postalCode: cp, city: ville, countryIsoCode: 'FR' });
+    if (rue) params.set('street', rue);
+    const res = await fetch('/api/parcel-points?' + params.toString());
+    const data = await res.json();
+    if (!res.ok || !data.points || data.points.length === 0) {
+      throw new Error('Aucun point relais trouvé');
+    }
+    relayPointSelect.innerHTML = data.points.map(p =>
+      `<option value="${p.code}">${p.name} — ${(p.distanceM / 1000).toFixed(1)} km</option>`
+    ).join('');
+    relayPointSelect.style.display = 'block';
+  } catch (err) {
+    relayPointError.textContent = 'Aucun point relais trouvé pour cette adresse. Vérifiez le code postal et la ville, ou choisissez la livraison à domicile.';
+    relayPointError.style.display = 'block';
+    relayPointSelect.style.display = 'none';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Chercher un point relais';
+  }
+});
+
+const cartDrawer = document.getElementById('cartDrawer');
+const cartOverlay = document.getElementById('cartOverlay');
+function openCart() { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); }
+function closeCart() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+document.getElementById('cartToggle').addEventListener('click', openCart);
+document.getElementById('cartClose').addEventListener('click', closeCart);
+cartOverlay.addEventListener('click', closeCart);
+
+document.getElementById('checkoutBtn').addEventListener('click', async function() {
+  const btn = this;
+  const errorEl = document.getElementById('checkoutError');
+  errorEl.style.display = 'none';
+
+  const shipping = document.querySelector('input[name="shipping"]:checked').value;
+  const address = {
+    prenom: document.getElementById('addrPrenom').value.trim(),
+    nom: document.getElementById('addrNom').value.trim(),
+    email: document.getElementById('addrEmail').value.trim(),
+    telephone: document.getElementById('addrTel').value.trim(),
+    rue: document.getElementById('addrRue').value.trim(),
+    codePostal: document.getElementById('addrCp').value.trim(),
+    ville: document.getElementById('addrVille').value.trim(),
+    pays: 'FR'
+  };
+
+  if (Object.values(address).some(v => v === '' )) {
+    errorEl.textContent = 'Merci de renseigner toutes vos coordonnées de livraison.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  let pickupPointCode = null;
+  if (shipping === 'relais') {
+    if (relayPointSelect.style.display === 'none' || !relayPointSelect.value) {
+      errorEl.textContent = 'Merci de choisir un point relais avant de payer.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    pickupPointCode = relayPointSelect.value;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Redirection...';
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error('Pas d\'URL de paiement retournée');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Une erreur est survenue. Merci de réessayer ou de nous contacter.';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Passer au paiement →';
+  }
+});
+
+renderCart();
+
+const burger = document.querySelector('.burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', function() {
+  mobileMenu.classList.add('open');
+  burger.setAttribute('aria-expanded', 'true');
+});
+document.querySelector('.mobile-menu-close').addEventListener('click', function() {
+  mobileMenu.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+});
+mobileMenu.addEventListener('click', function(e) {
+  if(e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+</script>
+</body>
+</html>
