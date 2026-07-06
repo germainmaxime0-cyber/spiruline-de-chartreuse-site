@@ -34,12 +34,11 @@ module.exports = async (req, res) => {
 
   try {
     const data = await boxtalRequest(`/shipping/v3.2/parcel-point-by-shipping-offer?${params.toString()}`);
-    console.log('DEBUG réponse Boxtal parcel-point:', JSON.stringify(data));
     const points = (data.content || []).map((entry) => ({
-      code: entry.parcelpoint.code,
-      name: entry.parcelpoint.name,
+      code: entry.parcelPoint.code,
+      name: entry.parcelPoint.name,
       distanceM: entry.distanceFromSearchLocation,
-      location: entry.parcelpoint.location,
+      location: entry.parcelPoint.location,
     }));
     return res.status(200).json({ points });
   } catch (err) {
