@@ -39,6 +39,7 @@ module.exports = async (req, res) => {
     const line_items = [];
     let subtotal = 0;
     let parcelWeightG = 0;
+    let netWeightG = 0;
 
     for (const item of items) {
       const product = CATALOG[item.productId];
@@ -51,6 +52,7 @@ module.exports = async (req, res) => {
 
       subtotal += variant.price * quantity;
       parcelWeightG += variant.weightG * quantity;
+      netWeightG += variant.netG * quantity;
 
       line_items.push({
         price_data: {
@@ -92,6 +94,7 @@ module.exports = async (req, res) => {
         mode_livraison_cle: shippingKey,
         mode_livraison: SHIPPING_LABELS[shippingKey],
         poids_colis: `${(parcelWeightG / 1000).toFixed(2)} kg`,
+        poids_spiruline_kg: (netWeightG / 1000).toFixed(3),
         point_relais: pickupPointCode || '',
         adresse: JSON.stringify(address),
         panier: JSON.stringify(items.map(i => ({ p: i.productId, v: i.variantIndex, q: parseInt(i.quantity, 10) }))),

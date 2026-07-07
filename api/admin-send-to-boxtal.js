@@ -9,11 +9,18 @@
 //                                — uniquement si vous avez un contrat direct Colissimo/Lettre suivie
 //                                  rattaché à votre compte Boxtal (shippingOfferId) — pas votre cas
 //                                  d'après le support Boxtal, ces variables ne servent probablement pas.
-//   PACKAGE_LENGTH_CM / PACKAGE_WIDTH_CM / PACKAGE_HEIGHT_CM
-//                                — dimensions par défaut du colis expédié, en centimètres.
-//                                  Valeurs de départ à vérifier/ajuster : elles ne reflètent pas
-//                                  forcément vos emballages réels.
 //   BOXTAL_CONTENT_CATEGORY_ID  — optionnel, id de catégorie de contenu (GET /content-category)
+//
+// Dimensions du colis choisies selon le poids de spiruline commandé (données par le client) :
+//   < 500g de spiruline       -> 25x20x20 cm
+//   500g à 1kg de spiruline   -> 50x20x20 cm
+//   > 1kg de spiruline        -> 50x50x20 cm
+
+function packageDimensionsCm(poidsSpirulineKg) {
+  if (poidsSpirulineKg == null || poidsSpirulineKg < 0.5) return { length: 25, width: 20, height: 20 };
+  if (poidsSpirulineKg <= 1) return { length: 50, width: 20, height: 20 };
+  return { length: 50, width: 50, height: 20 };
+}
 
 const { requireAuth } = require('./_auth');
 const { getOrder, updateOrder } = require('./_orders');
@@ -96,9 +103,7 @@ module.exports = async (req, res) => {
       {
         type: 'PARCEL',
         weight: order.poidsColisKg,
-        length: parseInt(process.env.PACKAGE_LENGTH_CM || '25', 10),
-        width: parseInt(process.env.PACKAGE_WIDTH_CM || '20', 10),
-        height: parseInt(process.env.PACKAGE_HEIGHT_CM || '15', 10),
+        ...packageDimensionsCm(order.poidsSpirulineKg),
         value: { value: order.montantTotalEur || 0, currency: 'EUR' },
         ...(process.env.BOXTAL_CONTENT_CATEGORY_ID
           ? { content: { id: process.env.BOXTAL_CONTENT_CATEGORY_ID, description: 'Compléments alimentaires à base de spiruline' } }

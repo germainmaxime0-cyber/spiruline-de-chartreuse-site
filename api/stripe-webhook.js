@@ -73,6 +73,7 @@ function buildOrder(session) {
     modeLivraison: session.metadata && session.metadata.mode_livraison,
     pointRelaisCode: (session.metadata && session.metadata.point_relais) || null,
     poidsColisKg: session.metadata && parseFloat(session.metadata.poids_colis),
+    poidsSpirulineKg: session.metadata && parseFloat(session.metadata.poids_spiruline_kg),
     montantTotalEur: session.amount_total != null ? session.amount_total / 100 : null,
     contenu: cart.map((item) => {
       const product = CATALOG[item.p];
