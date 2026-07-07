@@ -39,10 +39,15 @@ Le tunnel d'achat complet fonctionne en mode **test** (aucun vrai paiement, aucu
 
 **Avant la mise en ligne réelle :**
 - Résoudre le problème du domaine `spirulinedechartreuse.com` (contenu suspect détecté dessus, à nettoyer avant de le pointer vers le nouveau site)
-- Vérifier les vraies dimensions des colis (valeurs par défaut utilisées pour l'instant : 25×20×15cm)
 - Basculer les clés Stripe et Boxtal en mode réel (Live) une fois tout validé
 
-**Nouvelles fonctionnalités demandées :**
-- Ajouter la possibilité d'utiliser un **code promo** au moment du paiement
-- Ajouter une **carte interactive** pour choisir son point relais (au lieu d'une simple liste déroulante)
-- Réflexion à avoir sur la mise en place de **comptes clients** (plusieurs questions à trancher ensemble à ce sujet)
+✅ Dimensions de colis réelles ajoutées le 7 juillet 2026 : <500g de spiruline → 25×20×20cm, 500g-1kg → 50×20×20cm, >1kg → 50×50×20cm (calculées sur le poids réel de spiruline commandée, pas sur le poids total emballé).
+
+**Nouvelles fonctionnalités demandées (précisées le 7 juillet 2026) :**
+
+1. **Comptes clients (facultatifs)** — actuellement le site fonctionne uniquement en achat "invité" (aucun compte n'existe). Objectif : ajouter une création de compte facultative, qui donne accès à la saisie d'un code promo au paiement. But recherché : inciter les clients à créer un compte pour fidéliser.
+   - À trancher ensemble avant de développer : comment gérer le mot de passe/la connexion en toute sécurité, où stocker les comptes, faut-il un espace "mon compte" (historique de commandes, etc.) ou juste un email+mot de passe minimal au moment du paiement ?
+
+2. **Codes promo** — premier code : **SPIRULINE**, réduction de **10%**, utilisable **uniquement après création d'un compte** et **uniquement à la toute première commande** de ce compte. Nécessite de suivre si un compte a déjà commandé ou non (dépend de la mise en place des comptes clients ci-dessus).
+
+3. **Carte interactive pour le choix du point relais** — remplacer le menu déroulant actuel par une vraie carte avec les points relais **Chronopost uniquement** affichés dessus (cliquables). Techniquement faisable avec une librairie de carte gratuite (ex. Leaflet + OpenStreetMap, sans clé API payante), en utilisant les coordonnées GPS déjà renvoyées par Boxtal pour chaque point relais.
