@@ -20,6 +20,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
@@ -114,6 +116,23 @@ a{text-decoration:none;}
 .cart-item-price{font-family:'Playfair Display',serif;font-size:14px;color:#2d5a27;font-weight:700;white-space:nowrap;}
 .cart-item-remove{background:none;border:none;color:#c0392b;font-size:12px;cursor:pointer;margin-left:0.5rem;}
 .cart-empty{text-align:center;color:#999;font-family:'Merriweather',serif;font-style:italic;padding:3rem 1rem;}
+.account-section{padding:1rem 1.5rem;background:#F0EBE0;border-bottom:1px solid #e8e4d9;font-size:13px;}
+.account-toggle{background:none;border:none;color:#2d5a27;font-weight:700;font-size:13px;cursor:pointer;padding:0;text-decoration:underline;}
+.account-forms{margin-top:0.8rem;display:flex;flex-direction:column;gap:0.6rem;}
+.account-tabs{display:flex;gap:0.5rem;margin-bottom:0.2rem;}
+.account-tab{background:none;border:none;font-size:12px;font-weight:700;color:#999;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent;}
+.account-tab.active{color:#2d5a27;border-bottom-color:#2d5a27;}
+.account-forms input{padding:8px 10px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:13px;width:100%;}
+.account-submit-btn{background:#2d5a27;color:white;border:none;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
+.account-error{color:#b23b3b;font-size:11px;margin:0;}
+.account-logged{display:flex;justify-content:space-between;align-items:center;}
+.account-logout-btn{background:none;border:none;color:#7a9e76;font-size:12px;cursor:pointer;text-decoration:underline;padding:0;}
+.promo-row{display:flex;gap:0.5rem;margin-top:0.8rem;}
+.promo-row input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid #e0d8cc;font-size:13px;}
+.promo-apply-btn{background:white;border:1px solid #2d5a27;color:#2d5a27;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
+.promo-message{font-size:11px;margin-top:0.4rem;}
+.promo-message.ok{color:#2d5a27;}
+.promo-message.error{color:#b23b3b;}
 .cart-footer{padding:1.5rem;border-top:1px solid #e8e4d9;}
 .shipping-options{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
 .shipping-option{display:flex;align-items:center;gap:0.6rem;padding:0.7rem 0.9rem;border:1px solid #e0d8cc;border-radius:10px;font-size:13px;cursor:pointer;}
@@ -130,6 +149,9 @@ a{text-decoration:none;}
 .search-relay-btn{padding:9px 10px;border-radius:8px;border:1px solid #2d5a27;background:white;color:#2d5a27;font-size:12px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
 .search-relay-btn:hover{background:#eef4ec;}
 .relay-point-error{font-size:11px;color:#b23b3b;margin:0;}
+.relay-point-map{height:220px;border-radius:10px;overflow:hidden;border:1px solid #e0d8cc;}
+.relay-point-selected{font-size:12px;color:#2d5a27;font-weight:700;margin:0;background:#eef4ec;padding:8px 10px;border-radius:8px;}
+.relay-marker-selected{filter:hue-rotate(120deg) saturate(1.5);}
 .cart-totals{display:flex;justify-content:space-between;font-size:14px;margin-bottom:0.4rem;color:#555;}
 .cart-total-final{display:flex;justify-content:space-between;font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin:0.8rem 0;padding-top:0.8rem;border-top:1px solid #e8e4d9;}
 .checkout-btn{display:block;width:100%;background:#1e4d20;color:white;border:none;padding:15px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;}
@@ -403,6 +425,7 @@ a{text-decoration:none;}
     <h2>Votre panier</h2>
     <button class="cart-close" id="cartClose" aria-label="Fermer le panier">&times;</button>
   </div>
+  <div class="account-section" id="accountSection"></div>
   <div class="cart-items" id="cartItems">
     <p class="cart-empty">Votre panier est vide.</p>
   </div>
@@ -427,7 +450,8 @@ a{text-decoration:none;}
       </div>
       <div class="relay-point-picker" id="relayPointPicker">
         <button type="button" class="search-relay-btn" id="searchRelayBtn">Chercher un point relais</button>
-        <select id="relayPointSelect" style="display:none;"></select>
+        <div id="relayPointMap" class="relay-point-map" style="display:none;"></div>
+        <p class="relay-point-selected" id="relayPointSelected" style="display:none;"></p>
         <p class="relay-point-error" id="relayPointError" style="display:none;"></p>
       </div>
     </div>
@@ -633,8 +657,19 @@ document.querySelectorAll('input[name="shipping"]').forEach(r => r.addEventListe
 }));
 updateRelayPickerVisibility();
 
-const relayPointSelect = document.getElementById('relayPointSelect');
 const relayPointError = document.getElementById('relayPointError');
+const relayPointSelected = document.getElementById('relayPointSelected');
+let relayLeafletMap = null;
+let relayMarkers = [];
+let selectedRelayPoint = null;
+
+function selectRelayMarker(point, marker) {
+  selectedRelayPoint = point;
+  relayMarkers.forEach((m) => m.getElement() && m.getElement().classList.remove('relay-marker-selected'));
+  if (marker.getElement()) marker.getElement().classList.add('relay-marker-selected');
+  relayPointSelected.textContent = `Point relais choisi : ${point.name} (${(point.distanceM / 1000).toFixed(1)} km)`;
+  relayPointSelected.style.display = 'block';
+}
 
 document.getElementById('searchRelayBtn').addEventListener('click', async function() {
   const btn = this;
@@ -642,6 +677,8 @@ document.getElementById('searchRelayBtn').addEventListener('click', async functi
   const ville = document.getElementById('addrVille').value.trim();
   const rue = document.getElementById('addrRue').value.trim();
   relayPointError.style.display = 'none';
+  relayPointSelected.style.display = 'none';
+  selectedRelayPoint = null;
 
   if (!cp || !ville) {
     relayPointError.textContent = 'Renseignez le code postal et la ville avant de chercher un point relais.';
@@ -659,14 +696,37 @@ document.getElementById('searchRelayBtn').addEventListener('click', async functi
     if (!res.ok || !data.points || data.points.length === 0) {
       throw new Error('Aucun point relais trouvé');
     }
-    relayPointSelect.innerHTML = data.points.map(p =>
-      `<option value="${p.code}">${p.name} — ${(p.distanceM / 1000).toFixed(1)} km</option>`
-    ).join('');
-    relayPointSelect.style.display = 'block';
+
+    const mapEl = document.getElementById('relayPointMap');
+    mapEl.style.display = 'block';
+
+    if (!relayLeafletMap) {
+      relayLeafletMap = L.map(mapEl);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 19
+      }).addTo(relayLeafletMap);
+    }
+
+    relayMarkers.forEach((m) => relayLeafletMap.removeLayer(m));
+    relayMarkers = data.points.map((point) => {
+      const pos = point.location && point.location.position;
+      if (!pos) return null;
+      const marker = L.marker([parseFloat(pos.latitude), parseFloat(pos.longitude)]).addTo(relayLeafletMap);
+      marker.bindTooltip(`${point.name} — ${(point.distanceM / 1000).toFixed(1)} km`);
+      marker.on('click', () => selectRelayMarker(point, marker));
+      return marker;
+    }).filter(Boolean);
+
+    if (relayMarkers.length > 0) {
+      relayLeafletMap.fitBounds(L.featureGroup(relayMarkers).getBounds().pad(0.2));
+      setTimeout(() => relayLeafletMap.invalidateSize(), 100);
+      selectRelayMarker(data.points[0], relayMarkers[0]);
+    }
   } catch (err) {
     relayPointError.textContent = 'Aucun point relais trouvé pour cette adresse. Vérifiez le code postal et la ville, ou choisissez la livraison à domicile.';
     relayPointError.style.display = 'block';
-    relayPointSelect.style.display = 'none';
+    document.getElementById('relayPointMap').style.display = 'none';
   } finally {
     btn.disabled = false;
     btn.textContent = 'Chercher un point relais';
@@ -713,12 +773,12 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
 
   let pickupPointCode = null;
   if (shipping === 'relais') {
-    if (relayPointSelect.style.display === 'none' || !relayPointSelect.value) {
-      errorEl.textContent = 'Merci de choisir un point relais avant de payer.';
+    if (!selectedRelayPoint) {
+      errorEl.textContent = 'Merci de choisir un point relais sur la carte avant de payer.';
       errorEl.style.display = 'block';
       return;
     }
-    pickupPointCode = relayPointSelect.value;
+    pickupPointCode = selectedRelayPoint.code;
   }
 
   btn.disabled = true;
@@ -727,23 +787,160 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode })
+      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode })
     });
     const data = await res.json();
     if (data.url) {
       window.location.href = data.url;
     } else {
-      throw new Error('Pas d\'URL de paiement retournée');
+      throw new Error(data.error || 'Pas d\'URL de paiement retournée');
     }
   } catch (err) {
-    errorEl.textContent = 'Une erreur est survenue. Merci de réessayer ou de nous contacter.';
+    errorEl.textContent = err.message || 'Une erreur est survenue. Merci de réessayer ou de nous contacter.';
     errorEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Passer au paiement →';
   }
 });
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+let customerState = { loggedIn: false, email: null, hasOrdered: false };
+let appliedPromoCode = null;
+
+async function refreshCustomerState() {
+  try {
+    const res = await fetch('/api/customer-me');
+    const data = await res.json();
+    customerState = data.loggedIn
+      ? { loggedIn: true, email: data.email, hasOrdered: data.hasOrdered }
+      : { loggedIn: false, email: null, hasOrdered: false };
+  } catch (err) {
+    customerState = { loggedIn: false, email: null, hasOrdered: false };
+  }
+  renderAccountSection();
+}
+
+function renderAccountSection() {
+  const el = document.getElementById('accountSection');
+
+  if (customerState.loggedIn) {
+    el.innerHTML = `
+      <div class="account-logged">
+        <span>Connecté·e : <strong>${escapeHtml(customerState.email)}</strong></span>
+        <button type="button" class="account-logout-btn" id="logoutBtn">Se déconnecter</button>
+      </div>
+      ${customerState.hasOrdered ? '' : `
+        <div class="promo-row">
+          <input type="text" id="promoCodeInput" placeholder="Code promo">
+          <button type="button" class="promo-apply-btn" id="promoApplyBtn">Appliquer</button>
+        </div>
+        <p class="promo-message" id="promoMessage" style="display:none;"></p>
+      `}`;
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/customer-logout', { method: 'POST' });
+      appliedPromoCode = null;
+      await refreshCustomerState();
+    });
+
+    const promoBtn = document.getElementById('promoApplyBtn');
+    if (promoBtn) {
+      promoBtn.addEventListener('click', () => {
+        const code = document.getElementById('promoCodeInput').value.trim();
+        const msg = document.getElementById('promoMessage');
+        appliedPromoCode = code || null;
+        msg.style.display = 'block';
+        if (code) {
+          msg.textContent = 'Code enregistré — la réduction sera vérifiée et appliquée au moment du paiement.';
+          msg.className = 'promo-message ok';
+        } else {
+          msg.textContent = 'Entrez un code avant de cliquer sur Appliquer.';
+          msg.className = 'promo-message error';
+        }
+      });
+    }
+    return;
+  }
+
+  el.innerHTML = `
+    <button type="button" class="account-toggle" id="accountToggleBtn">Vous avez un compte, ou voulez en créer un (accès aux codes promo) ?</button>
+    <div class="account-forms" id="accountForms" style="display:none;">
+      <div class="account-tabs">
+        <button type="button" class="account-tab active" data-tab="login">Se connecter</button>
+        <button type="button" class="account-tab" data-tab="signup">Créer un compte</button>
+      </div>
+      <div id="loginPane">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Mot de passe">
+        <button type="button" class="account-submit-btn" id="loginSubmitBtn">Se connecter</button>
+        <p class="account-error" id="loginError" style="display:none;"></p>
+      </div>
+      <div id="signupPane" style="display:none;">
+        <input type="email" id="signupEmail" placeholder="Email">
+        <input type="password" id="signupPassword" placeholder="Mot de passe (8 caractères min.)">
+        <button type="button" class="account-submit-btn" id="signupSubmitBtn">Créer mon compte</button>
+        <p class="account-error" id="signupError" style="display:none;"></p>
+      </div>
+    </div>`;
+
+  document.getElementById('accountToggleBtn').addEventListener('click', () => {
+    const forms = document.getElementById('accountForms');
+    forms.style.display = forms.style.display === 'none' ? 'flex' : 'none';
+  });
+
+  document.querySelectorAll('.account-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.account-tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('loginPane').style.display = tab.dataset.tab === 'login' ? 'block' : 'none';
+      document.getElementById('signupPane').style.display = tab.dataset.tab === 'signup' ? 'block' : 'none';
+    });
+  });
+
+  document.getElementById('loginSubmitBtn').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const errorEl = document.getElementById('loginError');
+    errorEl.style.display = 'none';
+    try {
+      const res = await fetch('/api/customer-login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur de connexion');
+      await refreshCustomerState();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.style.display = 'block';
+    }
+  });
+
+  document.getElementById('signupSubmitBtn').addEventListener('click', async () => {
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+    const errorEl = document.getElementById('signupError');
+    errorEl.style.display = 'none';
+    try {
+      const res = await fetch('/api/customer-signup', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur de création de compte');
+      await refreshCustomerState();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.style.display = 'block';
+    }
+  });
+}
+
 renderCart();
+refreshCustomerState();
 
 const burger = document.querySelector('.burger');
 const mobileMenu = document.getElementById('mobileMenu');

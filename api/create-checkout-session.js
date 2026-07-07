@@ -9,6 +9,9 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 // qu'un client ne modifie un prix côté front-end.
 // Doit rester synchronisé avec le CATALOG déclaré dans commander.html (mêmes identifiants produit/variante).
 const { CATALOG, FREE_SHIPPING_THRESHOLD, SHIPPING_RATES, SHIPPING_LABELS } = require('./_catalog');
+const { getLoggedInEmail } = require('./_customer-auth');
+const { getCustomer } = require('./_customers');
+const { getPromoCode } = require('./_promo');
 
 const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
 
@@ -19,10 +22,31 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { items, shipping, address, pickupPointCode } = req.body;
+    const { items, shipping, address, pickupPointCode, promoCode } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Panier vide' });
+    }
+
+    // Un code promo n'est utilisable que par un client connecté à un compte (jamais vérifié
+    // depuis une donnée envoyée par le navigateur : on relit la session client signée par cookie).
+    const loggedInEmail = getLoggedInEmail(req);
+    let promoPercentOff = null;
+    if (promoCode) {
+      const promo = getPromoCode(promoCode);
+      if (!promo) {
+        return res.status(400).json({ error: 'Code promo invalide' });
+      }
+      if (promo.requiresAccount && !loggedInEmail) {
+        return res.status(400).json({ error: 'Ce code promo nécessite d\'être connecté à un compte' });
+      }
+      if (promo.firstOrderOnly) {
+        const customer = loggedInEmail && (await getCustomer(loggedInEmail));
+        if (!customer || customer.hasOrdered) {
+          return res.status(400).json({ error: 'Ce code promo est réservé à votre première commande' });
+        }
+      }
+      promoPercentOff = promo.percentOff;
     }
 
     const requiredAddressFields = ['prenom', 'nom', 'email', 'telephone', 'rue', 'codePostal', 'ville', 'pays'];
@@ -78,10 +102,17 @@ module.exports = async (req, res) => {
       });
     }
 
+    let discounts;
+    if (promoPercentOff) {
+      const coupon = await stripe.coupons.create({ percent_off: promoPercentOff, duration: 'once' });
+      discounts = [{ coupon: coupon.id }];
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
+      ...(discounts ? { discounts } : {}),
       customer_email: address.email,
       success_url: `${SITE_URL}/commander.html?paiement=succes`,
       cancel_url: `${SITE_URL}/commander.html?paiement=annule`,
@@ -96,6 +127,7 @@ module.exports = async (req, res) => {
         poids_colis: `${(parcelWeightG / 1000).toFixed(2)} kg`,
         poids_spiruline_kg: (netWeightG / 1000).toFixed(3),
         point_relais: pickupPointCode || '',
+        compte_client: loggedInEmail || '',
         adresse: JSON.stringify(address),
         panier: JSON.stringify(items.map(i => ({ p: i.productId, v: i.variantIndex, q: parseInt(i.quantity, 10) }))),
       },

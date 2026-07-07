@@ -13,6 +13,7 @@ const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { CATALOG } = require('./_catalog');
 const { saveOrder } = require('./_orders');
+const { markCustomerOrdered } = require('./_customers');
 
 // Vercel doit nous donner le corps brut (non parsé) pour que la vérification de signature Stripe fonctionne.
 module.exports.config = { api: { bodyParser: false } };
@@ -46,6 +47,10 @@ module.exports = async (req, res) => {
     try {
       const fullSession = await stripe.checkout.sessions.retrieve(session.id);
       await saveOrder(buildOrder(fullSession));
+      const customerEmail = fullSession.metadata && fullSession.metadata.compte_client;
+      if (customerEmail) {
+        await markCustomerOrdered(customerEmail);
+      }
     } catch (err) {
       // On loggue l'erreur mais on répond quand même 200 : sinon Stripe retentera cet évènement
       // pendant plusieurs jours, alors que la commande est déjà payée et doit être traitée manuellement.
