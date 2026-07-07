@@ -1,15 +1,19 @@
-// Catalogue des codes promo. Ajoutez-en de nouveaux ici.
+// Catalogue des codes promo "manuels" (à distribuer, ex. à des partenaires). Ajoutez-en de nouveaux ici.
+// Ces codes n'ont plus de condition de compte/première commande : ils marchent à chaque commande,
+// pour n'importe quel client (connecté ou non).
 //
-// requiresAccount : le client doit être connecté à un compte pour utiliser ce code.
-// firstOrderOnly  : réservé à la toute première commande de ce compte (customer.hasOrdered doit être false).
+// La réduction automatique de 10% à la première commande d'un compte (sans code à saisir) est gérée
+// séparément par FIRST_ORDER_DISCOUNT_PERCENT, appliquée directement dans create-checkout-session.js.
 
 const PROMO_CODES = {
-  SPIRULINE: { percentOff: 10, requiresAccount: true, firstOrderOnly: true },
+  SPIRULINE: { percentOff: 10 },
 };
+
+const FIRST_ORDER_DISCOUNT_PERCENT = 10;
 
 function getPromoCode(code) {
   if (!code) return null;
   return PROMO_CODES[code.trim().toUpperCase()] || null;
 }
 
-module.exports = { getPromoCode };
+module.exports = { getPromoCode, FIRST_ORDER_DISCOUNT_PERCENT };

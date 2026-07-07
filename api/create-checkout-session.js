@@ -11,7 +11,7 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { CATALOG, FREE_SHIPPING_THRESHOLD, SHIPPING_RATES, SHIPPING_LABELS } = require('./_catalog');
 const { getLoggedInEmail } = require('./_customer-auth');
 const { getCustomer } = require('./_customers');
-const { getPromoCode } = require('./_promo');
+const { getPromoCode, FIRST_ORDER_DISCOUNT_PERCENT } = require('./_promo');
 
 const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
 
@@ -28,26 +28,31 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Panier vide' });
     }
 
-    // Un code promo n'est utilisable que par un client connecté à un compte (jamais vérifié
-    // depuis une donnée envoyée par le navigateur : on relit la session client signée par cookie).
+    // La réduction n'est jamais calculée depuis une donnée envoyée par le navigateur : on relit
+    // toujours la session client signée par cookie et l'état "a déjà commandé" stocké côté serveur.
     const loggedInEmail = getLoggedInEmail(req);
-    let promoPercentOff = null;
+
+    // Réduction automatique de 10% à la toute première commande d'un compte, sans code à saisir.
+    let autoPercentOff = 0;
+    if (loggedInEmail) {
+      const customer = await getCustomer(loggedInEmail);
+      if (customer && !customer.hasOrdered) {
+        autoPercentOff = FIRST_ORDER_DISCOUNT_PERCENT;
+      }
+    }
+
+    // Code promo manuel (ex. codes partenaires) : valable à chaque commande, pour tout le monde.
+    let codePercentOff = 0;
     if (promoCode) {
       const promo = getPromoCode(promoCode);
       if (!promo) {
         return res.status(400).json({ error: 'Code promo invalide' });
       }
-      if (promo.requiresAccount && !loggedInEmail) {
-        return res.status(400).json({ error: 'Ce code promo nécessite d\'être connecté à un compte' });
-      }
-      if (promo.firstOrderOnly) {
-        const customer = loggedInEmail && (await getCustomer(loggedInEmail));
-        if (!customer || customer.hasOrdered) {
-          return res.status(400).json({ error: 'Ce code promo est réservé à votre première commande' });
-        }
-      }
-      promoPercentOff = promo.percentOff;
+      codePercentOff = promo.percentOff;
     }
+
+    // On ne cumule pas les deux réductions : on applique la plus avantageuse des deux.
+    const promoPercentOff = Math.max(autoPercentOff, codePercentOff);
 
     const requiredAddressFields = ['prenom', 'nom', 'email', 'telephone', 'rue', 'codePostal', 'ville', 'pays'];
     if (!address || requiredAddressFields.some((f) => !address[f])) {

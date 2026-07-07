@@ -74,8 +74,10 @@ a{text-decoration:none;}
 .hero-badges{display:flex;justify-content:center;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;}
 .hero-badges span{font-size:13px;font-weight:700;color:#2d5a27;display:flex;align-items:center;gap:0.4rem;}
 .hero-badges span::before{content:'✓';}
-.hero-promo-note{display:inline-flex;align-items:center;gap:0.5rem;background:#F0EBE0;color:#2d5a27;font-size:13px;font-weight:500;padding:10px 20px;border-radius:25px;margin-top:1.5rem;}
+.hero-promo-note{display:inline-flex;align-items:center;gap:0.4rem;background:#F0EBE0;color:#2d5a27;font-size:12px;font-weight:500;padding:8px 16px;border-radius:25px;margin-top:1.5rem;white-space:nowrap;}
+.hero-promo-note img{width:16px;height:16px;flex-shrink:0;}
 .hero-promo-note strong{font-weight:700;}
+@media (max-width:480px){.hero-promo-note{font-size:10px;padding:7px 12px;white-space:normal;text-align:center;}}
 
 /* CATALOGUE */
 .shop-section{padding:3rem 3rem 1rem;max-width:1100px;margin:0 auto;}
@@ -138,6 +140,7 @@ a{text-decoration:none;}
 .promo-message{font-size:11px;margin-top:0.4rem;}
 .promo-message.ok{color:#2d5a27;}
 .promo-message.error{color:#b23b3b;}
+.auto-discount-note{font-size:12px;color:#2d5a27;font-weight:700;margin-top:0.7rem;}
 .cart-footer{padding:1.5rem;border-top:1px solid #e8e4d9;}
 .shipping-options{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem;}
 .shipping-option{display:flex;align-items:center;gap:0.6rem;padding:0.7rem 0.9rem;border:1px solid #e0d8cc;border-radius:10px;font-size:13px;cursor:pointer;}
@@ -214,10 +217,10 @@ a{text-decoration:none;}
 <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
 <nav class="nav">
-  <div class="nav-lw">
+  <a class="nav-lw" href="index.html">
     <img class="nav-logo" src="images/logo.png" width="515" height="502" alt="Logo Spiruline de Chartreuse">
     <div class="nav-brand">Spiruline de Chartreuse<span class="nav-brand-sub">Le Touvet &middot; Is&egrave;re &middot; France</span></div>
-  </div>
+  </a>
   <ul class="nav-menu">
     <li><a href="spiruline.html">La spiruline <span class="arr">&#9662;</span></a>
       <div class="dropdown"><a href="spiruline.html#histoire">Son histoire</a><a href="spiruline.html#bienfaits">Les bienfaits</a><a href="spiruline.html#composition">Composition</a><a href="spiruline.html#mode-emploi">Mode d'emploi</a></div>
@@ -271,7 +274,7 @@ a{text-decoration:none;}
     <span>Exp&eacute;dition sous 48h</span>
     <span>Livraison offerte d&egrave;s 100&nbsp;&euro;</span>
   </div>
-  <p class="hero-promo-note">&#127793; <strong>-10%</strong> sur votre premi&egrave;re commande en cr&eacute;ant un compte gratuit</p>
+  <p class="hero-promo-note"><img src="images/icone-promo.png" width="320" height="320" alt="" loading="lazy"> <strong>-10%</strong> sur votre premi&egrave;re commande en cr&eacute;ant un compte gratuit</p>
 </section>
 
 <section class="shop-section" id="produits">
@@ -461,6 +464,11 @@ a{text-decoration:none;}
         <p class="relay-point-error" id="relayPointError" style="display:none;"></p>
       </div>
     </div>
+    <div class="promo-row">
+      <input type="text" id="promoCodeInput" placeholder="Code promo">
+      <button type="button" class="promo-apply-btn" id="promoApplyBtn">Appliquer</button>
+    </div>
+    <p class="promo-message" id="promoMessage" style="display:none;"></p>
     <div class="cart-totals"><span>Sous-total</span><span id="cartSubtotal">0&nbsp;&euro;</span></div>
     <div class="cart-totals"><span>Livraison</span><span id="cartShippingCost">0&nbsp;&euro;</span></div>
     <div class="cart-total-final"><span>Total</span><span id="cartTotal">0&nbsp;&euro;</span></div>
@@ -867,38 +875,14 @@ function renderAccountSection() {
           <option value="other">À une autre adresse (cadeau, etc.)</option>
         </select>
       </div>
-      ${customerState.hasOrdered ? '' : `
-        <div class="promo-row">
-          <input type="text" id="promoCodeInput" placeholder="Code promo">
-          <button type="button" class="promo-apply-btn" id="promoApplyBtn">Appliquer</button>
-        </div>
-        <p class="promo-message" id="promoMessage" style="display:none;"></p>
-      `}`;
+      ${customerState.hasOrdered ? '' : `<p class="auto-discount-note">&#127881; -10% appliqué automatiquement sur votre première commande</p>`}`;
 
     document.getElementById('deliveryChoice').addEventListener('change', applyDeliveryChoice);
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await fetch('/api/customer-logout', { method: 'POST' });
-      appliedPromoCode = null;
       await refreshCustomerState();
     });
-
-    const promoBtn = document.getElementById('promoApplyBtn');
-    if (promoBtn) {
-      promoBtn.addEventListener('click', () => {
-        const code = document.getElementById('promoCodeInput').value.trim();
-        const msg = document.getElementById('promoMessage');
-        appliedPromoCode = code || null;
-        msg.style.display = 'block';
-        if (code) {
-          msg.textContent = 'Code enregistré — la réduction sera vérifiée et appliquée au moment du paiement.';
-          msg.className = 'promo-message ok';
-        } else {
-          msg.textContent = 'Entrez un code avant de cliquer sur Appliquer.';
-          msg.className = 'promo-message error';
-        }
-      });
-    }
     return;
   }
 
@@ -987,6 +971,20 @@ function renderAccountSection() {
     }
   });
 }
+
+document.getElementById('promoApplyBtn').addEventListener('click', () => {
+  const code = document.getElementById('promoCodeInput').value.trim();
+  const msg = document.getElementById('promoMessage');
+  appliedPromoCode = code || null;
+  msg.style.display = 'block';
+  if (code) {
+    msg.textContent = 'Code enregistré — la réduction sera vérifiée et appliquée au moment du paiement.';
+    msg.className = 'promo-message ok';
+  } else {
+    msg.textContent = 'Entrez un code avant de cliquer sur Appliquer.';
+    msg.className = 'promo-message error';
+  }
+});
 
 renderCart();
 refreshCustomerState();
