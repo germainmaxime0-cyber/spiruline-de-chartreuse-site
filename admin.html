@@ -22,6 +22,9 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d5a27;margin-bott
 .status-a_traiter{background:#fdf0d5;color:#a06a00;}
 .status-envoye{background:#e6f4e6;color:#2d5a27;}
 .status-erreur{background:#fbe2e2;color:#b23b3b;}
+.status-annulee{background:#e5e5e5;color:#666;}
+.cancel-btn{background:none;border:1px solid #b23b3b;color:#b23b3b;padding:7px 15px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;margin-left:0.5rem;}
+.cancel-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .order-detail{font-size:13px;color:#555;line-height:1.7;}
 .order-content{font-size:13px;color:#333;margin-top:0.4rem;}
 .order-actions{margin-top:0.8rem;}
@@ -70,7 +73,7 @@ async function login() {
   }
 }
 
-const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Envoyé à Boxtal', erreur: 'Erreur' };
+const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Envoyé à Boxtal', erreur: 'Erreur', annulee: 'Annulée' };
 
 async function loadOrders() {
   const res = await fetch('/api/admin-orders');
@@ -93,7 +96,9 @@ function renderOrders(orders) {
   list.innerHTML = orders.map((o) => {
     const contenu = (o.contenu || []).map((c) => `${c.quantite}× ${c.description}`).join(', ');
     const canSend = o.status === 'a_traiter' || o.status === 'erreur';
+    const canCancel = o.status !== 'annulee';
     const errorMsg = o.status === 'erreur' && o.boxtal && o.boxtal.error ? `<p class="order-error">${escapeHtml(o.boxtal.error)}</p>` : '';
+    const refundErrorMsg = o.refundError ? `<p class="order-error">Remboursement Stripe échoué : ${escapeHtml(o.refundError)}</p>` : '';
     return `
       <div class="order-card" data-order-id="${o.id}">
         <div class="order-top">
@@ -107,8 +112,10 @@ function renderOrders(orders) {
         </div>
         <div class="order-content">${escapeHtml(contenu)}</div>
         ${errorMsg}
+        ${refundErrorMsg}
         <div class="order-actions">
           ${canSend ? `<button class="send-btn" data-send="${o.id}">${o.status === 'erreur' ? 'Réessayer' : 'Envoyer vers Boxtal'}</button>` : ''}
+          ${canCancel ? `<button class="cancel-btn" data-cancel="${o.id}">Annuler la commande</button>` : ''}
         </div>
       </div>`;
   }).join('');
@@ -116,6 +123,32 @@ function renderOrders(orders) {
   list.querySelectorAll('[data-send]').forEach((btn) => {
     btn.addEventListener('click', () => sendToBoxtal(btn.getAttribute('data-send'), btn));
   });
+  list.querySelectorAll('[data-cancel]').forEach((btn) => {
+    btn.addEventListener('click', () => cancelOrder(btn.getAttribute('data-cancel'), btn));
+  });
+}
+
+async function cancelOrder(orderId, btn) {
+  if (!confirm('Annuler cette commande ? Le client sera remboursé automatiquement et l\'expédition Boxtal annulée si elle avait déjà été créée.')) {
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Annulation...';
+  try {
+    const res = await fetch('/api/admin-cancel-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Échec de l\'annulation.');
+    }
+  } catch (err) {
+    alert('Échec de l\'annulation (erreur réseau).');
+  } finally {
+    loadOrders();
+  }
 }
 
 async function sendToBoxtal(orderId, btn) {
