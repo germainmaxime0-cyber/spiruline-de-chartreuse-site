@@ -894,20 +894,20 @@ function renderAccountSection() {
         <button type="button" class="account-tab" data-tab="signup">Créer un compte</button>
       </div>
       <div id="loginPane">
-        <input type="email" id="loginEmail" placeholder="Email">
-        <input type="password" id="loginPassword" placeholder="Mot de passe">
+        <input type="email" id="loginEmail" name="email" autocomplete="email" placeholder="Email">
+        <input type="password" id="loginPassword" name="password" autocomplete="current-password" placeholder="Mot de passe">
         <button type="button" class="account-submit-btn" id="loginSubmitBtn">Se connecter</button>
         <p class="account-error" id="loginError" style="display:none;"></p>
       </div>
       <div id="signupPane" style="display:none;">
-        <input type="email" id="signupEmail" placeholder="Email">
-        <input type="password" id="signupPassword" placeholder="Mot de passe (8 caractères min.)">
-        <input type="text" id="signupPrenom" placeholder="Prénom">
-        <input type="text" id="signupNom" placeholder="Nom">
-        <input type="tel" id="signupTel" placeholder="Téléphone">
-        <input type="text" id="signupRue" placeholder="Adresse (numéro et rue)">
-        <input type="text" id="signupCp" placeholder="Code postal">
-        <input type="text" id="signupVille" placeholder="Ville">
+        <input type="email" id="signupEmail" name="email" autocomplete="email" placeholder="Email">
+        <input type="password" id="signupPassword" name="new-password" autocomplete="new-password" placeholder="Mot de passe (8 caractères min.)">
+        <input type="text" id="signupPrenom" name="prenom" autocomplete="given-name" placeholder="Prénom">
+        <input type="text" id="signupNom" name="nom" autocomplete="family-name" placeholder="Nom">
+        <input type="tel" id="signupTel" name="telephone" autocomplete="tel" placeholder="Téléphone">
+        <input type="text" id="signupRue" name="rue" autocomplete="street-address" placeholder="Adresse (numéro et rue)">
+        <input type="text" id="signupCp" name="codePostal" autocomplete="postal-code" placeholder="Code postal">
+        <input type="text" id="signupVille" name="ville" autocomplete="address-level2" placeholder="Ville">
         <button type="button" class="account-submit-btn" id="signupSubmitBtn">Créer mon compte</button>
         <p class="account-error" id="signupError" style="display:none;"></p>
       </div>
