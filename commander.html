@@ -701,7 +701,7 @@ document.getElementById('searchRelayBtn').addEventListener('click', async functi
     mapEl.style.display = 'block';
 
     if (!relayLeafletMap) {
-      relayLeafletMap = L.map(mapEl);
+      relayLeafletMap = L.map(mapEl, { scrollWheelZoom: false });
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap',
         maxZoom: 19
