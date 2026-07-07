@@ -126,6 +126,9 @@ a{text-decoration:none;}
 .account-submit-btn{background:#2d5a27;color:white;border:none;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
 .account-error{color:#b23b3b;font-size:11px;margin:0;}
 .account-logged{display:flex;justify-content:space-between;align-items:center;}
+.delivery-choice-row{display:flex;align-items:center;gap:0.5rem;margin-top:0.7rem;font-size:12px;}
+.delivery-choice-row select{flex:1;padding:6px 8px;border-radius:8px;border:1px solid #e0d8cc;font-size:12px;font-family:'Lato',sans-serif;}
+.address-form input:read-only,.account-forms input:read-only{background:#F0EBE0;color:#666;}
 .account-logout-btn{background:none;border:none;color:#7a9e76;font-size:12px;cursor:pointer;text-decoration:underline;padding:0;}
 .promo-row{display:flex;gap:0.5rem;margin-top:0.8rem;}
 .promo-row input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid #e0d8cc;font-size:13px;}
@@ -809,20 +812,40 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-let customerState = { loggedIn: false, email: null, hasOrdered: false };
+let customerState = { loggedIn: false };
 let appliedPromoCode = null;
 
 async function refreshCustomerState() {
   try {
     const res = await fetch('/api/customer-me');
     const data = await res.json();
-    customerState = data.loggedIn
-      ? { loggedIn: true, email: data.email, hasOrdered: data.hasOrdered }
-      : { loggedIn: false, email: null, hasOrdered: false };
+    customerState = data.loggedIn ? data : { loggedIn: false };
   } catch (err) {
-    customerState = { loggedIn: false, email: null, hasOrdered: false };
+    customerState = { loggedIn: false };
   }
   renderAccountSection();
+  applyDeliveryChoice();
+}
+
+function applyDeliveryChoice() {
+  const select = document.getElementById('deliveryChoice');
+  const fields = ['addrPrenom', 'addrNom', 'addrEmail', 'addrTel', 'addrRue', 'addrCp', 'addrVille'];
+  const useMine = customerState.loggedIn && select && select.value === 'mine';
+
+  if (useMine) {
+    document.getElementById('addrPrenom').value = customerState.prenom || '';
+    document.getElementById('addrNom').value = customerState.nom || '';
+    document.getElementById('addrEmail').value = customerState.email || '';
+    document.getElementById('addrTel').value = customerState.telephone || '';
+    document.getElementById('addrRue').value = customerState.rue || '';
+    document.getElementById('addrCp').value = customerState.codePostal || '';
+    document.getElementById('addrVille').value = customerState.ville || '';
+  }
+  fields.forEach((id) => { document.getElementById(id).readOnly = useMine; });
+
+  if (!customerState.loggedIn) {
+    fields.forEach((id) => { document.getElementById(id).value = ''; });
+  }
 }
 
 function renderAccountSection() {
@@ -834,6 +857,13 @@ function renderAccountSection() {
         <span>Connecté·e : <strong>${escapeHtml(customerState.email)}</strong></span>
         <button type="button" class="account-logout-btn" id="logoutBtn">Se déconnecter</button>
       </div>
+      <div class="delivery-choice-row">
+        <label for="deliveryChoice">Livrer</label>
+        <select id="deliveryChoice">
+          <option value="mine">À mon adresse</option>
+          <option value="other">À une autre adresse (cadeau, etc.)</option>
+        </select>
+      </div>
       ${customerState.hasOrdered ? '' : `
         <div class="promo-row">
           <input type="text" id="promoCodeInput" placeholder="Code promo">
@@ -841,6 +871,8 @@ function renderAccountSection() {
         </div>
         <p class="promo-message" id="promoMessage" style="display:none;"></p>
       `}`;
+
+    document.getElementById('deliveryChoice').addEventListener('change', applyDeliveryChoice);
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await fetch('/api/customer-logout', { method: 'POST' });
@@ -883,6 +915,12 @@ function renderAccountSection() {
       <div id="signupPane" style="display:none;">
         <input type="email" id="signupEmail" placeholder="Email">
         <input type="password" id="signupPassword" placeholder="Mot de passe (8 caractères min.)">
+        <input type="text" id="signupPrenom" placeholder="Prénom">
+        <input type="text" id="signupNom" placeholder="Nom">
+        <input type="tel" id="signupTel" placeholder="Téléphone">
+        <input type="text" id="signupRue" placeholder="Adresse (numéro et rue)">
+        <input type="text" id="signupCp" placeholder="Code postal">
+        <input type="text" id="signupVille" placeholder="Ville">
         <button type="button" class="account-submit-btn" id="signupSubmitBtn">Créer mon compte</button>
         <p class="account-error" id="signupError" style="display:none;"></p>
       </div>
@@ -921,13 +959,21 @@ function renderAccountSection() {
   });
 
   document.getElementById('signupSubmitBtn').addEventListener('click', async () => {
-    const email = document.getElementById('signupEmail').value.trim();
-    const password = document.getElementById('signupPassword').value;
+    const payload = {
+      email: document.getElementById('signupEmail').value.trim(),
+      password: document.getElementById('signupPassword').value,
+      prenom: document.getElementById('signupPrenom').value.trim(),
+      nom: document.getElementById('signupNom').value.trim(),
+      telephone: document.getElementById('signupTel').value.trim(),
+      rue: document.getElementById('signupRue').value.trim(),
+      codePostal: document.getElementById('signupCp').value.trim(),
+      ville: document.getElementById('signupVille').value.trim(),
+    };
     const errorEl = document.getElementById('signupError');
     errorEl.style.display = 'none';
     try {
       const res = await fetch('/api/customer-signup', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password })
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur de création de compte');

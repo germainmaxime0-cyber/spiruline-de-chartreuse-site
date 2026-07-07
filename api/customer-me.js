@@ -1,7 +1,7 @@
 // Indique si un client est connecté (utilisé par commander.html pour afficher ou non le champ code promo).
 
 const { getLoggedInEmail } = require('./_customer-auth');
-const { getCustomer } = require('./_customers');
+const { getCustomer, toPublicProfile } = require('./_customers');
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
@@ -19,5 +19,5 @@ module.exports = async (req, res) => {
     return res.status(200).json({ loggedIn: false });
   }
 
-  return res.status(200).json({ loggedIn: true, email: customer.email, hasOrdered: customer.hasOrdered });
+  return res.status(200).json({ loggedIn: true, ...toPublicProfile(customer) });
 };

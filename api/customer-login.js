@@ -1,6 +1,6 @@
 // Connexion à un compte client existant.
 
-const { getCustomer, verifyPassword } = require('./_customers');
+const { getCustomer, verifyPassword, toPublicProfile } = require('./_customers');
 const { createSessionToken, SESSION_DURATION_MS } = require('./_customer-auth');
 
 module.exports = async (req, res) => {
@@ -22,5 +22,5 @@ module.exports = async (req, res) => {
   const token = createSessionToken(customer.email);
   const maxAgeSeconds = Math.floor(SESSION_DURATION_MS / 1000);
   res.setHeader('Set-Cookie', `customer_session=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAgeSeconds}`);
-  return res.status(200).json({ email: customer.email, hasOrdered: customer.hasOrdered });
+  return res.status(200).json(toPublicProfile(customer));
 };

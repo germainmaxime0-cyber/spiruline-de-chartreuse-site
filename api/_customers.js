@@ -25,7 +25,7 @@ async function getCustomer(email) {
   return kv.get(customerKey(email));
 }
 
-async function createCustomer(email, password) {
+async function createCustomer(email, password, profile) {
   const existing = await getCustomer(email);
   if (existing) return null;
   const customer = {
@@ -33,6 +33,13 @@ async function createCustomer(email, password) {
     passwordHash: hashPassword(password),
     createdAt: new Date().toISOString(),
     hasOrdered: false,
+    prenom: profile.prenom,
+    nom: profile.nom,
+    telephone: profile.telephone,
+    rue: profile.rue,
+    codePostal: profile.codePostal,
+    ville: profile.ville,
+    pays: profile.pays || 'FR',
   };
   await kv.set(customerKey(email), customer);
   return customer;
@@ -46,4 +53,10 @@ async function markCustomerOrdered(email) {
   return updated;
 }
 
-module.exports = { getCustomer, createCustomer, verifyPassword, markCustomerOrdered };
+// Version du compte renvoyée au navigateur : jamais le hash du mot de passe.
+function toPublicProfile(customer) {
+  const { passwordHash, ...publicProfile } = customer;
+  return publicProfile;
+}
+
+module.exports = { getCustomer, createCustomer, verifyPassword, markCustomerOrdered, toPublicProfile };
