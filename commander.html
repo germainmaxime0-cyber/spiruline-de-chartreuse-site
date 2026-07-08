@@ -140,6 +140,9 @@ a{text-decoration:none;}
 .account-tab{background:none;border:none;font-size:12px;font-weight:700;color:#999;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent;}
 .account-tab.active{color:#2d5a27;border-bottom-color:#2d5a27;}
 .account-forms input{padding:8px 10px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:13px;width:100%;}
+.account-tel-row{display:flex;gap:0.5rem;}
+.account-tel-row select{flex:0 0 108px;padding:8px 4px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:12px;color:#2d2d2d;background:white;}
+.account-tel-row input{flex:1;min-width:0;}
 .password-field{position:relative;}
 .password-field input{padding-right:38px;}
 .password-toggle{position:absolute;top:50%;right:2px;transform:translateY(-50%);width:34px;height:28px;background:none;border:none;padding:0;margin:0;cursor:pointer;color:#888;display:flex;align-items:center;justify-content:center;}
@@ -170,6 +173,8 @@ a{text-decoration:none;}
 .address-form input{padding:9px 10px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:13px;color:#2d2d2d;width:100%;}
 .address-row{display:flex;gap:0.5rem;}
 .address-row input{flex:1;min-width:0;}
+.tel-row select{flex:0 0 108px;padding:9px 4px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:12px;color:#2d2d2d;background:white;}
+.tel-row input{flex:1;min-width:0;}
 #streetAddressFields{display:flex;flex-direction:column;gap:0.5rem;}
 .pickup-note{font-size:12px;color:#2d5a27;background:#eef3ea;border-radius:8px;padding:8px 10px;margin:-0.2rem 0 0.3rem;}
 .manual-order-success{font-size:13px;color:#2d5a27;background:#eef3ea;border-radius:8px;padding:12px;margin-top:0.6rem;line-height:1.5;}
@@ -484,7 +489,18 @@ a{text-decoration:none;}
         <input type="text" id="addrNom" placeholder="Nom" autocomplete="family-name">
       </div>
       <input type="email" id="addrEmail" placeholder="Email" autocomplete="email">
-      <input type="tel" id="addrTel" placeholder="T&eacute;l&eacute;phone" autocomplete="tel">
+      <div class="address-row tel-row">
+        <select id="addrTelCountry" aria-label="Indicatif pays">
+          <option value="+33" selected>France (+33)</option>
+          <option value="+32">Belgique (+32)</option>
+          <option value="+41">Suisse (+41)</option>
+          <option value="+352">Luxembourg (+352)</option>
+          <option value="+39">Italie (+39)</option>
+          <option value="+34">Espagne (+34)</option>
+          <option value="+49">Allemagne (+49)</option>
+        </select>
+        <input type="tel" id="addrTel" placeholder="T&eacute;l&eacute;phone" autocomplete="tel">
+      </div>
       <div id="streetAddressFields">
         <input type="text" id="addrRue" placeholder="Adresse (num&eacute;ro et rue)" autocomplete="street-address">
         <div class="address-row">
@@ -819,11 +835,13 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
   const shipping = document.querySelector('input[name="shipping"]:checked').value;
+  const telCountry = document.getElementById('addrTelCountry').value;
+  const telLocal = document.getElementById('addrTel').value.trim();
   const address = {
     prenom: document.getElementById('addrPrenom').value.trim(),
     nom: document.getElementById('addrNom').value.trim(),
     email: document.getElementById('addrEmail').value.trim(),
-    telephone: document.getElementById('addrTel').value.trim(),
+    telephone: telLocal,
     rue: document.getElementById('addrRue').value.trim(),
     codePostal: document.getElementById('addrCp').value.trim(),
     ville: document.getElementById('addrVille').value.trim(),
@@ -839,12 +857,14 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
     return;
   }
 
-  const phoneDigits = address.telephone.replace(/\D/g, '');
-  if (phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) {
-    errorEl.textContent = 'Le numéro de téléphone doit contenir 10 chiffres (ex. 06 12 34 56 78).';
+  if (!isPhoneValid(telCountry, telLocal)) {
+    errorEl.textContent = telCountry === '+33'
+      ? 'Le numéro de téléphone doit contenir 10 chiffres (ex. 06 12 34 56 78).'
+      : 'Merci de renseigner un numéro de téléphone valide.';
     errorEl.style.display = 'block';
     return;
   }
+  address.telephone = combinePhone(telCountry, telLocal);
 
   let pickupPointCode = null;
   if (shipping === 'relais') {
@@ -932,6 +952,33 @@ function setupPasswordToggle(inputId, btnId) {
   });
 }
 
+// Le numéro français garde son format local tel quel (compatibilité avec le reste du site,
+// qui sait déjà convertir un 0X... en +33X... côté serveur pour Boxtal). Les autres pays sont
+// envoyés directement au format international +indicatif, sans le 0 initial le cas échéant.
+function combinePhone(countryCode, localValue) {
+  if (countryCode === '+33') return localValue;
+  const digits = localValue.replace(/\D/g, '');
+  return `${countryCode}${digits.replace(/^0/, '')}`;
+}
+
+function isPhoneValid(countryCode, localValue) {
+  const digits = localValue.replace(/\D/g, '');
+  if (countryCode === '+33') return digits.length === 10 && digits.startsWith('0');
+  return digits.length >= 6;
+}
+
+// Retrouve l'indicatif pays et le numéro local à partir d'une valeur stockée (soit un format
+// local français "06 12 34 56 78", soit un format international "+32471234567").
+function splitPhone(stored) {
+  const value = (stored || '').trim();
+  if (!value.startsWith('+')) return { country: '+33', local: value };
+  const codes = ['+352', '+33', '+32', '+41', '+39', '+34', '+49'];
+  for (const code of codes) {
+    if (value.startsWith(code)) return { country: code, local: value.slice(code.length) };
+  }
+  return { country: '+33', local: value };
+}
+
 let customerState = { loggedIn: false };
 let appliedPromoCode = null;
 
@@ -956,7 +1003,9 @@ function applyDeliveryChoice() {
     document.getElementById('addrPrenom').value = customerState.prenom || '';
     document.getElementById('addrNom').value = customerState.nom || '';
     document.getElementById('addrEmail').value = customerState.email || '';
-    document.getElementById('addrTel').value = customerState.telephone || '';
+    const phone = splitPhone(customerState.telephone);
+    document.getElementById('addrTelCountry').value = phone.country;
+    document.getElementById('addrTel').value = phone.local;
     document.getElementById('addrRue').value = customerState.rue || '';
     document.getElementById('addrCp').value = customerState.codePostal || '';
     document.getElementById('addrVille').value = customerState.ville || '';
@@ -1025,7 +1074,18 @@ function renderAccountSection() {
         </div>
         <input type="text" id="signupPrenom" name="prenom" autocomplete="given-name" placeholder="Prénom">
         <input type="text" id="signupNom" name="nom" autocomplete="family-name" placeholder="Nom">
-        <input type="tel" id="signupTel" name="telephone" autocomplete="tel" placeholder="Téléphone">
+        <div class="account-tel-row">
+          <select id="signupTelCountry" aria-label="Indicatif pays">
+            <option value="+33" selected>France (+33)</option>
+            <option value="+32">Belgique (+32)</option>
+            <option value="+41">Suisse (+41)</option>
+            <option value="+352">Luxembourg (+352)</option>
+            <option value="+39">Italie (+39)</option>
+            <option value="+34">Espagne (+34)</option>
+            <option value="+49">Allemagne (+49)</option>
+          </select>
+          <input type="tel" id="signupTel" name="telephone" autocomplete="tel" placeholder="Téléphone">
+        </div>
         <input type="text" id="signupRue" name="rue" autocomplete="street-address" placeholder="Adresse (numéro et rue)">
         <input type="text" id="signupCp" name="codePostal" autocomplete="postal-code" placeholder="Code postal">
         <input type="text" id="signupVille" name="ville" autocomplete="address-level2" placeholder="Ville">
@@ -1092,18 +1152,29 @@ function renderAccountSection() {
   });
 
   document.getElementById('signupSubmitBtn').addEventListener('click', async () => {
+    const errorEl = document.getElementById('signupError');
+    errorEl.style.display = 'none';
+
+    const signupTelCountry = document.getElementById('signupTelCountry').value;
+    const signupTelLocal = document.getElementById('signupTel').value.trim();
+    if (!isPhoneValid(signupTelCountry, signupTelLocal)) {
+      errorEl.textContent = signupTelCountry === '+33'
+        ? 'Le numéro de téléphone doit contenir 10 chiffres (ex. 06 12 34 56 78).'
+        : 'Merci de renseigner un numéro de téléphone valide.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
     const payload = {
       email: document.getElementById('signupEmail').value.trim(),
       password: document.getElementById('signupPassword').value,
       prenom: document.getElementById('signupPrenom').value.trim(),
       nom: document.getElementById('signupNom').value.trim(),
-      telephone: document.getElementById('signupTel').value.trim(),
+      telephone: combinePhone(signupTelCountry, signupTelLocal),
       rue: document.getElementById('signupRue').value.trim(),
       codePostal: document.getElementById('signupCp').value.trim(),
       ville: document.getElementById('signupVille').value.trim(),
     };
-    const errorEl = document.getElementById('signupError');
-    errorEl.style.display = 'none';
     try {
       const res = await fetch('/api/customer-signup', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)

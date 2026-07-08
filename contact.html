@@ -153,6 +153,9 @@ a{text-decoration:none;}
 .form-group label{display:block;font-size:13px;font-weight:700;color:#2d2d2d;margin-bottom:0.4rem;}
 .form-group .optional{font-weight:500;color:#999;text-transform:none;font-size:12px;}
 .form-group input[type="text"],.form-group input[type="email"],.form-group input[type="tel"],.form-group input[type="date"],.form-group input[type="time"],.form-group input[type="number"],.form-group textarea{width:100%;padding:0.8rem 1rem;border:1px solid #e0d8cc;border-radius:10px;font-family:'Lato',sans-serif;font-size:14px;color:#2d2d2d;background:#F0EBE0;transition:border-color 0.2s;}
+.tel-row{display:flex;gap:0.6rem;}
+.tel-row select{flex:0 0 130px;padding:0.8rem 0.5rem;border:1px solid #e0d8cc;border-radius:10px;font-family:'Lato',sans-serif;font-size:13px;color:#2d2d2d;background:#F0EBE0;}
+.tel-row input{flex:1;min-width:0;}
 .form-group input:focus,.form-group textarea:focus{outline:none;border-color:#2d5a27;}
 .form-group textarea{min-height:110px;resize:vertical;}
 .motif-options{display:flex;gap:0.6rem;flex-wrap:wrap;}
@@ -361,7 +364,18 @@ a{text-decoration:none;}
     </div>
     <div class="form-group">
       <label for="telephone">T&eacute;l&eacute;phone <span class="optional">(facultatif)</span></label>
-      <input type="tel" id="telephone" name="telephone">
+      <div class="tel-row">
+        <select id="indicatif" name="indicatif" aria-label="Indicatif pays">
+          <option value="+33" selected>France (+33)</option>
+          <option value="+32">Belgique (+32)</option>
+          <option value="+41">Suisse (+41)</option>
+          <option value="+352">Luxembourg (+352)</option>
+          <option value="+39">Italie (+39)</option>
+          <option value="+34">Espagne (+34)</option>
+          <option value="+49">Allemagne (+49)</option>
+        </select>
+        <input type="tel" id="telephone" name="telephone">
+      </div>
     </div>
 
     <div class="form-group">

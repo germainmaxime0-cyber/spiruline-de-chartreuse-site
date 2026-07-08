@@ -29,9 +29,13 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Merci de renseigner toutes vos coordonnées' });
   }
 
+  // Format local français (ex. "06 12 34 56 78") : exactement 10 chiffres commençant par 0.
+  // Format international (ex. "+32471234567", saisi via l'indicatif pays) : au moins 6 chiffres.
   const phoneDigits = telephone.replace(/\D/g, '');
-  if (phoneDigits.length !== 10 || !phoneDigits.startsWith('0')) {
-    return res.status(400).json({ error: 'Le numéro de téléphone doit contenir 10 chiffres' });
+  const isValidFrenchLocal = phoneDigits.length === 10 && phoneDigits.startsWith('0');
+  const isValidInternational = telephone.trim().startsWith('+') && phoneDigits.length >= 6;
+  if (!isValidFrenchLocal && !isValidInternational) {
+    return res.status(400).json({ error: 'Merci de renseigner un numéro de téléphone valide' });
   }
 
   const customer = await createCustomer(email, password, { prenom, nom, telephone, rue, codePostal, ville, pays: 'FR' });
