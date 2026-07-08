@@ -84,6 +84,9 @@ a{text-decoration:none;}
 .hero-badges{display:flex;justify-content:center;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;}
 .hero-badges span{font-size:13px;font-weight:700;color:#2d5a27;display:flex;align-items:center;gap:0.4rem;}
 .hero-badges span::before{content:'✓';}
+.payment-banner{padding:1rem 2rem;text-align:center;font-size:14px;font-weight:700;}
+.payment-banner.success{background:#d4edda;color:#1e5c28;}
+.payment-banner.cancel{background:#fdf0d5;color:#a06a00;}
 .hero-promo-note{display:inline-flex;align-items:center;gap:0.4rem;background:#F0EBE0;color:#2d5a27;font-size:12px;font-weight:500;padding:8px 16px;border-radius:25px;margin-top:1.5rem;white-space:nowrap;}
 .hero-promo-note img{width:16px;height:16px;flex-shrink:0;}
 .hero-promo-note strong{font-weight:700;}
@@ -300,6 +303,8 @@ a{text-decoration:none;}
   <div class="mobile-nav-item"><a href="blog.html">Blog</a></div>
   <a class="mobile-cta" href="commander.html">Commander &rarr;</a>
 </div>
+
+<div class="payment-banner" id="paymentBanner" style="display:none;"></div>
 
 <section class="hero" id="main-content">
   <h1>Commander notre <em>spiruline</em></h1>
@@ -640,6 +645,31 @@ function saveCart(cart) {
 }
 
 let cart = loadCart();
+
+// Retour depuis Stripe (succès ou annulation du paiement par carte) : on informe le client
+// directement sur la page, puisqu'il n'y a sinon aucune confirmation visible après redirection.
+(function handlePaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const paiement = params.get('paiement');
+  if (!paiement) return;
+
+  const banner = document.getElementById('paymentBanner');
+  if (paiement === 'succes') {
+    banner.textContent = '✅ Paiement réussi ! Merci pour votre commande — un email de confirmation vient de vous être envoyé.';
+    banner.className = 'payment-banner success';
+    banner.style.display = 'block';
+    cart = [];
+    saveCart(cart);
+  } else if (paiement === 'annule') {
+    banner.textContent = 'Paiement annulé — votre panier a été conservé, vous pouvez réessayer quand vous le souhaitez.';
+    banner.className = 'payment-banner cancel';
+    banner.style.display = 'block';
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.delete('paiement');
+  window.history.replaceState({}, '', url);
+})();
 
 document.querySelectorAll('.product-card').forEach(card => {
   const qtyInput = card.querySelector('[data-qty-input]');
