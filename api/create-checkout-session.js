@@ -125,7 +125,9 @@ module.exports = async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card'],
+      // Pas de payment_method_types fixé volontairement : Stripe affiche alors automatiquement
+      // les moyens de paiement activés dans le Dashboard (carte, Apple Pay, Google Pay, PayPal...)
+      // selon l'appareil et le pays du client, sans avoir à les lister ici.
       line_items,
       customer_email: address.email,
       success_url: `${SITE_URL}/commander.html?paiement=succes`,
