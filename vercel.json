@@ -2,6 +2,9 @@
   "redirects": [
     { "source": "/boutique", "destination": "/commander.html", "permanent": true },
     { "source": "/boutique/", "destination": "/commander.html", "permanent": true },
-    { "source": "/boutique/:path*", "destination": "/commander.html", "permanent": true }
+    { "source": "/boutique/:path*", "destination": "/commander.html", "permanent": true },
+    { "source": "/point-de-vente", "destination": "/contact.html#points-de-vente", "permanent": true },
+    { "source": "/point-de-vente/", "destination": "/contact.html#points-de-vente", "permanent": true },
+    { "source": "/point-de-vente/:path*", "destination": "/contact.html#points-de-vente", "permanent": true }
   ]
 }
