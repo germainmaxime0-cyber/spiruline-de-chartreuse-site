@@ -1,21 +1,10 @@
 {
   "redirects": [
-    { "source": "/boutique", "destination": "/commander.html", "permanent": true },
-    { "source": "/boutique/", "destination": "/commander.html", "permanent": true },
-    { "source": "/boutique/:path*", "destination": "/commander.html", "permanent": true },
-    { "source": "/point-de-vente", "destination": "/contact.html#points-de-vente", "permanent": true },
-    { "source": "/point-de-vente/", "destination": "/contact.html#points-de-vente", "permanent": true },
-    { "source": "/point-de-vente/:path*", "destination": "/contact.html#points-de-vente", "permanent": true },
-    { "source": "/la-culture", "destination": "/notre-spiruline.html#recolte", "permanent": true },
-    { "source": "/la-culture/", "destination": "/notre-spiruline.html#recolte", "permanent": true },
-    { "source": "/la-culture/:path*", "destination": "/notre-spiruline.html#recolte", "permanent": true },
-    { "source": "/laspiruline", "destination": "/spiruline.html", "permanent": true },
-    { "source": "/laspiruline/", "destination": "/spiruline.html", "permanent": true },
-    { "source": "/laspiruline/:path*", "destination": "/spiruline.html", "permanent": true },
-    { "source": "/comment-la-consommer", "destination": "/spiruline.html#mode-emploi", "permanent": true },
-    { "source": "/comment-la-consommer/", "destination": "/spiruline.html#mode-emploi", "permanent": true },
-    { "source": "/comment-la-consommer/:path*", "destination": "/spiruline.html#mode-emploi", "permanent": true },
-    { "source": "/2018/01/16/gresivaudan", "destination": "/", "permanent": true },
-    { "source": "/2018/01/16/gresivaudan/", "destination": "/", "permanent": true }
+    { "source": "/boutique(/.*)?", "destination": "/commander.html", "permanent": true },
+    { "source": "/point-de-vente(/.*)?", "destination": "/contact.html#points-de-vente", "permanent": true },
+    { "source": "/la-culture(/.*)?", "destination": "/notre-spiruline.html#recolte", "permanent": true },
+    { "source": "/laspiruline(/.*)?", "destination": "/spiruline.html", "permanent": true },
+    { "source": "/comment-la-consommer(/.*)?", "destination": "/spiruline.html#mode-emploi", "permanent": true },
+    { "source": "/2018/01/16/gresivaudan(/.*)?", "destination": "/", "permanent": true }
   ]
 }
