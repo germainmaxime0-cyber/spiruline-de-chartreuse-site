@@ -122,14 +122,18 @@ a{text-decoration:none;}
 .cart-header h2{font-family:'Playfair Display',serif;font-size:22px;}
 .cart-close{background:none;border:none;font-size:26px;cursor:pointer;color:#2d5a27;}
 .cart-items{padding:1rem 1.5rem;}
-.cart-item{display:flex;gap:0.9rem;padding:1rem 0;border-bottom:1px solid #f0f0f0;align-items:center;}
+.cart-item{display:flex;gap:0.9rem;padding:1rem 0;border-bottom:1px solid #f0f0f0;align-items:flex-start;}
 .cart-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;}
 .cart-item-info{flex:1;min-width:0;}
+.cart-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;}
+.cart-item-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;}
 .cart-item-name{font-size:13px;font-weight:700;color:#2d2d2d;}
 .cart-item-weight{font-size:12px;color:#999;}
-.cart-item-qty{font-size:12px;color:#666;margin-top:2px;}
 .cart-item-price{font-family:'Playfair Display',serif;font-size:14px;color:#2d5a27;font-weight:700;white-space:nowrap;}
-.cart-item-remove{background:none;border:none;color:#c0392b;font-size:12px;cursor:pointer;margin-left:0.5rem;}
+.cart-item-remove{background:none;border:none;color:#c0392b;font-size:12px;cursor:pointer;flex-shrink:0;}
+.cart-qty-control{display:flex;align-items:center;border:1px solid #e0d8cc;border-radius:8px;overflow:hidden;flex-shrink:0;}
+.cart-qty-control button{background:#F0EBE0;border:none;width:24px;height:26px;font-size:13px;cursor:pointer;color:#2d5a27;font-weight:700;}
+.cart-qty-control input{width:28px;height:26px;border:none;text-align:center;font-size:12px;font-weight:700;color:#2d2d2d;}
 .cart-empty{text-align:center;color:#999;font-family:'Merriweather',serif;font-style:italic;padding:3rem 1rem;}
 .account-section{padding:1rem 1.5rem;background:#F0EBE0;border-bottom:1px solid #e8e4d9;font-size:13px;}
 .account-toggle{background:none;border:none;color:#2d5a27;font-weight:700;font-size:13px;cursor:pointer;padding:0;text-decoration:underline;}
@@ -186,6 +190,7 @@ a{text-decoration:none;}
 .relay-point-selected{font-size:12px;color:#2d5a27;font-weight:700;margin:0;background:#eef4ec;padding:8px 10px;border-radius:8px;}
 .relay-marker-selected{filter:hue-rotate(120deg) saturate(1.5);}
 .cart-totals{display:flex;justify-content:space-between;font-size:14px;margin-bottom:0.4rem;color:#555;}
+.cart-discount-row{color:#2d5a27;font-weight:700;}
 .cart-total-final{display:flex;justify-content:space-between;font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin:0.8rem 0;padding-top:0.8rem;border-top:1px solid #e8e4d9;}
 .checkout-btn{display:block;width:100%;background:#1e4d20;color:white;border:none;padding:15px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;}
 .checkout-btn:hover{background:#142e12;}
@@ -521,6 +526,7 @@ a{text-decoration:none;}
     </div>
     <p class="promo-message" id="promoMessage" style="display:none;"></p>
     <div class="cart-totals"><span>Sous-total</span><span id="cartSubtotal">0&nbsp;&euro;</span></div>
+    <div class="cart-totals cart-discount-row" id="cartDiscountRow" style="display:none;"><span id="cartDiscountLabel">R&eacute;duction</span><span id="cartDiscountAmount">0&nbsp;&euro;</span></div>
     <div class="cart-totals"><span>Livraison</span><span id="cartShippingCost">0&nbsp;&euro;</span></div>
     <div class="cart-total-final"><span>Total</span><span id="cartTotal">0&nbsp;&euro;</span></div>
     <p class="address-form-title">Mode de paiement</p>
@@ -687,14 +693,49 @@ function renderCart() {
     return `<div class="cart-item">
       <img src="${product.image}" alt="${product.name}">
       <div class="cart-item-info">
-        <div class="cart-item-name">${product.name}</div>
-        <div class="cart-item-weight">${variant.weight}</div>
-        <div class="cart-item-qty">Qt&eacute; : ${item.quantity}</div>
+        <div class="cart-item-top">
+          <div>
+            <div class="cart-item-name">${product.name}</div>
+            <div class="cart-item-weight">${variant.weight}</div>
+          </div>
+          <button class="cart-item-remove" data-remove="${index}" aria-label="Retirer">&times;</button>
+        </div>
+        <div class="cart-item-bottom">
+          <div class="cart-qty-control">
+            <button type="button" data-cart-qty-minus="${index}" aria-label="Diminuer">&minus;</button>
+            <input type="number" value="${item.quantity}" min="1" data-cart-qty-input="${index}" aria-label="Quantit&eacute;">
+            <button type="button" data-cart-qty-plus="${index}" aria-label="Augmenter">+</button>
+          </div>
+          <div class="cart-item-price">${formatPrice(variant.price * item.quantity)}</div>
+        </div>
       </div>
-      <div class="cart-item-price">${formatPrice(variant.price * item.quantity)}</div>
-      <button class="cart-item-remove" data-remove="${index}" aria-label="Retirer">&times;</button>
     </div>`;
   }).join('');
+
+  itemsEl.querySelectorAll('[data-cart-qty-minus]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-cart-qty-minus'));
+      cart[idx].quantity = Math.max(1, cart[idx].quantity - 1);
+      saveCart(cart);
+      renderCart();
+    });
+  });
+  itemsEl.querySelectorAll('[data-cart-qty-plus]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-cart-qty-plus'));
+      cart[idx].quantity += 1;
+      saveCart(cart);
+      renderCart();
+    });
+  });
+  itemsEl.querySelectorAll('[data-cart-qty-input]').forEach(input => {
+    input.addEventListener('change', () => {
+      const idx = parseInt(input.getAttribute('data-cart-qty-input'));
+      cart[idx].quantity = Math.max(1, parseInt(input.value, 10) || 1);
+      saveCart(cart);
+      renderCart();
+    });
+  });
 
   itemsEl.querySelectorAll('[data-remove]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -709,14 +750,33 @@ function renderCart() {
 
 function updateTotals() {
   const subtotal = computeSubtotal();
-  const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+
+  // Aperçu uniquement : le montant réellement facturé est toujours recalculé côté serveur
+  // au moment du paiement (voir create-checkout-session.js / create-manual-order.js).
+  const autoPercentOff = (customerState.loggedIn && !customerState.hasOrdered) ? FIRST_ORDER_DISCOUNT_PERCENT : 0;
+  const codePercentOff = (appliedPromoEffect && appliedPromoEffect.type === 'percent') ? appliedPromoEffect.percentOff : 0;
+  const codeFreeShipping = !!(appliedPromoEffect && appliedPromoEffect.type === 'freeShipping');
+  const percentOff = Math.max(autoPercentOff, codePercentOff);
+  const discountAmount = subtotal * percentOff / 100;
+
+  const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD || codeFreeShipping;
   const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
   const shippingCost = freeShipping ? 0 : SHIPPING_RATES[selectedShipping];
 
   document.getElementById('shippingFreeNote').style.display = freeShipping ? 'block' : 'none';
   document.getElementById('cartSubtotal').textContent = formatPrice(subtotal);
+
+  const discountRow = document.getElementById('cartDiscountRow');
+  if (percentOff > 0) {
+    discountRow.style.display = 'flex';
+    document.getElementById('cartDiscountLabel').textContent = `Réduction (-${percentOff}%)`;
+    document.getElementById('cartDiscountAmount').textContent = `-${formatPrice(discountAmount)}`;
+  } else {
+    discountRow.style.display = 'none';
+  }
+
   document.getElementById('cartShippingCost').textContent = shippingCost === 0 ? 'Gratuite' : formatPrice(shippingCost);
-  document.getElementById('cartTotal').textContent = formatPrice(subtotal + shippingCost);
+  document.getElementById('cartTotal').textContent = formatPrice(subtotal - discountAmount + shippingCost);
 }
 
 function updateRelayPickerVisibility() {
@@ -1000,8 +1060,10 @@ function splitPhone(stored) {
   return { country: '+33', local: value };
 }
 
+const FIRST_ORDER_DISCOUNT_PERCENT = 10;
 let customerState = { loggedIn: false };
 let appliedPromoCode = null;
+let appliedPromoEffect = null;
 
 async function refreshCustomerState() {
   try {
@@ -1013,6 +1075,7 @@ async function refreshCustomerState() {
   }
   renderAccountSection();
   applyDeliveryChoice();
+  updateTotals();
 }
 
 function applyDeliveryChoice() {
@@ -1210,18 +1273,42 @@ function renderAccountSection() {
   });
 }
 
-document.getElementById('promoApplyBtn').addEventListener('click', () => {
+document.getElementById('promoApplyBtn').addEventListener('click', async () => {
   const code = document.getElementById('promoCodeInput').value.trim();
   const msg = document.getElementById('promoMessage');
-  appliedPromoCode = code || null;
   msg.style.display = 'block';
-  if (code) {
-    msg.textContent = 'Code enregistré — la réduction sera vérifiée et appliquée au moment du paiement.';
-    msg.className = 'promo-message ok';
-  } else {
+  if (!code) {
+    appliedPromoCode = null;
+    appliedPromoEffect = null;
     msg.textContent = 'Entrez un code avant de cliquer sur Appliquer.';
     msg.className = 'promo-message error';
+    updateTotals();
+    return;
   }
+
+  try {
+    const res = await fetch('/api/promo-preview?code=' + encodeURIComponent(code));
+    const data = await res.json();
+    if (!data.valid) {
+      appliedPromoCode = null;
+      appliedPromoEffect = null;
+      msg.textContent = 'Code promo invalide.';
+      msg.className = 'promo-message error';
+    } else {
+      appliedPromoCode = code;
+      appliedPromoEffect = data;
+      msg.textContent = data.type === 'freeShipping'
+        ? 'Code appliqué : livraison offerte !'
+        : `Code appliqué : -${data.percentOff}% sur le panier.`;
+      msg.className = 'promo-message ok';
+    }
+  } catch (err) {
+    appliedPromoCode = null;
+    appliedPromoEffect = null;
+    msg.textContent = 'Impossible de vérifier ce code pour le moment.';
+    msg.className = 'promo-message error';
+  }
+  updateTotals();
 });
 
 renderCart();
