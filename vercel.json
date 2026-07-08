@@ -8,6 +8,9 @@
     { "source": "/point-de-vente/:path*", "destination": "/contact.html#points-de-vente", "permanent": true },
     { "source": "/la-culture", "destination": "/notre-spiruline.html#recolte", "permanent": true },
     { "source": "/la-culture/", "destination": "/notre-spiruline.html#recolte", "permanent": true },
-    { "source": "/la-culture/:path*", "destination": "/notre-spiruline.html#recolte", "permanent": true }
+    { "source": "/la-culture/:path*", "destination": "/notre-spiruline.html#recolte", "permanent": true },
+    { "source": "/laspiruline", "destination": "/spiruline.html", "permanent": true },
+    { "source": "/laspiruline/", "destination": "/spiruline.html", "permanent": true },
+    { "source": "/laspiruline/:path*", "destination": "/spiruline.html", "permanent": true }
   ]
 }
