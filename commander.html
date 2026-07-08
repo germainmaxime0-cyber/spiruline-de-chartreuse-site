@@ -192,6 +192,9 @@ a{text-decoration:none;}
 .cart-totals{display:flex;justify-content:space-between;font-size:14px;margin-bottom:0.4rem;color:#555;}
 .cart-discount-row{color:#2d5a27;font-weight:700;}
 .cart-total-final{display:flex;justify-content:space-between;font-family:'Playfair Display',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin:0.8rem 0;padding-top:0.8rem;border-top:1px solid #e8e4d9;}
+.cgv-check{display:flex;align-items:flex-start;gap:0.5rem;font-size:12px;color:#555;margin:0.8rem 0;cursor:pointer;}
+.cgv-check input{flex-shrink:0;margin-top:2px;width:auto;}
+.cgv-check a{color:#2d5a27;text-decoration:underline;}
 .checkout-btn{display:block;width:100%;background:#1e4d20;color:white;border:none;padding:15px;border-radius:25px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;}
 .checkout-btn:hover{background:#142e12;}
 .checkout-btn:disabled{background:#ccc;cursor:not-allowed;}
@@ -537,6 +540,10 @@ a{text-decoration:none;}
     </div>
     <p class="pickup-note" id="chequeNote" style="display:none;">Vous recevrez par email l'adresse &agrave; laquelle envoyer votre ch&egrave;que &agrave; l'ordre de GAEC Char'Algue. La commande sera exp&eacute;di&eacute;e/pr&eacute;par&eacute;e &agrave; r&eacute;ception du r&egrave;glement.</p>
     <p class="pickup-note" id="virementNote" style="display:none;">Vous recevrez par email le RIB du GAEC Char'Algue pour effectuer votre virement. La commande sera exp&eacute;di&eacute;e/pr&eacute;par&eacute;e &agrave; r&eacute;ception du r&egrave;glement.</p>
+    <label class="cgv-check">
+      <input type="checkbox" id="cgvCheckbox">
+      <span>J'ai lu et j'accepte les <a href="cgv.html" target="_blank" rel="noopener">Conditions G&eacute;n&eacute;rales de Vente</a></span>
+    </label>
     <button class="checkout-btn" id="checkoutBtn">Passer au paiement &rarr;</button>
     <p class="checkout-note" id="checkoutNote">Paiement s&eacute;curis&eacute; par carte bancaire (Stripe)</p>
     <p class="checkout-error" id="checkoutError">Une erreur est survenue. Merci de r&eacute;essayer ou de nous contacter.</p>
@@ -892,6 +899,12 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
   const btn = this;
   const errorEl = document.getElementById('checkoutError');
   errorEl.style.display = 'none';
+
+  if (!document.getElementById('cgvCheckbox').checked) {
+    errorEl.textContent = 'Merci d\'accepter les Conditions Générales de Vente avant de valider votre commande.';
+    errorEl.style.display = 'block';
+    return;
+  }
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
   const shipping = document.querySelector('input[name="shipping"]:checked').value;
