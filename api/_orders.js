@@ -30,15 +30,16 @@ async function updateOrder(id, patch) {
   return updated;
 }
 
-// Numéro de commande lisible, basé sur la date/heure + suffixe aléatoire pour garantir l'unicité
-// même en cas de deux commandes à la même seconde.
-function generateOrderNumber() {
+// Numéro de commande court : AAMMJJX, où X est le numéro d'ordre de la commande ce jour-là
+// (1 pour la 1ère commande du jour, 2 pour la 2e, etc.). Le compteur repart de zéro chaque jour
+// puisqu'il est stocké sous une clé KV différente par date (ex. order-counter:260708).
+// kv.incr est atomique : même si deux commandes arrivent en même temps, chacune reçoit un numéro distinct.
+async function generateOrderNumber() {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
-  const datePart = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
-  const timePart = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-  const rand = Math.random().toString(36).slice(2, 5).toUpperCase();
-  return `SDC-${datePart}-${timePart}-${rand}`;
+  const datePart = `${String(now.getFullYear()).slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+  const seq = await kv.incr(`order-counter:${datePart}`);
+  return `${datePart}${seq}`;
 }
 
 module.exports = { saveOrder, listOrders, getOrder, updateOrder, generateOrderNumber };

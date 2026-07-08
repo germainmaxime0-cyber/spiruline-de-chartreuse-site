@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
       ? Math.round(totalBeforeDiscount * (1 - promoPercentOff / 100) * 100) / 100
       : totalBeforeDiscount;
 
-    const orderNumber = generateOrderNumber();
+    const orderNumber = await generateOrderNumber();
 
     const order = {
       id: `manual_${orderNumber}`,

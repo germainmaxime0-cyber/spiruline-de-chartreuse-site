@@ -117,7 +117,7 @@ module.exports = async (req, res) => {
       discounts = [{ coupon: coupon.id }];
     }
 
-    const orderNumber = generateOrderNumber();
+    const orderNumber = await generateOrderNumber();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
