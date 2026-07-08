@@ -1,0 +1,7 @@
+{
+  "redirects": [
+    { "source": "/boutique", "destination": "/commander.html", "permanent": true },
+    { "source": "/boutique/", "destination": "/commander.html", "permanent": true },
+    { "source": "/boutique/:path*", "destination": "/commander.html", "permanent": true }
+  ]
+}
