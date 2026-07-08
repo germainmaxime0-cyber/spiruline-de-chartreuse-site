@@ -962,8 +962,14 @@ function combinePhone(countryCode, localValue) {
 }
 
 function isPhoneValid(countryCode, localValue) {
-  const digits = localValue.replace(/\D/g, '');
-  if (countryCode === '+33') return digits.length === 10 && digits.startsWith('0');
+  const trimmed = localValue.trim();
+  const digits = trimmed.replace(/\D/g, '');
+  if (countryCode === '+33') {
+    // Format local (06 12 34 56 78) ou déjà saisi avec l'indicatif (+33 6 12 34 56 78) : les deux sont acceptés.
+    if (digits.length === 10 && digits.startsWith('0')) return true;
+    if (trimmed.startsWith('+33') && digits.length === 11) return true;
+    return false;
+  }
   return digits.length >= 6;
 }
 
