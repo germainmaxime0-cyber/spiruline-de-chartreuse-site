@@ -14,6 +14,8 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { CATALOG } = require('./_catalog');
 const { saveOrder } = require('./_orders');
 const { markCustomerOrdered } = require('./_customers');
+const { sendEmail, businessEmail } = require('./_mailer');
+const { customerRecapHtml, businessRecapHtml } = require('./_order-email');
 
 // Vercel doit nous donner le corps brut (non parsé) pour que la vérification de signature Stripe fonctionne.
 module.exports.config = { api: { bodyParser: false } };
@@ -46,10 +48,20 @@ module.exports = async (req, res) => {
     const session = event.data.object;
     try {
       const fullSession = await stripe.checkout.sessions.retrieve(session.id);
-      await saveOrder(buildOrder(fullSession));
+      const order = buildOrder(fullSession);
+      await saveOrder(order);
       const customerEmail = fullSession.metadata && fullSession.metadata.compte_client;
       if (customerEmail) {
         await markCustomerOrdered(customerEmail);
+      }
+      // L'envoi des emails ne doit jamais faire échouer le webhook : la commande est déjà enregistrée.
+      try {
+        if (order.email) {
+          await sendEmail({ to: order.email, subject: `Confirmation de votre commande n°${order.numeroCommande}`, html: customerRecapHtml(order) });
+        }
+        await sendEmail({ to: businessEmail(), subject: `Nouvelle commande n°${order.numeroCommande}`, html: businessRecapHtml(order) });
+      } catch (emailErr) {
+        console.error('Échec de l\'envoi des emails de récapitulatif de commande', session.id, emailErr);
       }
     } catch (err) {
       // On loggue l'erreur mais on répond quand même 200 : sinon Stripe retentera cet évènement
@@ -67,6 +79,8 @@ function buildOrder(session) {
 
   return {
     id: session.id,
+    numeroCommande: session.metadata && session.metadata.numero_commande,
+    modePaiement: 'carte',
     createdAt: new Date().toISOString(),
     status: 'a_traiter',
     email: address.email || (session.customer_details && session.customer_details.email),

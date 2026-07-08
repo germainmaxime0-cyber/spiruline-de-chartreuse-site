@@ -36,15 +36,19 @@ module.exports = async (req, res) => {
     }
   }
 
+  // Les commandes payées par chèque/virement (id "manual_...") n'ont pas de session Stripe :
+  // rien à rembourser automatiquement, l'éventuel remboursement se fait par le moyen de paiement d'origine.
   let refundError = null;
-  try {
-    const session = await stripe.checkout.sessions.retrieve(order.id);
-    if (session.payment_intent) {
-      await stripe.refunds.create({ payment_intent: session.payment_intent });
+  if (order.modePaiement === 'carte' || !order.modePaiement) {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(order.id);
+      if (session.payment_intent) {
+        await stripe.refunds.create({ payment_intent: session.payment_intent });
+      }
+    } catch (err) {
+      refundError = err.message;
+      console.error('Échec remboursement Stripe pour la commande', order.id, refundError);
     }
-  } catch (err) {
-    refundError = err.message;
-    console.error('Échec remboursement Stripe pour la commande', order.id, refundError);
   }
 
   const updated = await updateOrder(order.id, {

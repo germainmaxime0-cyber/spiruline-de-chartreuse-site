@@ -53,10 +53,18 @@ async function markCustomerOrdered(email) {
   return updated;
 }
 
+async function updateCustomerPassword(email, newPassword) {
+  const customer = await getCustomer(email);
+  if (!customer) return null;
+  const updated = { ...customer, passwordHash: hashPassword(newPassword) };
+  await kv.set(customerKey(email), updated);
+  return updated;
+}
+
 // Version du compte renvoyée au navigateur : jamais le hash du mot de passe.
 function toPublicProfile(customer) {
   const { passwordHash, ...publicProfile } = customer;
   return publicProfile;
 }
 
-module.exports = { getCustomer, createCustomer, verifyPassword, markCustomerOrdered, toPublicProfile };
+module.exports = { getCustomer, createCustomer, verifyPassword, markCustomerOrdered, updateCustomerPassword, toPublicProfile };

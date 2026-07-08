@@ -50,7 +50,7 @@ const CATALOG = {
 };
 
 const FREE_SHIPPING_THRESHOLD = 100;
-const SHIPPING_RATES = { relais: 4.6, domicile: 9.9 };
-const SHIPPING_LABELS = { relais: 'Point relais', domicile: 'Domicile (Colissimo)' };
+const SHIPPING_RATES = { relais: 4.6, domicile: 9.9, retrait: 0 };
+const SHIPPING_LABELS = { relais: 'Point relais', domicile: 'Domicile (Colissimo)', retrait: 'Retrait à la ferme (gratuit)' };
 
 module.exports = { CATALOG, FREE_SHIPPING_THRESHOLD, SHIPPING_RATES, SHIPPING_LABELS };

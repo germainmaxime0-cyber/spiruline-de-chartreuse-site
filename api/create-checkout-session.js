@@ -12,6 +12,7 @@ const { CATALOG, FREE_SHIPPING_THRESHOLD, SHIPPING_RATES, SHIPPING_LABELS } = re
 const { getLoggedInEmail } = require('./_customer-auth');
 const { getCustomer } = require('./_customers');
 const { getPromoCode, FIRST_ORDER_DISCOUNT_PERCENT } = require('./_promo');
+const { generateOrderNumber } = require('./_orders');
 
 const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
 
@@ -54,12 +55,15 @@ module.exports = async (req, res) => {
     // On ne cumule pas les deux réductions : on applique la plus avantageuse des deux.
     const promoPercentOff = Math.max(autoPercentOff, codePercentOff);
 
-    const requiredAddressFields = ['prenom', 'nom', 'email', 'telephone', 'rue', 'codePostal', 'ville', 'pays'];
+    const shippingKey = SHIPPING_RATES.hasOwnProperty(shipping) ? shipping : 'relais';
+
+    const requiredAddressFields = shippingKey === 'retrait'
+      ? ['prenom', 'nom', 'email', 'telephone', 'pays']
+      : ['prenom', 'nom', 'email', 'telephone', 'rue', 'codePostal', 'ville', 'pays'];
     if (!address || requiredAddressFields.some((f) => !address[f])) {
       return res.status(400).json({ error: 'Coordonnées de livraison incomplètes' });
     }
 
-    const shippingKey = SHIPPING_RATES.hasOwnProperty(shipping) ? shipping : 'relais';
     if (shippingKey === 'relais' && !pickupPointCode) {
       return res.status(400).json({ error: 'Point relais manquant' });
     }
@@ -113,6 +117,8 @@ module.exports = async (req, res) => {
       discounts = [{ coupon: coupon.id }];
     }
 
+    const orderNumber = generateOrderNumber();
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -127,6 +133,8 @@ module.exports = async (req, res) => {
       // L'adresse est collectée sur notre propre page (pas via Stripe) pour permettre le choix
       // d'un point relais précis avant paiement.
       metadata: {
+        numero_commande: orderNumber,
+        mode_paiement: 'carte',
         mode_livraison_cle: shippingKey,
         mode_livraison: SHIPPING_LABELS[shippingKey],
         poids_colis: `${(parcelWeightG / 1000).toFixed(2)} kg`,

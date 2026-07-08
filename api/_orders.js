@@ -30,4 +30,15 @@ async function updateOrder(id, patch) {
   return updated;
 }
 
-module.exports = { saveOrder, listOrders, getOrder, updateOrder };
+// Numéro de commande lisible, basé sur la date/heure + suffixe aléatoire pour garantir l'unicité
+// même en cas de deux commandes à la même seconde.
+function generateOrderNumber() {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const datePart = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+  const timePart = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+  const rand = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `SDC-${datePart}-${timePart}-${rand}`;
+}
+
+module.exports = { saveOrder, listOrders, getOrder, updateOrder, generateOrderNumber };

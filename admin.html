@@ -23,8 +23,12 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d5a27;margin-bott
 .status-envoye{background:#e6f4e6;color:#2d5a27;}
 .status-erreur{background:#fbe2e2;color:#b23b3b;}
 .status-annulee{background:#e5e5e5;color:#666;}
+.status-en_attente_paiement{background:#e3ecf7;color:#2454a0;}
+.order-number{font-size:12px;color:#888;font-weight:400;margin-left:0.5rem;}
 .cancel-btn{background:none;border:1px solid #b23b3b;color:#b23b3b;padding:7px 15px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;margin-left:0.5rem;}
 .cancel-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.paid-btn{background:#2454a0;color:white;border:none;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;margin-left:0.5rem;}
+.paid-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .order-detail{font-size:13px;color:#555;line-height:1.7;}
 .order-content{font-size:13px;color:#333;margin-top:0.4rem;}
 .order-actions{margin-top:0.8rem;}
@@ -73,7 +77,8 @@ async function login() {
   }
 }
 
-const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Envoyé à Boxtal', erreur: 'Erreur', annulee: 'Annulée' };
+const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Envoyé à Boxtal', erreur: 'Erreur', annulee: 'Annulée', en_attente_paiement: 'En attente de paiement' };
+const PAYMENT_LABELS = { carte: 'Carte bancaire', cheque: 'Chèque', virement: 'Virement' };
 
 async function loadOrders() {
   const res = await fetch('/api/admin-orders');
@@ -95,25 +100,28 @@ function renderOrders(orders) {
 
   list.innerHTML = orders.map((o) => {
     const contenu = (o.contenu || []).map((c) => `${c.quantite}× ${c.description}`).join(', ');
-    const canSend = o.status === 'a_traiter' || o.status === 'erreur';
+    const canSend = (o.status === 'a_traiter' || o.status === 'erreur') && o.modeLivraisonCle !== 'retrait';
     const canCancel = o.status !== 'annulee';
+    const canMarkPaid = o.status === 'en_attente_paiement';
     const errorMsg = o.status === 'erreur' && o.boxtal && o.boxtal.error ? `<p class="order-error">${escapeHtml(o.boxtal.error)}</p>` : '';
     const refundErrorMsg = o.refundError ? `<p class="order-error">Remboursement Stripe échoué : ${escapeHtml(o.refundError)}</p>` : '';
     return `
       <div class="order-card" data-order-id="${o.id}">
         <div class="order-top">
-          <span class="order-name">${escapeHtml(o.prenom || '')} ${escapeHtml(o.nom || '')}</span>
+          <span class="order-name">${escapeHtml(o.prenom || '')} ${escapeHtml(o.nom || '')}${o.numeroCommande ? `<span class="order-number">n°${escapeHtml(o.numeroCommande)}</span>` : ''}</span>
           <span class="order-status status-${o.status}">${STATUS_LABELS[o.status] || o.status}</span>
         </div>
         <div class="order-detail">
           ${escapeHtml(o.adresse?.rue || '')}, ${escapeHtml(o.adresse?.codePostal || '')} ${escapeHtml(o.adresse?.ville || '')}<br>
           ${escapeHtml(o.telephone || '')} — ${escapeHtml(o.email || '')}<br>
-          ${escapeHtml(o.modeLivraison || '')}${o.pointRelaisCode ? ' (point ' + escapeHtml(o.pointRelaisCode) + ')' : ''} — ${o.poidsColisKg ? o.poidsColisKg.toFixed(2) + ' kg' : ''}
+          ${escapeHtml(o.modeLivraison || '')}${o.pointRelaisCode ? ' (point ' + escapeHtml(o.pointRelaisCode) + ')' : ''} — ${o.poidsColisKg ? o.poidsColisKg.toFixed(2) + ' kg' : ''}<br>
+          Paiement : ${escapeHtml(PAYMENT_LABELS[o.modePaiement] || o.modePaiement || 'Carte bancaire')}
         </div>
         <div class="order-content">${escapeHtml(contenu)}</div>
         ${errorMsg}
         ${refundErrorMsg}
         <div class="order-actions">
+          ${canMarkPaid ? `<button class="paid-btn" data-paid="${o.id}">Marquer comme payée</button>` : ''}
           ${canSend ? `<button class="send-btn" data-send="${o.id}">${o.status === 'erreur' ? 'Réessayer' : 'Envoyer vers Boxtal'}</button>` : ''}
           ${canCancel ? `<button class="cancel-btn" data-cancel="${o.id}">Annuler la commande</button>` : ''}
         </div>
@@ -126,6 +134,32 @@ function renderOrders(orders) {
   list.querySelectorAll('[data-cancel]').forEach((btn) => {
     btn.addEventListener('click', () => cancelOrder(btn.getAttribute('data-cancel'), btn));
   });
+  list.querySelectorAll('[data-paid]').forEach((btn) => {
+    btn.addEventListener('click', () => markPaid(btn.getAttribute('data-paid'), btn));
+  });
+}
+
+async function markPaid(orderId, btn) {
+  if (!confirm('Confirmer la réception du règlement (chèque encaissé ou virement reçu) pour cette commande ?')) {
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Validation...';
+  try {
+    const res = await fetch('/api/admin-mark-paid', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Échec de la mise à jour.');
+    }
+  } catch (err) {
+    alert('Échec de la mise à jour (erreur réseau).');
+  } finally {
+    loadOrders();
+  }
 }
 
 async function cancelOrder(orderId, btn) {

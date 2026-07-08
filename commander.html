@@ -123,6 +123,8 @@ a{text-decoration:none;}
 .account-section{padding:1rem 1.5rem;background:#F0EBE0;border-bottom:1px solid #e8e4d9;font-size:13px;}
 .account-toggle{background:none;border:none;color:#2d5a27;font-weight:700;font-size:13px;cursor:pointer;padding:0;text-decoration:underline;}
 .account-forms{margin-top:0.8rem;display:flex;flex-direction:column;gap:0.6rem;}
+#forgotPasswordForm{flex-direction:column;gap:0.5rem;margin-top:0.5rem;}
+#forgotPasswordToggle{margin-top:0.4rem;font-size:11px;}
 .account-tabs{display:flex;gap:0.5rem;margin-bottom:0.2rem;}
 .account-tab{background:none;border:none;font-size:12px;font-weight:700;color:#999;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent;}
 .account-tab.active{color:#2d5a27;border-bottom-color:#2d5a27;}
@@ -153,6 +155,9 @@ a{text-decoration:none;}
 .address-form input{padding:9px 10px;border-radius:8px;border:1px solid #e0d8cc;font-family:'Lato',sans-serif;font-size:13px;color:#2d2d2d;width:100%;}
 .address-row{display:flex;gap:0.5rem;}
 .address-row input{flex:1;min-width:0;}
+#streetAddressFields{display:flex;flex-direction:column;gap:0.5rem;}
+.pickup-note{font-size:12px;color:#2d5a27;background:#eef3ea;border-radius:8px;padding:8px 10px;margin:-0.2rem 0 0.3rem;}
+.manual-order-success{font-size:13px;color:#2d5a27;background:#eef3ea;border-radius:8px;padding:12px;margin-top:0.6rem;line-height:1.5;}
 .relay-point-picker{display:flex;flex-direction:column;gap:0.4rem;}
 .search-relay-btn{padding:9px 10px;border-radius:8px;border:1px solid #2d5a27;background:white;color:#2d5a27;font-size:12px;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;}
 .search-relay-btn:hover{background:#eef4ec;}
@@ -443,7 +448,9 @@ a{text-decoration:none;}
     <div class="shipping-options" id="shippingOptions">
       <label class="shipping-option"><input type="radio" name="shipping" value="relais" checked><span>Point relais</span><strong>4,60&nbsp;&euro;</strong></label>
       <label class="shipping-option"><input type="radio" name="shipping" value="domicile"><span>Domicile (Colissimo)</span><strong>9,90&nbsp;&euro;</strong></label>
+      <label class="shipping-option"><input type="radio" name="shipping" value="retrait"><span>Retrait &agrave; la ferme</span><strong>Gratuit</strong></label>
     </div>
+    <p class="pickup-note" id="pickupNote" style="display:none;">Retrait au GAEC Char'Algue, 458 Rue de la Grande Terre, 38660 Le Touvet &mdash; mercredi de 16h &agrave; 18h30 et samedi de 9h30 &agrave; 12h30.</p>
     <div class="address-form" id="addressForm">
       <p class="address-form-title">Vos coordonn&eacute;es de livraison</p>
       <div class="address-row">
@@ -452,10 +459,12 @@ a{text-decoration:none;}
       </div>
       <input type="email" id="addrEmail" placeholder="Email" autocomplete="email">
       <input type="tel" id="addrTel" placeholder="T&eacute;l&eacute;phone" autocomplete="tel">
-      <input type="text" id="addrRue" placeholder="Adresse (num&eacute;ro et rue)" autocomplete="street-address">
-      <div class="address-row">
-        <input type="text" id="addrCp" placeholder="Code postal" autocomplete="postal-code">
-        <input type="text" id="addrVille" placeholder="Ville" autocomplete="address-level2">
+      <div id="streetAddressFields">
+        <input type="text" id="addrRue" placeholder="Adresse (num&eacute;ro et rue)" autocomplete="street-address">
+        <div class="address-row">
+          <input type="text" id="addrCp" placeholder="Code postal" autocomplete="postal-code">
+          <input type="text" id="addrVille" placeholder="Ville" autocomplete="address-level2">
+        </div>
       </div>
       <div class="relay-point-picker" id="relayPointPicker">
         <button type="button" class="search-relay-btn" id="searchRelayBtn">Chercher un point relais</button>
@@ -472,9 +481,18 @@ a{text-decoration:none;}
     <div class="cart-totals"><span>Sous-total</span><span id="cartSubtotal">0&nbsp;&euro;</span></div>
     <div class="cart-totals"><span>Livraison</span><span id="cartShippingCost">0&nbsp;&euro;</span></div>
     <div class="cart-total-final"><span>Total</span><span id="cartTotal">0&nbsp;&euro;</span></div>
+    <p class="address-form-title">Mode de paiement</p>
+    <div class="shipping-options" id="paymentOptions">
+      <label class="shipping-option"><input type="radio" name="payment" value="carte" checked><span>Carte bancaire</span></label>
+      <label class="shipping-option"><input type="radio" name="payment" value="cheque"><span>Ch&egrave;que</span></label>
+      <label class="shipping-option"><input type="radio" name="payment" value="virement"><span>Virement</span></label>
+    </div>
+    <p class="pickup-note" id="chequeNote" style="display:none;">Vous recevrez par email l'adresse &agrave; laquelle envoyer votre ch&egrave;que &agrave; l'ordre de GAEC Char'Algue. La commande sera exp&eacute;di&eacute;e/pr&eacute;par&eacute;e &agrave; r&eacute;ception du r&egrave;glement.</p>
+    <p class="pickup-note" id="virementNote" style="display:none;">Vous recevrez par email le RIB du GAEC Char'Algue pour effectuer votre virement. La commande sera exp&eacute;di&eacute;e/pr&eacute;par&eacute;e &agrave; r&eacute;ception du r&egrave;glement.</p>
     <button class="checkout-btn" id="checkoutBtn">Passer au paiement &rarr;</button>
-    <p class="checkout-note">Paiement s&eacute;curis&eacute; par carte bancaire (Stripe)</p>
+    <p class="checkout-note" id="checkoutNote">Paiement s&eacute;curis&eacute; par carte bancaire (Stripe)</p>
     <p class="checkout-error" id="checkoutError">Une erreur est survenue. Merci de r&eacute;essayer ou de nous contacter.</p>
+    <div class="manual-order-success" id="manualOrderSuccess" style="display:none;"></div>
   </div>
 </div>
 
@@ -553,7 +571,7 @@ const CATALOG = {
 };
 
 const FREE_SHIPPING_THRESHOLD = 100;
-const SHIPPING_RATES = { relais: 4.6, domicile: 9.9 };
+const SHIPPING_RATES = { relais: 4.6, domicile: 9.9, retrait: 0 };
 
 function formatPrice(n) {
   return n.toLocaleString('fr-FR', {minimumFractionDigits: n % 1 === 0 ? 0 : 2, maximumFractionDigits: 2}) + ' €';
@@ -654,7 +672,6 @@ function updateTotals() {
   const shippingCost = freeShipping ? 0 : SHIPPING_RATES[selectedShipping];
 
   document.getElementById('shippingFreeNote').style.display = freeShipping ? 'block' : 'none';
-  document.getElementById('shippingOptions').style.display = freeShipping ? 'none' : 'flex';
   document.getElementById('cartSubtotal').textContent = formatPrice(subtotal);
   document.getElementById('cartShippingCost').textContent = shippingCost === 0 ? 'Gratuite' : formatPrice(shippingCost);
   document.getElementById('cartTotal').textContent = formatPrice(subtotal + shippingCost);
@@ -663,6 +680,8 @@ function updateTotals() {
 function updateRelayPickerVisibility() {
   const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
   document.getElementById('relayPointPicker').style.display = selectedShipping === 'relais' ? 'flex' : 'none';
+  document.getElementById('streetAddressFields').style.display = selectedShipping === 'retrait' ? 'none' : 'block';
+  document.getElementById('pickupNote').style.display = selectedShipping === 'retrait' ? 'block' : 'none';
 }
 
 document.querySelectorAll('input[name="shipping"]').forEach(r => r.addEventListener('change', () => {
@@ -755,11 +774,24 @@ document.getElementById('cartToggle').addEventListener('click', openCart);
 document.getElementById('cartClose').addEventListener('click', closeCart);
 cartOverlay.addEventListener('click', closeCart);
 
+function updatePaymentNotes() {
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+  document.getElementById('chequeNote').style.display = paymentMethod === 'cheque' ? 'block' : 'none';
+  document.getElementById('virementNote').style.display = paymentMethod === 'virement' ? 'block' : 'none';
+  document.getElementById('checkoutNote').textContent = paymentMethod === 'carte'
+    ? 'Paiement sécurisé par carte bancaire (Stripe)'
+    : 'Votre commande est enregistrée dès validation ; le règlement suit par ' + (paymentMethod === 'cheque' ? 'chèque' : 'virement') + '.';
+  document.getElementById('checkoutBtn').textContent = paymentMethod === 'carte' ? 'Passer au paiement →' : 'Valider la commande →';
+}
+document.querySelectorAll('input[name="payment"]').forEach(r => r.addEventListener('change', updatePaymentNotes));
+updatePaymentNotes();
+
 document.getElementById('checkoutBtn').addEventListener('click', async function() {
   const btn = this;
   const errorEl = document.getElementById('checkoutError');
   errorEl.style.display = 'none';
 
+  const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
   const shipping = document.querySelector('input[name="shipping"]:checked').value;
   const address = {
     prenom: document.getElementById('addrPrenom').value.trim(),
@@ -772,8 +804,11 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
     pays: 'FR'
   };
 
-  if (Object.values(address).some(v => v === '' )) {
-    errorEl.textContent = 'Merci de renseigner toutes vos coordonnées de livraison.';
+  const requiredFields = shipping === 'retrait'
+    ? ['prenom', 'nom', 'email', 'telephone']
+    : ['prenom', 'nom', 'email', 'telephone', 'rue', 'codePostal', 'ville'];
+  if (requiredFields.some(f => address[f] === '')) {
+    errorEl.textContent = 'Merci de renseigner toutes vos coordonnées.';
     errorEl.style.display = 'block';
     return;
   }
@@ -796,24 +831,56 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
   }
 
   btn.disabled = true;
-  btn.textContent = 'Redirection...';
+
+  if (paymentMethod === 'carte') {
+    btn.textContent = 'Redirection...';
+    try {
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Pas d\'URL de paiement retournée');
+      }
+    } catch (err) {
+      errorEl.textContent = err.message || 'Une erreur est survenue. Merci de réessayer ou de nous contacter.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Passer au paiement →';
+    }
+    return;
+  }
+
+  btn.textContent = 'Validation...';
   try {
-    const res = await fetch('/api/create-checkout-session', {
+    const res = await fetch('/api/create-manual-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode })
+      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode, paymentMethod })
     });
     const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      throw new Error(data.error || 'Pas d\'URL de paiement retournée');
-    }
+    if (!res.ok) throw new Error(data.error || 'Échec de la validation de la commande');
+
+    const instructions = paymentMethod === 'cheque'
+      ? "Envoyez votre chèque à l'ordre de GAEC Char'Algue, 458 Rue de la Grande Terre, 38660 Le Touvet."
+      : 'Le RIB du GAEC Char\'Algue vous a été envoyé par email pour effectuer votre virement.';
+    document.getElementById('manualOrderSuccess').innerHTML =
+      `<strong>Commande n°${data.numeroCommande} enregistrée !</strong><br>${instructions}<br>Un email récapitulatif vient de vous être envoyé.`;
+    document.getElementById('manualOrderSuccess').style.display = 'block';
+    document.querySelectorAll('.address-form, .promo-row, .promo-message, .cart-totals, .cart-total-final, #paymentOptions, #checkoutBtn, #checkoutNote, .shipping-options, .pickup-note').forEach(el => el.style.display = 'none');
+    document.getElementById('cartItems').innerHTML = '';
+    document.getElementById('cartCount').textContent = '0';
+    cart = [];
+    saveCart(cart);
   } catch (err) {
     errorEl.textContent = err.message || 'Une erreur est survenue. Merci de réessayer ou de nous contacter.';
     errorEl.style.display = 'block';
     btn.disabled = false;
-    btn.textContent = 'Passer au paiement →';
+    btn.textContent = 'Valider la commande →';
   }
 });
 
@@ -898,6 +965,12 @@ function renderAccountSection() {
         <input type="password" id="loginPassword" name="password" autocomplete="current-password" placeholder="Mot de passe">
         <button type="button" class="account-submit-btn" id="loginSubmitBtn">Se connecter</button>
         <p class="account-error" id="loginError" style="display:none;"></p>
+        <button type="button" class="account-toggle" id="forgotPasswordToggle">Mot de passe oublié ?</button>
+        <div id="forgotPasswordForm" style="display:none;">
+          <input type="email" id="forgotEmail" autocomplete="email" placeholder="Votre email">
+          <button type="button" class="account-submit-btn" id="forgotSubmitBtn">Recevoir un lien de réinitialisation</button>
+          <p class="account-error" id="forgotMessage" style="display:none;"></p>
+        </div>
       </div>
       <div id="signupPane" style="display:none;">
         <input type="email" id="signupEmail" name="email" autocomplete="email" placeholder="Email">
@@ -942,6 +1015,29 @@ function renderAccountSection() {
     } catch (err) {
       errorEl.textContent = err.message;
       errorEl.style.display = 'block';
+    }
+  });
+
+  document.getElementById('forgotPasswordToggle').addEventListener('click', () => {
+    const form = document.getElementById('forgotPasswordForm');
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  });
+
+  document.getElementById('forgotSubmitBtn').addEventListener('click', async () => {
+    const email = document.getElementById('forgotEmail').value.trim();
+    const msgEl = document.getElementById('forgotMessage');
+    msgEl.style.display = 'none';
+    if (!email) return;
+    try {
+      const res = await fetch('/api/customer-forgot-password', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      msgEl.textContent = data.message || 'Si un compte existe avec cet email, un lien vient de lui être envoyé.';
+      msgEl.style.display = 'block';
+    } catch (err) {
+      msgEl.textContent = 'Erreur réseau, merci de réessayer.';
+      msgEl.style.display = 'block';
     }
   });
 
