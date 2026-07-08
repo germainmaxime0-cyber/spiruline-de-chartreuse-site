@@ -5,6 +5,9 @@
     { "source": "/boutique/:path*", "destination": "/commander.html", "permanent": true },
     { "source": "/point-de-vente", "destination": "/contact.html#points-de-vente", "permanent": true },
     { "source": "/point-de-vente/", "destination": "/contact.html#points-de-vente", "permanent": true },
-    { "source": "/point-de-vente/:path*", "destination": "/contact.html#points-de-vente", "permanent": true }
+    { "source": "/point-de-vente/:path*", "destination": "/contact.html#points-de-vente", "permanent": true },
+    { "source": "/la-culture", "destination": "/notre-spiruline.html#recolte", "permanent": true },
+    { "source": "/la-culture/", "destination": "/notre-spiruline.html#recolte", "permanent": true },
+    { "source": "/la-culture/:path*", "destination": "/notre-spiruline.html#recolte", "permanent": true }
   ]
 }
