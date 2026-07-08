@@ -11,6 +11,9 @@
     { "source": "/la-culture/:path*", "destination": "/notre-spiruline.html#recolte", "permanent": true },
     { "source": "/laspiruline", "destination": "/spiruline.html", "permanent": true },
     { "source": "/laspiruline/", "destination": "/spiruline.html", "permanent": true },
-    { "source": "/laspiruline/:path*", "destination": "/spiruline.html", "permanent": true }
+    { "source": "/laspiruline/:path*", "destination": "/spiruline.html", "permanent": true },
+    { "source": "/comment-la-consommer", "destination": "/spiruline.html#mode-emploi", "permanent": true },
+    { "source": "/comment-la-consommer/", "destination": "/spiruline.html#mode-emploi", "permanent": true },
+    { "source": "/comment-la-consommer/:path*", "destination": "/spiruline.html#mode-emploi", "permanent": true }
   ]
 }
