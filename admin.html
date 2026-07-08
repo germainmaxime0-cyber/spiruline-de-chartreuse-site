@@ -29,7 +29,7 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d5a27;margin-bott
 .status-erreur{background:#fbe2e2;color:#b23b3b;}
 .status-annulee{background:#e5e5e5;color:#666;}
 .status-en_attente_paiement{background:#e3ecf7;color:#2454a0;}
-.order-number{font-size:12px;color:#888;font-weight:400;margin-left:0.5rem;}
+.order-number{font-size:15px;color:#2454a0;font-weight:700;margin-left:0.6rem;font-family:'Playfair Display',serif;}
 .cancel-btn{background:none;border:1px solid #b23b3b;color:#b23b3b;padding:7px 15px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;margin-left:0.5rem;}
 .cancel-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .paid-btn{background:#2454a0;color:white;border:none;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;margin-left:0.5rem;}
@@ -58,6 +58,7 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d5a27;margin-bott
 .period-tabs{display:flex;gap:0.4rem;margin-bottom:1rem;}
 .period-tab{background:#F0EBE0;border:none;color:#555;padding:6px 14px;border-radius:14px;font-size:12px;font-weight:700;cursor:pointer;}
 .period-tab.active{background:#2d5a27;color:white;}
+.compare-years-check{display:flex;align-items:center;gap:0.4rem;font-size:12px;color:#555;margin-bottom:0.8rem;cursor:pointer;}
 .top-products-table{width:100%;border-collapse:collapse;font-size:13px;}
 .top-products-table th{text-align:left;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:0.03em;padding-bottom:0.5rem;border-bottom:1px solid #eee;}
 .top-products-table td{padding:0.5rem 0;border-bottom:1px solid #f5f5f5;}
@@ -103,6 +104,10 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#2d5a27;margin-bott
           <button class="period-tab active" data-period="month">Mois</button>
           <button class="period-tab" data-period="year">Année</button>
         </div>
+        <label class="compare-years-check" id="compareYearsRow">
+          <input type="checkbox" id="compareYearsCheckbox">
+          <span>Comparer avec les ann&eacute;es pr&eacute;c&eacute;dentes</span>
+        </label>
         <canvas id="evolutionChart" height="90"></canvas>
       </div>
       <div class="stats-panel">
@@ -358,8 +363,73 @@ let currentPeriod = 'month';
 let evolutionChartInstance = null;
 let categoryChartInstance = null;
 
+const YEAR_COLORS = ['#2d5a27', '#7a9e76', '#2454a0', '#c9a86a', '#a0785a'];
+
+// Regroupe par sous-période (mois de l'année, ou n° de semaine) ET par année, pour pouvoir
+// tracer une ligne par année sur le même axe (ex. comparer juillet 2026 à juillet 2025).
+function groupByYearAndSubPeriod(dailySeries, period) {
+  const byYear = new Map();
+  for (const day of dailySeries) {
+    const date = new Date(day.date + 'T00:00:00');
+    const year = date.getFullYear();
+    const subKey = period === 'week' ? getISOWeek(date).week : date.getMonth();
+
+    if (!byYear.has(year)) byYear.set(year, new Map());
+    const yearMap = byYear.get(year);
+    const bucket = yearMap.get(subKey) || { subKey, revenue: 0, orders: 0 };
+    bucket.revenue += day.revenue;
+    bucket.orders += day.orders;
+    yearMap.set(subKey, bucket);
+  }
+  return byYear;
+}
+
+function renderEvolutionChartCompare(period) {
+  const byYear = groupByYearAndSubPeriod(statsData.dailySeries, period);
+  const years = Array.from(byYear.keys()).sort((a, b) => a - b);
+
+  const allSubKeys = new Set();
+  years.forEach((y) => byYear.get(y).forEach((_, k) => allSubKeys.add(k)));
+  const sortedSubKeys = Array.from(allSubKeys).sort((a, b) => a - b);
+  const labelFor = (k) => (period === 'week' ? `S${k}` : MONTH_LABELS[k]);
+
+  const datasets = years.map((year, idx) => {
+    const yearMap = byYear.get(year);
+    return {
+      type: 'line',
+      label: String(year),
+      data: sortedSubKeys.map((k) => {
+        const bucket = yearMap.get(k);
+        return bucket ? Math.round(bucket.revenue * 100) / 100 : null;
+      }),
+      borderColor: YEAR_COLORS[idx % YEAR_COLORS.length],
+      backgroundColor: YEAR_COLORS[idx % YEAR_COLORS.length],
+      spanGaps: true,
+      tension: 0.3,
+    };
+  });
+
+  const ctx = document.getElementById('evolutionChart');
+  if (evolutionChartInstance) evolutionChartInstance.destroy();
+  evolutionChartInstance = new Chart(ctx, {
+    data: { labels: sortedSubKeys.map(labelFor), datasets },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true, title: { display: true, text: 'CA (€)' } } },
+    },
+  });
+}
+
 function renderEvolutionChart(period) {
   if (!statsData) return;
+
+  const compareCheckbox = document.getElementById('compareYearsCheckbox');
+  document.getElementById('compareYearsRow').style.display = period === 'year' ? 'none' : 'flex';
+  if (period !== 'year' && compareCheckbox.checked) {
+    renderEvolutionChartCompare(period);
+    return;
+  }
+
   const buckets = aggregateByPeriod(statsData.dailySeries, period);
   const ctx = document.getElementById('evolutionChart');
   if (evolutionChartInstance) evolutionChartInstance.destroy();
@@ -424,6 +494,9 @@ document.querySelectorAll('.period-tab').forEach((btn) => {
     currentPeriod = btn.getAttribute('data-period');
     renderEvolutionChart(currentPeriod);
   });
+});
+document.getElementById('compareYearsCheckbox').addEventListener('change', () => {
+  renderEvolutionChart(currentPeriod);
 });
 </script>
 </body>

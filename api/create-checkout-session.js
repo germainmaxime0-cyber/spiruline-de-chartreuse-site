@@ -12,7 +12,6 @@ const { CATALOG, FREE_SHIPPING_THRESHOLD, SHIPPING_RATES, SHIPPING_LABELS } = re
 const { getLoggedInEmail } = require('./_customer-auth');
 const { getCustomer } = require('./_customers');
 const { getPromoCode, FIRST_ORDER_DISCOUNT_PERCENT } = require('./_promo');
-const { generateOrderNumber } = require('./_orders');
 
 const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
 
@@ -124,8 +123,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    const orderNumber = await generateOrderNumber();
-
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
@@ -138,8 +135,10 @@ module.exports = async (req, res) => {
       // et visibles aussi directement sur la page du paiement dans le Dashboard Stripe en secours.
       // L'adresse est collectée sur notre propre page (pas via Stripe) pour permettre le choix
       // d'un point relais précis avant paiement.
+      // Le numéro de commande n'est PAS généré ici : une session Stripe créée mais abandonnée
+      // (client qui ferme l'onglet, carte refusée...) ne doit pas consommer de numéro. Il est
+      // généré uniquement dans stripe-webhook.js, au moment où le paiement est réellement confirmé.
       metadata: {
-        numero_commande: orderNumber,
         mode_paiement: 'carte',
         mode_livraison_cle: shippingKey,
         mode_livraison: SHIPPING_LABELS[shippingKey],

@@ -12,7 +12,7 @@
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { CATALOG } = require('./_catalog');
-const { saveOrder } = require('./_orders');
+const { saveOrder, generateOrderNumber } = require('./_orders');
 const { markCustomerOrdered } = require('./_customers');
 const { sendEmail, businessEmail } = require('./_mailer');
 const { customerRecapHtml, businessRecapHtml } = require('./_order-email');
@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
     const session = event.data.object;
     try {
       const fullSession = await stripe.checkout.sessions.retrieve(session.id);
-      const order = buildOrder(fullSession);
+      const order = await buildOrder(fullSession);
       await saveOrder(order);
       const customerEmail = fullSession.metadata && fullSession.metadata.compte_client;
       if (customerEmail) {
@@ -73,13 +73,17 @@ module.exports = async (req, res) => {
   return res.status(200).json({ received: true });
 };
 
-function buildOrder(session) {
+// Le numéro de commande n'est généré qu'ici, une fois le paiement confirmé par Stripe — jamais à
+// la création de la session, sinon un panier abandonné ou une carte refusée "consommerait" un
+// numéro pour rien, créant des trous dans la numérotation quotidienne.
+async function buildOrder(session) {
   const address = session.metadata && session.metadata.adresse ? JSON.parse(session.metadata.adresse) : {};
   const cart = session.metadata && session.metadata.panier ? JSON.parse(session.metadata.panier) : [];
+  const numeroCommande = await generateOrderNumber();
 
   return {
     id: session.id,
-    numeroCommande: session.metadata && session.metadata.numero_commande,
+    numeroCommande,
     modePaiement: 'carte',
     createdAt: new Date().toISOString(),
     status: 'a_traiter',
