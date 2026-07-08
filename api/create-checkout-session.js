@@ -43,16 +43,23 @@ module.exports = async (req, res) => {
     }
 
     // Code promo manuel (ex. codes partenaires) : valable à chaque commande, pour tout le monde.
+    // Deux types possibles : réduction en % sur le panier (jamais sur la livraison), ou livraison offerte.
     let codePercentOff = 0;
+    let codeFreeShipping = false;
     if (promoCode) {
       const promo = getPromoCode(promoCode);
       if (!promo) {
         return res.status(400).json({ error: 'Code promo invalide' });
       }
-      codePercentOff = promo.percentOff;
+      if (promo.type === 'percent') {
+        codePercentOff = promo.percentOff;
+      } else if (promo.type === 'freeShipping') {
+        codeFreeShipping = true;
+      }
     }
 
-    // On ne cumule pas les deux réductions : on applique la plus avantageuse des deux.
+    // On ne cumule pas deux réductions en % : on applique la plus avantageuse des deux (auto vs code).
+    // La livraison offerte par code s'ajoute en plus, puisqu'elle porte sur un montant différent (le port, pas le panier).
     const promoPercentOff = Math.max(autoPercentOff, codePercentOff);
 
     const shippingKey = SHIPPING_RATES.hasOwnProperty(shipping) ? shipping : 'relais';
@@ -87,18 +94,24 @@ module.exports = async (req, res) => {
       parcelWeightG += variant.weightG * quantity;
       netWeightG += variant.netG * quantity;
 
+      // La réduction en % (auto première commande ou code) s'applique ici, sur le prix produit,
+      // jamais sur la livraison : on l'applique directement sur le prix unitaire plutôt que via un
+      // coupon Stripe global, qui aurait aussi réduit la ligne de livraison.
+      const discountedUnitPrice = promoPercentOff ? variant.price * (1 - promoPercentOff / 100) : variant.price;
+
       line_items.push({
         price_data: {
           currency: 'eur',
           product_data: { name: `${product.name} — ${variant.weight}` },
-          unit_amount: Math.round(variant.price * 100),
+          unit_amount: Math.round(discountedUnitPrice * 100),
         },
         quantity,
       });
     }
 
-    // Frais de port : gratuits à partir du seuil, sinon tarif selon le mode choisi
-    const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_RATES[shippingKey];
+    // Frais de port : gratuits à partir du seuil (calculé sur le panier avant réduction) ou avec un
+    // code "livraison offerte", sinon tarif selon le mode choisi.
+    const shippingCost = (subtotal >= FREE_SHIPPING_THRESHOLD || codeFreeShipping) ? 0 : SHIPPING_RATES[shippingKey];
 
     if (shippingCost > 0) {
       line_items.push({
@@ -111,19 +124,12 @@ module.exports = async (req, res) => {
       });
     }
 
-    let discounts;
-    if (promoPercentOff) {
-      const coupon = await stripe.coupons.create({ percent_off: promoPercentOff, duration: 'once' });
-      discounts = [{ coupon: coupon.id }];
-    }
-
     const orderNumber = await generateOrderNumber();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
-      ...(discounts ? { discounts } : {}),
       customer_email: address.email,
       success_url: `${SITE_URL}/commander.html?paiement=succes`,
       cancel_url: `${SITE_URL}/commander.html?paiement=annule`,

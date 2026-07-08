@@ -41,12 +41,17 @@ module.exports = async (req, res) => {
     }
 
     let codePercentOff = 0;
+    let codeFreeShipping = false;
     if (promoCode) {
       const promo = getPromoCode(promoCode);
       if (!promo) {
         return res.status(400).json({ error: 'Code promo invalide' });
       }
-      codePercentOff = promo.percentOff;
+      if (promo.type === 'percent') {
+        codePercentOff = promo.percentOff;
+      } else if (promo.type === 'freeShipping') {
+        codeFreeShipping = true;
+      }
     }
 
     const promoPercentOff = Math.max(autoPercentOff, codePercentOff);
@@ -84,11 +89,13 @@ module.exports = async (req, res) => {
       contenu.push({ description: `${product.name} — ${variant.weight}`, quantite: quantity });
     }
 
-    const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_RATES[shippingKey];
-    const totalBeforeDiscount = subtotal + shippingCost;
-    const montantTotalEur = promoPercentOff
-      ? Math.round(totalBeforeDiscount * (1 - promoPercentOff / 100) * 100) / 100
-      : totalBeforeDiscount;
+    // Réduction en % appliquée uniquement sur le panier (jamais sur la livraison) ; seuil de livraison
+    // gratuite calculé sur le panier avant réduction, comme pour le paiement par carte.
+    const shippingCost = (subtotal >= FREE_SHIPPING_THRESHOLD || codeFreeShipping) ? 0 : SHIPPING_RATES[shippingKey];
+    const discountedSubtotal = promoPercentOff
+      ? Math.round(subtotal * (1 - promoPercentOff / 100) * 100) / 100
+      : subtotal;
+    const montantTotalEur = discountedSubtotal + shippingCost;
 
     const orderNumber = await generateOrderNumber();
 
