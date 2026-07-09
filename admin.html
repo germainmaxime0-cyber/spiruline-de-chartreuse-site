@@ -165,6 +165,8 @@ async function login() {
     adminApp.style.display = 'block';
     loadOrders();
   } else {
+    const data = await res.json().catch(() => null);
+    loginError.textContent = (data && data.error) || 'Mot de passe incorrect.';
     loginError.style.display = 'block';
   }
 }

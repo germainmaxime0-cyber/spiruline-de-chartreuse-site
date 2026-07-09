@@ -1274,7 +1274,7 @@ function renderAccountSection() {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email })
       });
       const data = await res.json();
-      msgEl.textContent = data.message || 'Si un compte existe avec cet email, un lien vient de lui être envoyé.';
+      msgEl.textContent = data.message || data.error || 'Si un compte existe avec cet email, un lien vient de lui être envoyé.';
       msgEl.style.display = 'block';
     } catch (err) {
       msgEl.textContent = 'Erreur réseau, merci de réessayer.';

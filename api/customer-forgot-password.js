@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const { kv } = require('@vercel/kv');
 const { getCustomer } = require('./_customers');
 const { sendEmail } = require('./_mailer');
+const { checkRateLimit } = require('./_rate-limit');
 
 const RESET_TOKEN_TTL_SECONDS = 60 * 60; // 1h
 const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
@@ -13,6 +14,10 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Méthode non autorisée' });
+  }
+
+  if (!(await checkRateLimit(req, 'forgot-password'))) {
+    return res.status(429).json({ error: 'Trop de tentatives. Merci de réessayer dans quelques minutes.' });
   }
 
   const { email } = req.body || {};
