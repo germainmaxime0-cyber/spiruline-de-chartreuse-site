@@ -1151,7 +1151,11 @@ function renderAccountSection() {
     el.innerHTML = `
       <div class="account-logged">
         <span>Connecté·e : <strong>${escapeHtml(customerState.email)}</strong></span>
-        <button type="button" class="account-logout-btn" id="logoutBtn">Se déconnecter</button>
+        <span>
+          <a href="mon-compte.html" class="account-logout-btn">Mes commandes</a>
+          &middot;
+          <button type="button" class="account-logout-btn" id="logoutBtn">Se déconnecter</button>
+        </span>
       </div>
       <div class="delivery-choice-row">
         <label for="deliveryChoice">Livrer</label>

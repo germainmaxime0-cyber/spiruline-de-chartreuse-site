@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mon compte &mdash; Spiruline de Chartreuse</title>
+<meta name="robots" content="noindex,follow">
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;font-weight:400;background:#F0EBE0;color:#2d2d2d;font-size:16px;line-height:1.6;}
+img{max-width:100%;}
+a{text-decoration:none;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:1000;background:#F0EBE0;border-bottom:1px solid #d8cfc2;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:90px;gap:1rem;}
+.nav-lw{display:flex;align-items:center;gap:8px;min-width:0;}
+.nav-lw img.nav-logo{height:78px;width:auto;aspect-ratio:515/502;flex-shrink:0;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:17px;color:#2d5a27;line-height:1.2;min-width:0;}
+.nav-brand-sub{display:block;font-family:'Lato',sans-serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#7a9e76;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-menu{display:flex;list-style:none;flex-shrink:1;min-width:0;}
+.nav-menu > li{position:relative;}
+.nav-menu > li > a{display:block;padding:0 0.9rem;height:90px;line-height:90px;font-size:14px;font-weight:700;color:#333;transition:color 0.2s;white-space:nowrap;}
+.nav-menu > li > a.active,.nav-menu > li > a:hover{color:#2d5a27;}
+.nav-right{display:flex;align-items:center;gap:0.8rem;flex-shrink:0;}
+.nav-cta{background:#1e4d20;color:white;padding:11px 22px;border-radius:25px;font-size:13px;font-weight:700;transition:background 0.2s;white-space:nowrap;}
+.nav-cta:hover{background:#142e12;}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;flex-shrink:0;}
+.burger span{display:block;width:24px;height:2px;background:#2d5a27;border-radius:2px;}
+
+/* MOBILE MENU */
+.mobile-menu{display:none;position:fixed;inset:0;background:white;z-index:2000;flex-direction:column;padding:2rem;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid #e8e4d9;}
+.mobile-menu-close{background:none;border:none;font-size:28px;cursor:pointer;color:#2d5a27;}
+.mobile-nav-item{border-bottom:1px solid #f0f0f0;}
+.mobile-nav-item > a{display:block;padding:1rem 0;font-size:17px;font-weight:700;color:#333;}
+.mobile-cta{background:#1e4d20;color:white;padding:16px;border-radius:12px;font-size:16px;font-weight:700;text-align:center;margin-top:2rem;display:block;}
+
+/* HERO */
+.hero{background:white;padding:3rem 3rem 2rem;text-align:center;}
+.hero h1{font-family:'Playfair Display',serif;font-size:38px;color:#2d2d2d;margin-bottom:0.4rem;}
+.hero h1 em{font-style:italic;color:#2d5a27;}
+.hero p{font-family:'Merriweather',serif;font-size:14px;color:#777;}
+
+/* CONTENU */
+.account-wrap{max-width:800px;margin:0 auto;padding:2.5rem 1.5rem 4rem;}
+.login-required{background:white;border-radius:14px;padding:2.5rem;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+.login-required p{color:#555;margin-bottom:1.2rem;}
+.login-required a{display:inline-block;background:#1e4d20;color:white;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:700;}
+.account-greeting{font-size:14px;color:#555;margin-bottom:1.5rem;}
+.account-greeting strong{color:#2d5a27;}
+.order-card{background:white;border-radius:14px;padding:1.4rem 1.6rem;margin-bottom:1.1rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+.order-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.6rem;}
+.order-number{font-family:'Playfair Display',serif;font-size:17px;color:#2454a0;font-weight:700;}
+.order-date{font-size:12px;color:#999;margin-left:0.5rem;font-weight:400;font-family:'Lato',sans-serif;}
+.order-status{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:4px 10px;border-radius:12px;}
+.status-a_traiter{background:#fdf0d5;color:#a06a00;}
+.status-envoye{background:#e6f4e6;color:#2d5a27;}
+.status-erreur{background:#fbe2e2;color:#b23b3b;}
+.status-annulee{background:#e5e5e5;color:#666;}
+.status-en_attente_paiement{background:#e3ecf7;color:#2454a0;}
+.order-detail{font-size:13px;color:#555;line-height:1.7;margin-bottom:0.5rem;}
+.order-content{font-size:13px;color:#333;}
+.order-total{font-family:'Playfair Display',serif;font-size:15px;color:#2d5a27;font-weight:700;margin-top:0.6rem;text-align:right;}
+.empty{color:#999;font-style:italic;text-align:center;padding:2rem;}
+
+/* FOOTER */
+.footer{background:#1e3e1b;padding:1rem 2rem;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:1.2rem;align-items:start;}
+.foot-lw{display:flex;align-items:flex-end;gap:4px;margin-bottom:0.4rem;}
+.foot-logo{height:36px;width:auto;aspect-ratio:515/502;display:block;flex-shrink:0;}
+.foot-brand{font-family:'Playfair Display',serif;font-size:14px;color:white;}
+.foot-p{font-size:11px;color:rgba(255,255,255,0.5);line-height:1.7;}
+.foot-p a{color:rgba(255,255,255,0.65);}
+.foot-p a:hover{color:white;}
+.foot-h{font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.5rem;}
+.foot-li{display:block;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:0.35rem;transition:color 0.2s;}
+.foot-li:hover{color:white;}
+.foot-bottom{background:#142e12;padding:0.5rem 2rem;text-align:center;}
+.foot-bottom p{font-size:10px;color:rgba(255,255,255,0.3);line-height:1.5;}
+
+@media (max-width:1200px){
+  .nav-menu{display:none;}
+  .burger{display:flex;}
+}
+@media (max-width:900px){
+  .nav-brand-sub{display:none;}
+  .hero{padding:2rem 1.5rem;}
+  .hero h1{font-size:28px;}
+  .footer{grid-template-columns:1fr 1fr;gap:1rem;padding:1rem 1.5rem;}
+}
+@media (max-width:480px){
+  .nav{height:68px;padding:0 1rem;}
+  .nav-lw img.nav-logo{height:52px;}
+  .nav-brand{font-size:13px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .nav-cta{display:none;}
+  .footer{grid-template-columns:1fr;gap:0.8rem;padding:1rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-lw" href="index.html">
+    <img class="nav-logo" src="images/logo.png" width="515" height="502" alt="Logo Spiruline de Chartreuse">
+    <div class="nav-brand">Spiruline de Chartreuse<span class="nav-brand-sub">Le Touvet &middot; Is&egrave;re &middot; France</span></div>
+  </a>
+  <ul class="nav-menu">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="spiruline.html">La spiruline</a></li>
+    <li><a href="notre-spiruline.html">Notre&nbsp;spiruline</a></li>
+    <li><a href="visites.html">Visites</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-cta" href="commander.html">Commander &rarr;</a>
+  </div>
+  <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <img src="images/logo.png" width="515" height="502" alt="Logo" style="height:50px;width:auto;aspect-ratio:515/502;">
+    <button class="mobile-menu-close" aria-label="Fermer le menu">&times;</button>
+  </div>
+  <div class="mobile-nav-item"><a href="index.html">Accueil</a></div>
+  <div class="mobile-nav-item"><a href="spiruline.html">La spiruline</a></div>
+  <div class="mobile-nav-item"><a href="notre-spiruline.html">Notre spiruline</a></div>
+  <div class="mobile-nav-item"><a href="visites.html">Visites</a></div>
+  <div class="mobile-nav-item"><a href="contact.html">Contact</a></div>
+  <div class="mobile-nav-item"><a href="blog.html">Blog</a></div>
+  <a class="mobile-cta" href="commander.html">Commander &rarr;</a>
+</div>
+
+<section class="hero">
+  <h1>Mon <em>compte</em></h1>
+  <p>Retrouvez ici l'historique de vos commandes.</p>
+</section>
+
+<div class="account-wrap" id="accountWrap">
+  <p class="empty">Chargement...</p>
+</div>
+
+<footer class="footer">
+  <div>
+    <div class="foot-lw">
+      <img class="foot-logo" src="images/logo.png" width="515" height="502" alt="Logo" loading="lazy">
+      <span class="foot-brand">Spiruline de Chartreuse</span>
+    </div>
+    <p class="foot-p">GAEC Char'Algue &mdash; 458 Rue de la Grande Terre, 38660 Le Touvet<br><a href="tel:+33659799633">06&nbsp;59&nbsp;79&nbsp;96&nbsp;33</a> / <a href="tel:+33781793810">07&nbsp;81&nbsp;79&nbsp;38&nbsp;10</a> &mdash; <a href="mailto:contact@spirulinedechartreuse.com">contact@spirulinedechartreuse.com</a></p>
+  </div>
+  <div>
+    <p class="foot-h">La spiruline</p>
+    <a class="foot-li" href="spiruline.html#histoire">Son histoire</a>
+    <a class="foot-li" href="spiruline.html#bienfaits">Les bienfaits</a>
+    <a class="foot-li" href="spiruline.html#mode-emploi">Mode d'emploi</a>
+  </div>
+  <div>
+    <p class="foot-h">Notre spiruline</p>
+    <a class="foot-li" href="notre-spiruline.html#recolte">La r&eacute;colte</a>
+    <a class="foot-li" href="notre-spiruline.html#ferme">La ferme</a>
+    <a class="foot-li" href="visites.html">Visites</a>
+    <a class="foot-li" href="blog.html">Blog</a>
+  </div>
+  <div>
+    <p class="foot-h">Informations</p>
+    <a class="foot-li" href="contact.html#points-de-vente">Points de vente</a>
+    <a class="foot-li" href="contact.html#nous-contacter">Nous contacter</a>
+    <a class="foot-li" href="mentions-legales.html">Mentions l&eacute;gales</a>
+    <a class="foot-li" href="cgv.html">CGV</a>
+    <a class="foot-li" href="confidentialite.html">Confidentialit&eacute;</a>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <p>&copy; 2025 GAEC Char'Algue &mdash; Spiruline de Chartreuse &mdash; SIRET 83044121800013 &mdash; TVA FR13830441218 &mdash; H&eacute;bergeur&nbsp;: Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA</p>
+</div>
+
+<script>
+const burger = document.querySelector('.burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', function() {
+  mobileMenu.classList.add('open');
+  burger.setAttribute('aria-expanded', 'true');
+});
+document.querySelector('.mobile-menu-close').addEventListener('click', function() {
+  mobileMenu.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+});
+mobileMenu.addEventListener('click', function(e) {
+  if (e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+
+const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Expédiée', erreur: 'Erreur', annulee: 'Annulée', en_attente_paiement: 'En attente de paiement' };
+const PAYMENT_LABELS = { carte: 'Carte bancaire', cheque: 'Chèque', virement: 'Virement' };
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+function formatPrice(n) {
+  return (n == null ? 0 : n).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+async function loadAccount() {
+  const wrap = document.getElementById('accountWrap');
+  const meRes = await fetch('/api/customer-me');
+  const me = await meRes.json();
+
+  if (!me.loggedIn) {
+    wrap.innerHTML = `
+      <div class="login-required">
+        <p>Connectez-vous depuis la boutique pour retrouver l'historique de vos commandes.</p>
+        <a href="commander.html">Aller à la boutique &rarr;</a>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<p class="account-greeting">Connect&eacute;&middot;e : <strong>${escapeHtml(me.email)}</strong></p><p class="empty">Chargement de vos commandes...</p>`;
+
+  try {
+    const res = await fetch('/api/customer-orders');
+    if (res.status === 401) {
+      wrap.innerHTML = `
+        <div class="login-required">
+          <p>Connectez-vous depuis la boutique pour retrouver l'historique de vos commandes.</p>
+          <a href="commander.html">Aller à la boutique &rarr;</a>
+        </div>`;
+      return;
+    }
+    const data = await res.json();
+    const greeting = `<p class="account-greeting">Connect&eacute;&middot;e : <strong>${escapeHtml(me.email)}</strong></p>`;
+    document.getElementById('accountWrap').innerHTML = greeting + '<div id="ordersList"></div>';
+    renderOrdersInto(data.orders || []);
+  } catch (err) {
+    wrap.innerHTML = '<p class="empty">Impossible de charger vos commandes pour le moment. Merci de réessayer plus tard.</p>';
+  }
+}
+
+function renderOrdersInto(orders) {
+  const target = document.getElementById('ordersList');
+  if (!target) return;
+  if (orders.length === 0) {
+    target.innerHTML = '<p class="empty">Vous n\'avez pas encore passé de commande.</p>';
+    return;
+  }
+  const list = orders.map((o) => {
+    const contenu = (o.contenu || []).map((c) => `${c.quantite}&times; ${escapeHtml(c.description)}`).join(', ');
+    return `
+      <div class="order-card">
+        <div class="order-top">
+          <span><span class="order-number">n&deg;${escapeHtml(o.numeroCommande || '')}</span><span class="order-date">${formatDate(o.createdAt)}</span></span>
+          <span class="order-status status-${o.status}">${STATUS_LABELS[o.status] || o.status}</span>
+        </div>
+        <div class="order-detail">
+          ${escapeHtml(o.modeLivraison || '')}${o.pointRelaisCode ? ' (point ' + escapeHtml(o.pointRelaisCode) + ')' : ''}<br>
+          Paiement : ${escapeHtml(PAYMENT_LABELS[o.modePaiement] || o.modePaiement || 'Carte bancaire')}
+        </div>
+        <div class="order-content">${contenu}</div>
+        <div class="order-total">${formatPrice(o.montantTotalEur)}</div>
+      </div>`;
+  }).join('');
+  target.innerHTML = list;
+}
+
+loadAccount();
+</script>
+</body>
+</html>
