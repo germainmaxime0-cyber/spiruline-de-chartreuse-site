@@ -64,4 +64,19 @@ function businessRecapHtml(order) {
   `;
 }
 
-module.exports = { customerRecapHtml, businessRecapHtml };
+function cancellationHtml(order) {
+  const refundText = (order.modePaiement === 'carte' || !order.modePaiement)
+    ? (order.refundError
+        ? "Nous revenons vers vous rapidement au sujet du remboursement."
+        : "Le remboursement a été effectué et apparaîtra sur votre moyen de paiement sous quelques jours.")
+    : "Si vous aviez déjà réglé cette commande, contactez-nous pour organiser le remboursement.";
+  return `
+    <p>Bonjour ${order.prenom || ''},</p>
+    <p>Votre commande <strong>n&deg;${order.numeroCommande}</strong> a &eacute;t&eacute; annul&eacute;e.</p>
+    <p>${refundText}</p>
+    <p>Pour toute question, n'h&eacute;sitez pas &agrave; nous contacter.</p>
+    <p>L'&eacute;quipe Spiruline de Chartreuse</p>
+  `;
+}
+
+module.exports = { customerRecapHtml, businessRecapHtml, cancellationHtml };

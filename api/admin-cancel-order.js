@@ -6,6 +6,8 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { requireAuth } = require('./_auth');
 const { getOrder, updateOrder } = require('./_orders');
 const { boxtalRequest } = require('./_boxtal');
+const { sendEmail } = require('./_mailer');
+const { cancellationHtml } = require('./_order-email');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -56,6 +58,16 @@ module.exports = async (req, res) => {
     boxtal: { ...order.boxtal, cancelError: boxtalCancelError },
     refundError,
   });
+
+  // L'envoi de l'email ne doit jamais faire échouer l'annulation : la commande est déjà marquée annulée
+  // (et remboursée le cas échéant) même si la notification au client échoue.
+  try {
+    if (updated.email) {
+      await sendEmail({ to: updated.email, subject: `Votre commande n°${updated.numeroCommande} a été annulée`, html: cancellationHtml(updated) });
+    }
+  } catch (emailErr) {
+    console.error('Échec de l\'envoi de l\'email d\'annulation', order.id, emailErr);
+  }
 
   if (refundError) {
     return res.status(502).json({ error: `Commande marquée annulée, mais le remboursement Stripe a échoué : ${refundError}`, order: updated });
