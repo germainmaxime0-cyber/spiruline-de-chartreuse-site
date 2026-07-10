@@ -222,7 +222,7 @@ function renderOrders(orders) {
         <div class="order-detail">
           ${escapeHtml(o.adresse?.rue || '')}, ${escapeHtml(o.adresse?.codePostal || '')} ${escapeHtml(o.adresse?.ville || '')}<br>
           ${escapeHtml(o.telephone || '')} — ${escapeHtml(o.email || '')}<br>
-          ${escapeHtml(o.modeLivraison || '')}${o.pointRelaisCode ? ' (point ' + escapeHtml(o.pointRelaisCode) + ')' : ''} — ${o.poidsColisKg ? o.poidsColisKg.toFixed(2) + ' kg' : ''}<br>
+          ${escapeHtml(o.modeLivraison || '')}${o.pointRelaisNom ? ' — ' + escapeHtml(o.pointRelaisNom) : (o.pointRelaisCode ? ' (point ' + escapeHtml(o.pointRelaisCode) + ')' : '')} — ${o.poidsColisKg ? o.poidsColisKg.toFixed(2) + ' kg' : ''}<br>
           Paiement : ${escapeHtml(PAYMENT_LABELS[o.modePaiement] || o.modePaiement || 'Carte bancaire')}
         </div>
         <div class="order-content">${escapeHtml(contenu)}</div>

@@ -24,7 +24,9 @@ function deliveryHtml(order) {
   if (order.modeLivraisonCle === 'retrait') {
     return `<p><strong>Retrait sur place (gratuit)</strong><br>${PICKUP_HOURS_TEXT}</p>`;
   }
-  const pointRelais = order.pointRelaisCode ? ` (point relais ${order.pointRelaisCode})` : '';
+  const pointRelais = order.pointRelaisNom
+    ? ` — point relais : ${order.pointRelaisNom}`
+    : (order.pointRelaisCode ? ` (point relais ${order.pointRelaisCode})` : '');
   const adresse = order.adresse ? `${order.adresse.rue}, ${order.adresse.codePostal} ${order.adresse.ville}` : '';
   return `<p><strong>${order.modeLivraison || ''}</strong>${pointRelais}<br>${adresse}</p>`;
 }

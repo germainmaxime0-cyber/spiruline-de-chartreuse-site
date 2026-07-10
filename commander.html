@@ -970,6 +970,7 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
   address.telephone = combinePhone(telCountry, telLocal);
 
   let pickupPointCode = null;
+  let pickupPointName = null;
   if (shipping === 'relais') {
     if (!selectedRelayPoint) {
       errorEl.textContent = 'Merci de choisir un point relais sur la carte avant de payer.';
@@ -977,6 +978,7 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
       return;
     }
     pickupPointCode = selectedRelayPoint.code;
+    pickupPointName = selectedRelayPoint.name;
   }
 
   btn.disabled = true;
@@ -987,7 +989,7 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
       const res = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode })
+        body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, pickupPointName, promoCode: appliedPromoCode })
       });
       const data = await res.json();
       if (data.url) {
@@ -1009,7 +1011,7 @@ document.getElementById('checkoutBtn').addEventListener('click', async function(
     const res = await fetch('/api/create-manual-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, promoCode: appliedPromoCode, paymentMethod })
+      body: JSON.stringify({ items: cart, shipping, address, pickupPointCode, pickupPointName, promoCode: appliedPromoCode, paymentMethod })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Échec de la validation de la commande');

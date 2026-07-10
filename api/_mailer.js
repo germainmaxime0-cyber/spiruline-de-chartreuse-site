@@ -5,11 +5,13 @@
 //   MAIL_FROM      — adresse d'expédition, ex. "Spiruline de Chartreuse <commandes@spirulinedechartreuse.com>"
 //                     (nécessite d'avoir vérifié le domaine spirulinedechartreuse.com dans Resend,
 //                     sinon repli automatique sur l'adresse de test Resend ci-dessous)
-//   MAIL_BUSINESS_TO — adresse recevant les notifications de nouvelle commande (défaut : contact@spirulinedechartreuse.com)
+//   MAIL_BUSINESS_TO — adresse(s) recevant les notifications de nouvelle commande, séparées par une
+//                       virgule si plusieurs (défaut : les boîtes Gmail de Renaud et Maxime, car
+//                       contact@spirulinedechartreuse.com n'est pas une boîte mail réellement relevée)
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
 const DEFAULT_FROM = 'Spiruline de Chartreuse <onboarding@resend.dev>';
-const DEFAULT_BUSINESS_TO = 'contact@spirulinedechartreuse.com';
+const DEFAULT_BUSINESS_TO = ['renaud.stalinski@gmail.com', 'germain.maxime0@gmail.com'];
 
 async function sendEmail({ to, subject, html }) {
   const res = await fetch(RESEND_API_URL, {
@@ -34,7 +36,10 @@ async function sendEmail({ to, subject, html }) {
 }
 
 function businessEmail() {
-  return process.env.MAIL_BUSINESS_TO || DEFAULT_BUSINESS_TO;
+  if (process.env.MAIL_BUSINESS_TO) {
+    return process.env.MAIL_BUSINESS_TO.split(',').map((e) => e.trim()).filter(Boolean);
+  }
+  return DEFAULT_BUSINESS_TO;
 }
 
 module.exports = { sendEmail, businessEmail };

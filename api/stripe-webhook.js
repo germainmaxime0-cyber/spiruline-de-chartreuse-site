@@ -95,6 +95,7 @@ async function buildOrder(session) {
     modeLivraisonCle: session.metadata && session.metadata.mode_livraison_cle,
     modeLivraison: session.metadata && session.metadata.mode_livraison,
     pointRelaisCode: (session.metadata && session.metadata.point_relais) || null,
+    pointRelaisNom: (session.metadata && session.metadata.point_relais_nom) || null,
     poidsColisKg: session.metadata && parseFloat(session.metadata.poids_colis),
     poidsSpirulineKg: session.metadata && parseFloat(session.metadata.poids_spiruline_kg),
     montantTotalEur: session.amount_total != null ? session.amount_total / 100 : null,

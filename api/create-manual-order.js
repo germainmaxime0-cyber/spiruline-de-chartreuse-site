@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { items, shipping, address, pickupPointCode, promoCode, paymentMethod } = req.body;
+    const { items, shipping, address, pickupPointCode, pickupPointName, promoCode, paymentMethod } = req.body;
 
     if (!PAYMENT_LABELS.hasOwnProperty(paymentMethod)) {
       return res.status(400).json({ error: 'Mode de paiement invalide' });
@@ -113,6 +113,7 @@ module.exports = async (req, res) => {
       modeLivraisonCle: shippingKey,
       modeLivraison: SHIPPING_LABELS[shippingKey],
       pointRelaisCode: pickupPointCode || null,
+      pointRelaisNom: pickupPointName || null,
       poidsColisKg: parcelWeightG / 1000,
       poidsSpirulineKg: netWeightG / 1000,
       montantTotalEur,

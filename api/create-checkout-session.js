@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const { items, shipping, address, pickupPointCode, promoCode } = req.body;
+    const { items, shipping, address, pickupPointCode, pickupPointName, promoCode } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'Panier vide' });
@@ -147,6 +147,7 @@ module.exports = async (req, res) => {
         poids_colis: `${(parcelWeightG / 1000).toFixed(2)} kg`,
         poids_spiruline_kg: (netWeightG / 1000).toFixed(3),
         point_relais: pickupPointCode || '',
+        point_relais_nom: pickupPointName || '',
         compte_client: loggedInEmail || '',
         adresse: JSON.stringify(address),
         panier: JSON.stringify(items.map(i => ({ p: i.productId, v: i.variantIndex, q: parseInt(i.quantity, 10) }))),
