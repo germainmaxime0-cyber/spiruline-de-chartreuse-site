@@ -26,6 +26,7 @@
 <link rel="preload" as="image" href="images/hero-maxime-renaud-bassins.jpg" fetchpriority="high">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+em{font-style:normal;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .skip-link{position:absolute;left:-9999px;top:0;background:#1e4d20;color:white;padding:12px 20px;z-index:3000;font-family:'Lato',sans-serif;font-weight:700;}
 .skip-link:focus{left:0;}
@@ -84,7 +85,7 @@ a{text-decoration:none;}
 .slide-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.65) 100%);}
 .slide-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
 .slide-content h1,.slide-content .slide-title{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:white;line-height:1.1;margin-bottom:1rem;text-shadow:0 2px 20px rgba(0,0,0,0.6);}
-.slide-content h1 em,.slide-content .slide-title em{font-style:italic;color:#a8d8a0;}
+.slide-content h1 em,.slide-content .slide-title em{color:#a8d8a0;}
 .slide-content p{font-family:'Merriweather',serif;font-size:16px;font-weight:400;color:white;max-width:540px;line-height:1.8;margin-bottom:2rem;text-shadow:0 1px 10px rgba(0,0,0,0.6);}
 .slide-btn{background:#2d7a35;color:white;padding:14px 34px;border-radius:25px;font-size:15px;font-weight:700;display:inline-block;transition:all 0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
 .slide-btn:hover{background:#1e5224;}
@@ -137,7 +138,7 @@ a{text-decoration:none;}
 .avis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
 .avis-card{background:#F0EBE0;border-radius:14px;padding:1.8rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);border-top:3px solid #2d5a27;text-align:center;}
 .avis-stars{display:flex;gap:3px;margin-bottom:0.8rem;justify-content:center;}
-.avis-text{font-family:'Merriweather',serif;font-size:14px;color:#2d2d2d;line-height:1.8;font-style:italic;margin-bottom:1rem;}
+.avis-text{font-family:'Merriweather',serif;font-size:14px;color:#2d2d2d;line-height:1.8;margin-bottom:1rem;}
 .avis-author{font-size:13px;font-weight:700;color:#2d5a27;letter-spacing:0.05em;text-transform:uppercase;}
 .avis-source{font-size:12px;font-weight:500;color:#999;margin-top:3px;}
 
@@ -168,7 +169,7 @@ a{text-decoration:none;}
 .histoire-imgs img.sub{height:160px;}
 .histoire-tag{display:inline-block;background:#d4e8d0;color:#2d5a27;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:6px 16px;border-radius:12px;margin-bottom:1.2rem;}
 .histoire-content h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;line-height:1.3;margin-bottom:1.2rem;}
-.histoire-content h2 em{font-style:italic;color:#2d5a27;}
+.histoire-content h2 em{color:#2d5a27;}
 .histoire-content p{font-family:'Merriweather',serif;font-size:15px;color:#444;line-height:2;margin-bottom:1.1rem;}
 .histoire-content strong{color:#2d5a27;font-weight:700;font-style:normal;}
 .histoire-stats{display:flex;gap:2rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #d8cfc2;}
@@ -690,6 +691,12 @@ document.querySelector('.mobile-menu-close').addEventListener('click', function(
 });
 mobileMenu.addEventListener('click', function(e) {
   if(e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+mobileMenu.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  });
 });
 </script>
 </body>

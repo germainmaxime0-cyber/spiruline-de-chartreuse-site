@@ -26,6 +26,7 @@
 <link rel="preload" as="image" href="images/hero-blog.jpg" fetchpriority="high">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+em{font-style:normal;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 .skip-link{position:absolute;left:-9999px;top:0;background:#1e4d20;color:white;padding:12px 20px;z-index:3000;font-family:'Lato',sans-serif;font-weight:700;}
 .skip-link:focus{left:0;}
@@ -71,7 +72,7 @@ a{text-decoration:none;}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.65) 100%);}
 .hero-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
 .hero-content h1{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:white;line-height:1.1;margin-bottom:0.8rem;text-shadow:0 2px 20px rgba(0,0,0,0.6);}
-.hero-content h1 em{font-style:italic;color:#a8d8a0;}
+.hero-content h1 em{color:#a8d8a0;}
 .hero-content p{font-family:'Merriweather',serif;font-size:16px;color:rgba(255,255,255,0.92);max-width:560px;line-height:1.7;text-shadow:0 1px 8px rgba(0,0,0,0.5);}
 
 /* FILTRES */
@@ -91,13 +92,13 @@ a{text-decoration:none;}
 .blog-card-body{padding:1.3rem 1.4rem;}
 .blog-card-cat{display:inline-block;background:#d4e8d0;color:#2d5a27;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border-radius:10px;margin-bottom:0.7rem;}
 .blog-card-title{font-family:'Playfair Display',serif;font-weight:400;font-size:18px;color:#1a1a1a;line-height:1.3;}
-.no-results{display:none;text-align:center;font-family:'Merriweather',serif;color:#999;font-style:italic;padding:2rem;grid-column:1/-1;}
+.no-results{display:none;text-align:center;font-family:'Merriweather',serif;color:#999;padding:2rem;grid-column:1/-1;}
 
 /* CTA */
 .cta-section{background:#1e4d20;padding:4rem 3rem;}
 .cta-inner{display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;max-width:900px;margin:0 auto;}
 .cta-text h2{font-family:'Playfair Display',serif;font-size:38px;color:white;margin-bottom:1rem;}
-.cta-text h2 em{font-style:italic;color:#a8d8a0;}
+.cta-text h2 em{color:#a8d8a0;}
 .cta-reassurance{display:flex;gap:1.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
 .cta-reassurance span{font-size:13px;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:0.4rem;}
 .cta-reassurance span::before{content:'✓';color:#a8d8a0;font-weight:700;}
@@ -360,6 +361,12 @@ document.querySelector('.mobile-menu-close').addEventListener('click', function(
 });
 mobileMenu.addEventListener('click', function(e) {
   if(e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+mobileMenu.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  });
 });
 
 // Filtrage des articles par catégorie

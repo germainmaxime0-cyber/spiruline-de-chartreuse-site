@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;500;700&family=Merriweather:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
+em{font-style:normal;}
 body{font-family:'Lato',sans-serif;font-weight:400;background:#F0EBE0;color:#2d2d2d;font-size:16px;line-height:1.6;}
 img{max-width:100%;}
 a{text-decoration:none;}
@@ -44,7 +45,7 @@ a{text-decoration:none;}
 /* HERO */
 .hero{background:white;padding:3rem 3rem 2rem;text-align:center;}
 .hero h1{font-family:'Playfair Display',serif;font-size:38px;color:#2d2d2d;margin-bottom:0.4rem;}
-.hero h1 em{font-style:italic;color:#2d5a27;}
+.hero h1 em{color:#2d5a27;}
 .hero p{font-family:'Merriweather',serif;font-size:14px;color:#777;}
 
 /* CONTENU */
@@ -67,7 +68,7 @@ a{text-decoration:none;}
 .order-detail{font-size:13px;color:#555;line-height:1.7;margin-bottom:0.5rem;}
 .order-content{font-size:13px;color:#333;}
 .order-total{font-family:'Playfair Display',serif;font-size:15px;color:#2d5a27;font-weight:700;margin-top:0.6rem;text-align:right;}
-.empty{color:#999;font-style:italic;text-align:center;padding:2rem;}
+.empty{color:#999;text-align:center;padding:2rem;}
 
 /* FOOTER */
 .footer{background:#1e3e1b;padding:1rem 2rem;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:1.2rem;align-items:start;}
@@ -193,6 +194,12 @@ document.querySelector('.mobile-menu-close').addEventListener('click', function(
 });
 mobileMenu.addEventListener('click', function(e) {
   if (e.target === this) { this.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+});
+mobileMenu.querySelectorAll('a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  });
 });
 
 const STATUS_LABELS = { a_traiter: 'À traiter', envoye: 'Expédiée', erreur: 'Erreur', annulee: 'Annulée', en_attente_paiement: 'En attente de paiement' };
