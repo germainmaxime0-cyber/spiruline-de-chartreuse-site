@@ -41,12 +41,26 @@ function totalHtml(order) {
   return order.montantTotalEur != null ? `${order.montantTotalEur.toFixed(2)} €` : '';
 }
 
+// Détail sous-total / réduction / livraison, pour que la réduction 1ère commande (ou un code promo)
+// soit visible noir sur blanc dans l'email, plutôt qu'un simple total qu'il faudrait recalculer à la main.
+function totalsBreakdownHtml(order) {
+  if (order.sousTotalEur == null) return `<p><strong>Total : ${totalHtml(order)}</strong></p>`;
+  const lines = [`<li>Sous-total produits : ${order.sousTotalEur.toFixed(2)} €</li>`];
+  if (order.reductionPourcent) {
+    const montantReduction = order.sousTotalEur * order.reductionPourcent / 100;
+    lines.push(`<li>Réduction -${order.reductionPourcent}% : -${montantReduction.toFixed(2)} €</li>`);
+  }
+  const livraisonText = order.fraisLivraisonEur ? `${order.fraisLivraisonEur.toFixed(2)} €` : 'Offerte';
+  lines.push(`<li>Livraison : ${livraisonText}</li>`);
+  return `<ul>${lines.join('')}</ul><p><strong>Total : ${totalHtml(order)}</strong></p>`;
+}
+
 function customerRecapHtml(order) {
   return `
     <p>Bonjour ${order.prenom || ''},</p>
     <p>Merci pour votre commande <strong>n&deg;${order.numeroCommande}</strong> !</p>
     <ul>${orderItemsHtml(order)}</ul>
-    <p><strong>Total : ${totalHtml(order)}</strong></p>
+    ${totalsBreakdownHtml(order)}
     ${deliveryHtml(order)}
     ${paymentInstructionsHtml(order)}
     <p>À bientôt,<br>L'équipe Spiruline de Chartreuse</p>
@@ -58,7 +72,7 @@ function businessRecapHtml(order) {
     <p>Nouvelle commande <strong>n&deg;${order.numeroCommande}</strong> reçue.</p>
     <p>${order.prenom || ''} ${order.nom || ''} &mdash; ${order.email || ''} &mdash; ${order.telephone || ''}</p>
     <ul>${orderItemsHtml(order)}</ul>
-    <p><strong>Total : ${totalHtml(order)}</strong></p>
+    ${totalsBreakdownHtml(order)}
     ${deliveryHtml(order)}
     <p>Mode de paiement : ${order.modePaiement || 'carte'}</p>
   `;
