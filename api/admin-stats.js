@@ -21,6 +21,17 @@ function detectCategory(description) {
   return 'Autre';
 }
 
+// Le poids net (spiruline pure, hors emballage) n'est pas stocké par article sur la commande —
+// seul le poids total de la commande l'est (poidsSpirulineKg, pour Boxtal). On le retrouve donc en
+// relisant le poids indiqué dans la description de l'article (ex. "... — 400g" ou "... — 1kg"),
+// qui reflète toujours variant.weight du catalogue au moment de la commande.
+function parseWeightGrams(description) {
+  const match = (description || '').match(/(\d+(?:[.,]\d+)?)\s*(kg|g)\s*$/i);
+  if (!match) return 0;
+  const value = parseFloat(match[1].replace(',', '.'));
+  return match[2].toLowerCase() === 'kg' ? value * 1000 : value;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
@@ -33,6 +44,7 @@ module.exports = async (req, res) => {
 
     let totalRevenue = 0;
     const categoryQty = {};
+    const categoryWeightG = {};
     const productQty = {};
     const dailyMap = new Map();
 
@@ -50,6 +62,7 @@ module.exports = async (req, res) => {
       for (const item of order.contenu || []) {
         const cat = detectCategory(item.description);
         categoryQty[cat] = (categoryQty[cat] || 0) + item.quantite;
+        categoryWeightG[cat] = (categoryWeightG[cat] || 0) + parseWeightGrams(item.description) * item.quantite;
         productQty[item.description] = (productQty[item.description] || 0) + item.quantite;
       }
     }
@@ -60,7 +73,7 @@ module.exports = async (req, res) => {
       .slice(0, 10);
 
     const categories = Object.entries(categoryQty)
-      .map(([label, quantite]) => ({ label, quantite }))
+      .map(([label, quantite]) => ({ label, quantite, poidsKg: (categoryWeightG[label] || 0) / 1000 }))
       .sort((a, b) => b.quantite - a.quantite);
 
     const dailySeries = Array.from(dailyMap.values()).sort((a, b) => a.date.localeCompare(b.date));

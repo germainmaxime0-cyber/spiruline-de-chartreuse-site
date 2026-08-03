@@ -117,6 +117,13 @@ h1{font-family:'Playfair Display',serif;font-size:28px;color:#0E7C74;margin-bott
         <canvas id="categoryChart" height="200"></canvas>
       </div>
       <div class="stats-panel">
+        <h2>Poids vendu par forme</h2>
+        <table class="top-products-table">
+          <thead><tr><th>Forme</th><th>Poids total</th></tr></thead>
+          <tbody id="categoryWeightBody"></tbody>
+        </table>
+      </div>
+      <div class="stats-panel">
         <h2>Produits les plus vendus</h2>
         <table class="top-products-table">
           <thead><tr><th>Produit</th><th>Quantité</th></tr></thead>
@@ -477,6 +484,13 @@ function renderTopProducts(topProducts) {
     : '<tr><td colspan="2" class="empty">Aucune vente pour le moment.</td></tr>';
 }
 
+function renderCategoryWeight(categories) {
+  const tbody = document.getElementById('categoryWeightBody');
+  tbody.innerHTML = categories.length
+    ? categories.map((c) => `<tr><td>${escapeHtml(c.label)}</td><td>${c.poidsKg.toFixed(2)} kg</td></tr>`).join('')
+    : '<tr><td colspan="2" class="empty">Aucune vente pour le moment.</td></tr>';
+}
+
 async function loadStats() {
   const res = await fetch('/api/admin-stats');
   if (res.status === 401) {
@@ -489,6 +503,7 @@ async function loadStats() {
   document.getElementById('statTotalRevenue').textContent = formatEuro(statsData.totalRevenue);
   document.getElementById('statAvgBasket').textContent = formatEuro(statsData.averageBasket);
   renderCategoryChart(statsData.categories);
+  renderCategoryWeight(statsData.categories);
   renderTopProducts(statsData.topProducts);
   renderEvolutionChart(currentPeriod);
 }
