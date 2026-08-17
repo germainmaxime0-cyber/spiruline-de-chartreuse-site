@@ -6,5 +6,8 @@
     { "source": "/laspiruline(/.*)?", "destination": "/spiruline.html", "permanent": true },
     { "source": "/comment-la-consommer(/.*)?", "destination": "/spiruline.html#mode-emploi", "permanent": true },
     { "source": "/2018/01/16/gresivaudan(/.*)?", "destination": "/", "permanent": true }
+  ],
+  "crons": [
+    { "path": "/api/cron-check-tracking", "schedule": "0 * * * *" }
   ]
 }

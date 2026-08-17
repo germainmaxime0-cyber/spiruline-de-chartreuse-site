@@ -134,7 +134,7 @@ function shipmentSentHtml(order) {
   } else if (order.trackingNumber) {
     trackingText = `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>`;
   } else {
-    trackingText = `<p>Le num&eacute;ro de suivi n'est pas encore disponible ; il appara&icirc;tra sous peu, nous vous le communiquerons si besoin.</p>`;
+    trackingText = `<p>Le num&eacute;ro de suivi n'est pas encore attribu&eacute; par le transporteur ; vous recevrez un email d&egrave;s qu'il sera disponible.</p>`;
   }
   return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>

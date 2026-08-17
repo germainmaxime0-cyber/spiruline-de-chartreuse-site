@@ -151,19 +151,10 @@ module.exports = async (req, res) => {
     });
 
     console.log('Réponse Boxtal shipping-order (création) :', JSON.stringify(data.content));
-    let trackingNumber = extractTrackingNumber(data.content);
-
-    // Le numéro de suivi n'est parfois attribué par le transporteur qu'une fois l'étiquette
-    // générée, pas encore présent dans la réponse de création : on retente une lecture immédiate.
-    if (!trackingNumber && data.content.id) {
-      try {
-        const refetched = await boxtalRequest(`/shipping/v3.1/shipping-order/${data.content.id}`);
-        console.log('Réponse Boxtal shipping-order (relecture) :', JSON.stringify(refetched.content));
-        trackingNumber = extractTrackingNumber(refetched.content);
-      } catch (refetchErr) {
-        console.error('Échec de la relecture Boxtal pour le suivi', order.id, refetchErr.status, refetchErr.data || refetchErr.message);
-      }
-    }
+    const trackingNumber = extractTrackingNumber(data.content);
+    // Boxtal n'attribue le numéro de suivi qu'après traitement de l'étiquette (statut "PENDING" à
+    // la création, confirmé par test réel) : la tâche planifiée cron-check-tracking.js prend le
+    // relais pour le récupérer dès qu'il est prêt et envoyer l'email à ce moment-là.
 
     const updated = await updateOrder(order.id, {
       status: 'envoye',
