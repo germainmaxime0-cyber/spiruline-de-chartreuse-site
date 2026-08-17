@@ -169,7 +169,7 @@ module.exports = async (req, res) => {
           : null;
         await sendEmail({
           to: updated.email,
-          subject: `Votre commande n°${updated.numeroCommande} est expédiée`,
+          subject: `Votre commande n°${updated.numeroCommande} est confirmée`,
           html: shipmentSentHtml({ ...updated, trackingNumber, trackingUrl }),
         });
       }

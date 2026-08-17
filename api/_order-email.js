@@ -128,18 +128,23 @@ function cancellationHtml(order) {
 }
 
 function shipmentSentHtml(order) {
-  // Si le numéro de suivi n'est pas encore disponible, on ne promet pas d'email de relance : le
-  // client attendrait pour rien si la récupération automatique échoue, et contacterait le vendeur
-  // pour demander pourquoi. On se contente de confirmer l'expédition dans ce cas.
+  // Le texte principal dépend de l'étape réelle : tant que le numéro de suivi n'est pas confirmé
+  // par le transporteur (webhook Boxtal TRACKING_CHANGED), le colis n'est pas forcément encore
+  // remis physiquement — on ne promet pas "expédié" trop tôt. Une fois le numéro connu, c'est bien
+  // le bon moment de l'annoncer.
   let trackingText = '';
-  if (order.trackingNumber && order.trackingUrl) {
-    trackingText = `<p style="margin:0 0 6px;">Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>${buttonHtml(order.trackingUrl, 'Suivre mon colis')}`;
-  } else if (order.trackingNumber) {
-    trackingText = `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>`;
+  let introText;
+  if (order.trackingNumber) {
+    introText = `<p>Votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> est exp&eacute;di&eacute;e !</p>`;
+    trackingText = order.trackingUrl
+      ? `<p style="margin:0 0 6px;">Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>${buttonHtml(order.trackingUrl, 'Suivre mon colis')}`
+      : `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>`;
+  } else {
+    introText = `<p>Votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> a &eacute;t&eacute; enregistr&eacute;e et sera bient&ocirc;t exp&eacute;di&eacute;e.</p>`;
   }
   return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
-    <p>Votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> vient d'&ecirc;tre confi&eacute;e au transporteur.</p>
+    ${introText}
     ${deliveryHtml(order)}
     ${trackingText}
     <p>&Agrave; bient&ocirc;t,<br>L'&eacute;quipe Spiruline de Chartreuse</p>
