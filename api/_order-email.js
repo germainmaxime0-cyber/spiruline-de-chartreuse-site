@@ -1,6 +1,36 @@
 // Contenu des emails récapitulatifs de commande (client + entreprise), partagé entre le paiement
 // par carte (stripe-webhook.js) et les paiements manuels (create-manual-order.js).
 
+const SITE_URL = process.env.SITE_URL || 'https://www.spirulinedechartreuse.com';
+const LOGO_URL = `${SITE_URL}/images/logo.png`;
+const BRAND_COLOR = '#0E7C74';
+const BRAND_TINT = '#E3F5F3';
+
+// Gabarit visuel (logo + couleurs de marque) appliqué à tous les emails adressés au client —
+// jamais à l'email interne businessRecapHtml, qui reste une simple notification texte.
+// Le logo est chargé depuis le site en ligne : certaines messageries bloquent les images par
+// défaut au premier affichage, c'est normal et sans conséquence sur la lisibilité du texte.
+function wrapEmailHtml(bodyHtml) {
+  return `
+    <div style="background:#F0EBE0;padding:24px 18px 18px;text-align:center;font-family:Arial,sans-serif;">
+      <img src="${LOGO_URL}" alt="Spiruline de Chartreuse" width="52" height="52" style="border-radius:12px;display:block;margin:0 auto 10px;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:17px;color:${BRAND_COLOR};">Spiruline de Chartreuse</div>
+    </div>
+    <div style="background:#F0EBE0;padding:0 18px 18px;">
+      <div style="background:white;border-radius:12px;padding:22px 20px;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#333;">
+        ${bodyHtml}
+      </div>
+      <div style="padding:16px 4px 0;text-align:center;font-family:Arial,sans-serif;font-size:11px;color:#999;">
+        GAEC Char'Algue &middot; 458 Rue de la Grande Terre, 38660 Le Touvet<br>contact@spirulinedechartreuse.com
+      </div>
+    </div>
+  `;
+}
+
+function buttonHtml(url, label) {
+  return `<div style="text-align:center;margin:18px 0 4px;"><a href="${url}" style="display:inline-block;background:${BRAND_COLOR};color:white;padding:11px 26px;border-radius:20px;font-size:13px;font-weight:bold;text-decoration:none;">${label}</a></div>`;
+}
+
 const PICKUP_ADDRESS = "GAEC Char'Algue, 458 Rue de la Grande Terre, 38660 Le Touvet";
 const PICKUP_HOURS_TEXT = `Mercredi de 16h à 18h30 et samedi de 9h30 à 12h30, à la ferme (${PICKUP_ADDRESS}).`;
 
@@ -20,15 +50,19 @@ function orderItemsHtml(order) {
   return (order.contenu || []).map((item) => `<li>${item.quantite}&times; ${item.description}</li>`).join('');
 }
 
+function deliveryBoxHtml(innerHtml) {
+  return `<div style="background:${BRAND_TINT};border-left:3px solid ${BRAND_COLOR};border-radius:0 8px 8px 0;padding:12px 14px;margin:0 0 14px;">${innerHtml}</div>`;
+}
+
 function deliveryHtml(order) {
   if (order.modeLivraisonCle === 'retrait') {
-    return `<p><strong>Retrait sur place (gratuit)</strong><br>${PICKUP_HOURS_TEXT}</p>`;
+    return deliveryBoxHtml(`<p style="margin:0 0 4px;font-weight:bold;">Retrait sur place (gratuit)</p><p style="margin:0;">${PICKUP_HOURS_TEXT}</p>`);
   }
   const pointRelais = order.pointRelaisNom
     ? ` — point relais : ${order.pointRelaisNom}`
     : (order.pointRelaisCode ? ` (point relais ${order.pointRelaisCode})` : '');
   const adresse = order.adresse ? `${order.adresse.rue}, ${order.adresse.codePostal} ${order.adresse.ville}` : '';
-  return `<p><strong>${order.modeLivraison || ''}</strong>${pointRelais}<br>${adresse}</p>`;
+  return deliveryBoxHtml(`<p style="margin:0 0 4px;font-weight:bold;">${order.modeLivraison || ''}${pointRelais}</p><p style="margin:0;">${adresse}</p>`);
 }
 
 function paymentInstructionsHtml(order) {
@@ -56,15 +90,15 @@ function totalsBreakdownHtml(order) {
 }
 
 function customerRecapHtml(order) {
-  return `
+  return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
-    <p>Merci pour votre commande <strong>n&deg;${order.numeroCommande}</strong> !</p>
+    <p>Merci pour votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> !</p>
     <ul>${orderItemsHtml(order)}</ul>
     ${totalsBreakdownHtml(order)}
     ${deliveryHtml(order)}
     ${paymentInstructionsHtml(order)}
     <p>À bientôt,<br>L'équipe Spiruline de Chartreuse</p>
-  `;
+  `);
 }
 
 function businessRecapHtml(order) {
@@ -84,26 +118,31 @@ function cancellationHtml(order) {
         ? "Nous revenons vers vous rapidement au sujet du remboursement."
         : "Le remboursement a été effectué et apparaîtra sur votre moyen de paiement sous quelques jours.")
     : "Si vous aviez déjà réglé cette commande, contactez-nous pour organiser le remboursement.";
-  return `
+  return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
-    <p>Votre commande <strong>n&deg;${order.numeroCommande}</strong> a &eacute;t&eacute; annul&eacute;e.</p>
+    <p>Votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> a &eacute;t&eacute; annul&eacute;e.</p>
     <p>${refundText}</p>
     <p>Pour toute question, n'h&eacute;sitez pas &agrave; nous contacter.</p>
     <p>L'&eacute;quipe Spiruline de Chartreuse</p>
-  `;
+  `);
 }
 
 function shipmentSentHtml(order) {
-  const trackingText = order.trackingNumber
-    ? `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong>${order.trackingUrl ? ` — <a href="${order.trackingUrl}">suivre mon colis</a>` : ''}</p>`
-    : `<p>Le num&eacute;ro de suivi n'est pas encore disponible ; il appara&icirc;tra sous peu, nous vous le communiquerons si besoin.</p>`;
-  return `
+  let trackingText;
+  if (order.trackingNumber && order.trackingUrl) {
+    trackingText = `<p style="margin:0 0 6px;">Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>${buttonHtml(order.trackingUrl, 'Suivre mon colis')}`;
+  } else if (order.trackingNumber) {
+    trackingText = `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>`;
+  } else {
+    trackingText = `<p>Le num&eacute;ro de suivi n'est pas encore disponible ; il appara&icirc;tra sous peu, nous vous le communiquerons si besoin.</p>`;
+  }
+  return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
-    <p>Votre commande <strong>n&deg;${order.numeroCommande}</strong> vient d'&ecirc;tre confi&eacute;e au transporteur.</p>
+    <p>Votre commande <strong style="color:${BRAND_COLOR};">n&deg;${order.numeroCommande}</strong> vient d'&ecirc;tre confi&eacute;e au transporteur.</p>
     ${deliveryHtml(order)}
     ${trackingText}
     <p>&Agrave; bient&ocirc;t,<br>L'&eacute;quipe Spiruline de Chartreuse</p>
-  `;
+  `);
 }
 
 module.exports = { customerRecapHtml, businessRecapHtml, cancellationHtml, shipmentSentHtml };

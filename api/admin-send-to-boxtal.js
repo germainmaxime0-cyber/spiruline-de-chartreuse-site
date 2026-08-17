@@ -34,13 +34,20 @@ const TRACKING_URL_BUILDERS = {
 };
 
 // Le nom exact du champ contenant le numéro de suivi n'est pas garanti à 100% sans un premier
-// envoi réel pour vérifier la réponse Boxtal : on tente plusieurs emplacements plausibles,
-// et console.log la réponse brute pour ajuster si besoin.
+// envoi réel pour vérifier la réponse Boxtal : on tente de nombreux emplacements plausibles,
+// et console.log la réponse brute (création + relecture) pour ajuster si besoin.
 function extractTrackingNumber(content) {
+  if (!content) return null;
+  const parcel = content.parcels && content.parcels[0];
   return (
     content.trackingNumber ||
     content.tracking_number ||
-    (content.parcels && content.parcels[0] && (content.parcels[0].trackingNumber || content.parcels[0].tracking_number)) ||
+    content.trackingCode ||
+    content.tracking_code ||
+    content.carrierTrackingNumber ||
+    (parcel && (parcel.trackingNumber || parcel.tracking_number || parcel.trackingCode || parcel.tracking_code)) ||
+    (content.tracking && (content.tracking.number || content.tracking.trackingNumber)) ||
+    (content.documents && content.documents.tracking && content.documents.tracking.number) ||
     null
   );
 }
@@ -143,8 +150,20 @@ module.exports = async (req, res) => {
       },
     });
 
-    console.log('Réponse Boxtal shipping-order :', JSON.stringify(data.content));
-    const trackingNumber = extractTrackingNumber(data.content);
+    console.log('Réponse Boxtal shipping-order (création) :', JSON.stringify(data.content));
+    let trackingNumber = extractTrackingNumber(data.content);
+
+    // Le numéro de suivi n'est parfois attribué par le transporteur qu'une fois l'étiquette
+    // générée, pas encore présent dans la réponse de création : on retente une lecture immédiate.
+    if (!trackingNumber && data.content.id) {
+      try {
+        const refetched = await boxtalRequest(`/shipping/v3.1/shipping-order/${data.content.id}`);
+        console.log('Réponse Boxtal shipping-order (relecture) :', JSON.stringify(refetched.content));
+        trackingNumber = extractTrackingNumber(refetched.content);
+      } catch (refetchErr) {
+        console.error('Échec de la relecture Boxtal pour le suivi', order.id, refetchErr.status, refetchErr.data || refetchErr.message);
+      }
+    }
 
     const updated = await updateOrder(order.id, {
       status: 'envoye',
