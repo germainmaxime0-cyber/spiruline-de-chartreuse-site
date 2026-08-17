@@ -25,6 +25,13 @@ function packageDimensionsCm(poidsSpirulineKg) {
 const { requireAuth } = require('./_auth');
 const { getOrder, updateOrder } = require('./_orders');
 const { boxtalRequest } = require('./_boxtal');
+const { sendEmail } = require('./_mailer');
+const { shipmentSentHtml } = require('./_order-email');
+
+const TRACKING_URL_BUILDERS = {
+  relais: (n) => `https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumeros=${encodeURIComponent(n)}`,
+  domicile: (n) => `https://www.laposte.fr/outils/suivre-vos-envois?code=${encodeURIComponent(n)}`,
+};
 
 // Le nom exact du champ contenant le numéro de suivi n'est pas garanti à 100% sans un premier
 // envoi réel pour vérifier la réponse Boxtal : on tente de nombreux emplacements plausibles,
@@ -146,15 +153,29 @@ module.exports = async (req, res) => {
     console.log('Réponse Boxtal shipping-order (création) :', JSON.stringify(data.content));
     const trackingNumber = extractTrackingNumber(data.content);
     // Boxtal n'attribue le numéro de suivi qu'après traitement de l'étiquette (statut "PENDING" à
-    // la création, confirmé par test réel), donc quasiment jamais présent ici : le webhook
-    // TRACKING_CHANGED (voir boxtal-webhook.js) prend le relais pour le récupérer dès qu'il est
-    // prêt et envoyer l'email d'expédition au client à ce moment-là — pas ici, pour éviter un
-    // email intermédiaire redondant avec la confirmation de commande déjà envoyée au paiement.
+    // la création, confirmé par test réel) : la tâche planifiée cron-check-tracking.js prend le
+    // relais pour le récupérer dès qu'il est prêt et envoyer l'email à ce moment-là.
 
     const updated = await updateOrder(order.id, {
       status: 'envoye',
       boxtal: { shippingOrderId: data.content.id, status: data.content.status, trackingNumber },
     });
+
+    // L'envoi de l'email ne doit jamais faire échouer l'expédition : le colis est déjà confié à Boxtal.
+    try {
+      if (updated.email) {
+        const trackingUrl = trackingNumber && TRACKING_URL_BUILDERS[order.modeLivraisonCle]
+          ? TRACKING_URL_BUILDERS[order.modeLivraisonCle](trackingNumber)
+          : null;
+        await sendEmail({
+          to: updated.email,
+          subject: `Votre commande n°${updated.numeroCommande} est confirmée`,
+          html: shipmentSentHtml({ ...updated, trackingNumber, trackingUrl }),
+        });
+      }
+    } catch (emailErr) {
+      console.error('Échec de l\'envoi de l\'email d\'expédition', order.id, emailErr);
+    }
 
     return res.status(200).json({ order: updated });
   } catch (err) {
