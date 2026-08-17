@@ -33,13 +33,21 @@ function extractTrackingNumber(content) {
   );
 }
 
+// Ne concerne que les commandes passées à partir de la mise en place de cette fonctionnalité :
+// les commandes déjà expédiées avant cette date ne doivent pas déclencher un email de suivi
+// "surprise" a posteriori une fois que l'extraction du numéro fonctionnera correctement.
+const TRACKING_CUTOFF_DATE = '2026-08-17T00:00:00Z';
+
 module.exports = async (req, res) => {
   if (process.env.CRON_SECRET && req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Non autorisé' });
   }
 
   const orders = await listOrders(100000);
-  const pending = orders.filter((o) => o.status === 'envoye' && o.boxtal && o.boxtal.shippingOrderId && !o.boxtal.trackingNumber);
+  const pending = orders.filter((o) =>
+    o.status === 'envoye' && o.boxtal && o.boxtal.shippingOrderId && !o.boxtal.trackingNumber &&
+    o.createdAt && o.createdAt >= TRACKING_CUTOFF_DATE
+  );
 
   const results = [];
   for (const order of pending) {
