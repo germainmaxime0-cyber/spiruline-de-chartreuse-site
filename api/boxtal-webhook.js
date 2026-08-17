@@ -19,6 +19,10 @@ const TRACKING_URL_BUILDERS = {
   domicile: (n) => `https://www.laposte.fr/outils/suivre-vos-envois?code=${encodeURIComponent(n)}`,
 };
 
+// Ne concerne que les commandes passées à partir de la mise en place de ce webhook : voir le
+// commentaire plus bas pour la raison.
+const TRACKING_CUTOFF_DATE = '2026-08-17T00:00:00Z';
+
 module.exports.config = { api: { bodyParser: false } };
 
 function readRawBody(req) {
@@ -96,6 +100,14 @@ module.exports = async (req, res) => {
     if (!order) {
       console.error('Webhook Boxtal : aucune commande ne correspond à', shippingOrderId);
       return res.status(200).json({ received: true, matched: false });
+    }
+
+    // Sécurité : une commande déjà reçue par le client avant la mise en place de ce webhook ne
+    // doit jamais déclencher un email de suivi a posteriori, source de confusion ("pourquoi je
+    // reçois ça, j'ai déjà mon colis ?"). Ne concerne que les commandes passées à partir d'ici.
+    if (!order.createdAt || order.createdAt < TRACKING_CUTOFF_DATE) {
+      console.log('Webhook Boxtal : commande antérieure à la mise en place du suivi, ignorée', order.id);
+      return res.status(200).json({ received: true, matched: false, reason: 'before-cutoff' });
     }
 
     const updated = await updateOrder(order.id, { boxtal: { ...order.boxtal, trackingNumber } });
