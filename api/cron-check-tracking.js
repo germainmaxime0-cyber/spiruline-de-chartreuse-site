@@ -1,4 +1,4 @@
-// Tâche planifiée (voir "crons" dans vercel.json, exécutée toutes les heures) : Boxtal ne propose
+// Tâche planifiée (voir "crons" dans vercel.json, exécutée toutes les 6 heures) : Boxtal ne propose
 // pas de webhook self-service en API v3/v1 pour être notifié quand le numéro de suivi est prêt
 // (confirmé — contrairement à Stripe), donc on interroge nous-mêmes périodiquement les commandes
 // expédiées qui n'ont pas encore de numéro de suivi, et on envoie un email dès qu'il apparaît.

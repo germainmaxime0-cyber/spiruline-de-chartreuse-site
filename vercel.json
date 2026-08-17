@@ -8,6 +8,6 @@
     { "source": "/2018/01/16/gresivaudan(/.*)?", "destination": "/", "permanent": true }
   ],
   "crons": [
-    { "path": "/api/cron-check-tracking", "schedule": "0 * * * *" }
+    { "path": "/api/cron-check-tracking", "schedule": "0 */6 * * *" }
   ]
 }
