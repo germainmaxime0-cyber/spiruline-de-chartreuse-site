@@ -221,6 +221,7 @@ function renderOrders(orders) {
     const canCancel = o.status !== 'annulee';
     const canMarkPaid = o.status === 'en_attente_paiement';
     const errorMsg = o.status === 'erreur' && o.boxtal && o.boxtal.error ? `<p class="order-error">${escapeHtml(o.boxtal.error)}</p>` : '';
+    const trackingMsg = o.boxtal && o.boxtal.trackingNumber ? `<p class="order-detail">Suivi : ${escapeHtml(o.boxtal.trackingNumber)}</p>` : '';
     const refundErrorMsg = o.refundError ? `<p class="order-error">Remboursement Stripe échoué : ${escapeHtml(o.refundError)}</p>` : '';
     return `
       <div class="order-card" data-order-id="${o.id}">
@@ -237,6 +238,7 @@ function renderOrders(orders) {
         </div>
         ${o.montantTotalEur != null ? `<div class="order-total">Total : ${o.montantTotalEur.toFixed(2)} €${o.sousTotalEur != null ? ` <span style="font-weight:400;font-size:12px;color:#999;">(sous-total ${o.sousTotalEur.toFixed(2)} €)</span>` : ''}</div>` : ''}
         <div class="order-content">${escapeHtml(contenu)}</div>
+        ${trackingMsg}
         ${errorMsg}
         ${refundErrorMsg}
         <div class="order-actions">

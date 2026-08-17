@@ -93,4 +93,17 @@ function cancellationHtml(order) {
   `;
 }
 
-module.exports = { customerRecapHtml, businessRecapHtml, cancellationHtml };
+function shipmentSentHtml(order) {
+  const trackingText = order.trackingNumber
+    ? `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong>${order.trackingUrl ? ` — <a href="${order.trackingUrl}">suivre mon colis</a>` : ''}</p>`
+    : `<p>Le num&eacute;ro de suivi n'est pas encore disponible ; il appara&icirc;tra sous peu, nous vous le communiquerons si besoin.</p>`;
+  return `
+    <p>Bonjour ${order.prenom || ''},</p>
+    <p>Votre commande <strong>n&deg;${order.numeroCommande}</strong> vient d'&ecirc;tre confi&eacute;e au transporteur.</p>
+    ${deliveryHtml(order)}
+    ${trackingText}
+    <p>&Agrave; bient&ocirc;t,<br>L'&eacute;quipe Spiruline de Chartreuse</p>
+  `;
+}
+
+module.exports = { customerRecapHtml, businessRecapHtml, cancellationHtml, shipmentSentHtml };

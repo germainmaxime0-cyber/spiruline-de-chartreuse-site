@@ -25,6 +25,25 @@ function packageDimensionsCm(poidsSpirulineKg) {
 const { requireAuth } = require('./_auth');
 const { getOrder, updateOrder } = require('./_orders');
 const { boxtalRequest } = require('./_boxtal');
+const { sendEmail } = require('./_mailer');
+const { shipmentSentHtml } = require('./_order-email');
+
+const TRACKING_URL_BUILDERS = {
+  relais: (n) => `https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumeros=${encodeURIComponent(n)}`,
+  domicile: (n) => `https://www.laposte.fr/outils/suivre-vos-envois?code=${encodeURIComponent(n)}`,
+};
+
+// Le nom exact du champ contenant le numéro de suivi n'est pas garanti à 100% sans un premier
+// envoi réel pour vérifier la réponse Boxtal : on tente plusieurs emplacements plausibles,
+// et console.log la réponse brute pour ajuster si besoin.
+function extractTrackingNumber(content) {
+  return (
+    content.trackingNumber ||
+    content.tracking_number ||
+    (content.parcels && content.parcels[0] && (content.parcels[0].trackingNumber || content.parcels[0].tracking_number)) ||
+    null
+  );
+}
 
 const DEFAULT_OFFER_CODES = {
   relais: 'CHRP-Chrono2ShopDirect',
@@ -124,10 +143,30 @@ module.exports = async (req, res) => {
       },
     });
 
+    console.log('Réponse Boxtal shipping-order :', JSON.stringify(data.content));
+    const trackingNumber = extractTrackingNumber(data.content);
+
     const updated = await updateOrder(order.id, {
       status: 'envoye',
-      boxtal: { shippingOrderId: data.content.id, status: data.content.status },
+      boxtal: { shippingOrderId: data.content.id, status: data.content.status, trackingNumber },
     });
+
+    // L'envoi de l'email ne doit jamais faire échouer l'expédition : le colis est déjà confié à Boxtal.
+    try {
+      if (updated.email) {
+        const trackingUrl = trackingNumber && TRACKING_URL_BUILDERS[order.modeLivraisonCle]
+          ? TRACKING_URL_BUILDERS[order.modeLivraisonCle](trackingNumber)
+          : null;
+        await sendEmail({
+          to: updated.email,
+          subject: `Votre commande n°${updated.numeroCommande} est expédiée`,
+          html: shipmentSentHtml({ ...updated, trackingNumber, trackingUrl }),
+        });
+      }
+    } catch (emailErr) {
+      console.error('Échec de l\'envoi de l\'email d\'expédition', order.id, emailErr);
+    }
+
     return res.status(200).json({ order: updated });
   } catch (err) {
     console.error('Erreur envoi commande à Boxtal :', order.id, err.status, err.data || err.message);
