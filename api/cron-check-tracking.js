@@ -47,8 +47,15 @@ module.exports = async (req, res) => {
       const data = await boxtalRequest(`/shipping/v3.1/shipping-order/${order.boxtal.shippingOrderId}`);
       const trackingNumber = extractTrackingNumber(data.content);
       if (!trackingNumber) {
-        // Réponse brute logguée pour identifier le bon nom de champ tant que le numéro n'est pas trouvé.
-        console.log(`Réponse Boxtal (relecture) pour ${order.id} :`, JSON.stringify(data.content));
+        // La réponse complète dépasse probablement la limite de taille des logs Vercel (silencieusement
+        // supprimée) : on logue seulement les noms de champs, bien plus léger, pour repérer le bon.
+        const parcel = data.content.parcels && data.content.parcels[0];
+        console.log(`Champs Boxtal pour ${order.id} :`, JSON.stringify({
+          topLevel: Object.keys(data.content || {}),
+          parcel: parcel ? Object.keys(parcel) : null,
+          tracking: data.content.tracking ? Object.keys(data.content.tracking) : null,
+          documents: data.content.documents ? Object.keys(data.content.documents) : null,
+        }));
         results.push({ orderId: order.id, found: false });
         continue;
       }
