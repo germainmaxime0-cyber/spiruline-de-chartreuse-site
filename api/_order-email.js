@@ -145,6 +145,7 @@ function shipmentSentHtml(order) {
   return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
     ${introText}
+    <ul>${orderItemsHtml(order)}</ul>
     ${deliveryHtml(order)}
     ${trackingText}
     <p>&Agrave; bient&ocirc;t,<br>L'&eacute;quipe Spiruline de Chartreuse</p>
