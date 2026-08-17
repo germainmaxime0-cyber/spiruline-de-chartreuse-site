@@ -8,6 +8,10 @@
 // valeur que la "clé de vérification des requêtes" saisie lors de la création de la souscription.
 // Tant qu'elle n'est pas configurée, la vérification de signature est ignorée (ne jamais laisser
 // en production sans le secret, n'importe qui pourrait alors déclencher cet endpoint).
+//
+// ⚠️ L'envoi d'email est actuellement DÉSACTIVÉ (voir SEND_TRACKING_EMAIL plus bas) : l'événement
+// TRACKING_CHANGED se déclenche à chaque changement de statut, pas seulement au dépôt physique du
+// colis chez le transporteur. À réactiver une fois le bon statut identifié via un vrai dépôt test.
 
 const crypto = require('crypto');
 const { listOrders, updateOrder } = require('./_orders');
@@ -58,6 +62,25 @@ function extractShippingOrderId(obj) {
   return null;
 }
 
+// Recherche tout champ dont le nom contient "status" (insensible à la casse), pour identifier la
+// valeur exacte correspondant à "pris en charge par le transporteur" lors d'un vrai test avec
+// dépôt physique — TRACKING_CHANGED se déclenche à chaque changement de statut du colis (étiquette
+// créée, pris en charge, en transit...), pas uniquement au dépôt réel, donc on ne peut pas encore
+// filtrer dessus tant qu'on n'a pas vu les valeurs réelles utilisées par Boxtal.
+function extractStatusFields(obj, path = '') {
+  const results = [];
+  if (!obj || typeof obj !== 'object') return results;
+  for (const [key, value] of Object.entries(obj)) {
+    const fullPath = path ? `${path}.${key}` : key;
+    if (typeof value === 'string' && /status/i.test(key)) {
+      results.push(`${fullPath}=${value}`);
+    } else if (value && typeof value === 'object') {
+      results.push(...extractStatusFields(value, fullPath));
+    }
+  }
+  return results;
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -88,6 +111,8 @@ module.exports = async (req, res) => {
 
   const trackingNumber = extractTrackingNumber(payload);
   const shippingOrderId = extractShippingOrderId(payload);
+  const statusFields = extractStatusFields(payload);
+  console.log('Webhook Boxtal — champs de statut trouvés :', JSON.stringify(statusFields));
 
   if (!trackingNumber || !shippingOrderId) {
     console.log('Webhook Boxtal — champs non trouvés, contenu complet :', JSON.stringify(payload));
@@ -112,7 +137,14 @@ module.exports = async (req, res) => {
 
     const updated = await updateOrder(order.id, { boxtal: { ...order.boxtal, trackingNumber } });
 
-    if (updated.email) {
+    // ⚠️ Envoi de l'email volontairement désactivé pour l'instant : TRACKING_CHANGED se déclenche à
+    // chaque changement de statut du colis (étiquette créée, pris en charge, en transit...), pas
+    // uniquement au dépôt physique chez le transporteur — confirmé par un test réel où l'email est
+    // parti sans qu'aucun colis n'ait été déposé. Le statut exact correspondant au dépôt n'est pas
+    // encore identifié (voir "statusFields" ci-dessus, à consulter dans les logs Vercel lors du
+    // prochain dépôt réel). Réactiver une fois le bon statut confirmé et filtré ci-dessous.
+    const SEND_TRACKING_EMAIL = false;
+    if (SEND_TRACKING_EMAIL && updated.email) {
       const trackingUrl = TRACKING_URL_BUILDERS[order.modeLivraisonCle]
         ? TRACKING_URL_BUILDERS[order.modeLivraisonCle](trackingNumber)
         : null;
@@ -123,7 +155,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ received: true, matched: true, orderId: order.id });
+    return res.status(200).json({ received: true, matched: true, orderId: order.id, emailSent: SEND_TRACKING_EMAIL });
   } catch (err) {
     console.error('Erreur traitement webhook Boxtal :', err.message);
     // On répond 200 quand même : Boxtal retenterait sinon pendant des heures alors que le souci
