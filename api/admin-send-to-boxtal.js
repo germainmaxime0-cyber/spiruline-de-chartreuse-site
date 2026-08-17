@@ -153,8 +153,9 @@ module.exports = async (req, res) => {
     console.log('Réponse Boxtal shipping-order (création) :', JSON.stringify(data.content));
     const trackingNumber = extractTrackingNumber(data.content);
     // Boxtal n'attribue le numéro de suivi qu'après traitement de l'étiquette (statut "PENDING" à
-    // la création, confirmé par test réel) : la tâche planifiée cron-check-tracking.js prend le
-    // relais pour le récupérer dès qu'il est prêt et envoyer l'email à ce moment-là.
+    // la création, confirmé par test réel) : quasiment toujours absent ici, l'email ci-dessous part
+    // donc généralement sans numéro de suivi — c'est le comportement voulu (email envoyé au moment
+    // de la création de l'étiquette, pas au dépôt physique chez le transporteur).
 
     const updated = await updateOrder(order.id, {
       status: 'envoye',
