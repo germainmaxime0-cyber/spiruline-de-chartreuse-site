@@ -1,15 +1,13 @@
-// Reçoit les notifications Boxtal (événement TRACKING_CHANGED — voir souscription créée par
-// admin-boxtal-subscribe.js) dès qu'un numéro de suivi est attribué à une expédition, en
-// remplacement du système de vérification périodique (cron-check-tracking.js), plus fiable.
+// Reçoit les notifications Boxtal (événement TRACKING_CHANGED) dès qu'un numéro de suivi est
+// attribué à une expédition. La souscription a été créée manuellement depuis l'espace développeur
+// Boxtal (developer.boxtal.com > Applications > Souscriptions), pas via l'API — testée avec succès
+// le 17/08/2026 (structure confirmée : id, timestamp, type, shippingOrderId, shipmentExternalId,
+// payload).
 //
-// Configuration requise : variable d'environnement Vercel BOXTAL_WEBHOOK_SECRET, obtenue lors de
-// la création de la souscription (voir /api/admin-boxtal-subscribe.js). Tant qu'elle n'est pas
-// configurée, la vérification de signature est ignorée (phase de mise au point uniquement — ne
-// jamais laisser en production sans le secret, n'importe qui pourrait alors déclencher cet endpoint).
-//
-// Structure exacte du contenu envoyé par Boxtal non confirmée par leur documentation publique :
-// on logue la structure reçue de façon défensive (noms de champs seulement, pas le contenu complet,
-// pour ne pas dépasser la limite de taille des logs Vercel) tant qu'on n'a pas vu un vrai événement.
+// Configuration requise : variable d'environnement Vercel BOXTAL_WEBHOOK_SECRET, avec la même
+// valeur que la "clé de vérification des requêtes" saisie lors de la création de la souscription.
+// Tant qu'elle n'est pas configurée, la vérification de signature est ignorée (ne jamais laisser
+// en production sans le secret, n'importe qui pourrait alors déclencher cet endpoint).
 
 const crypto = require('crypto');
 const { listOrders, updateOrder } = require('./_orders');
