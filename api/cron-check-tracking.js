@@ -47,6 +47,8 @@ module.exports = async (req, res) => {
       const data = await boxtalRequest(`/shipping/v3.1/shipping-order/${order.boxtal.shippingOrderId}`);
       const trackingNumber = extractTrackingNumber(data.content);
       if (!trackingNumber) {
+        // Réponse brute logguée pour identifier le bon nom de champ tant que le numéro n'est pas trouvé.
+        console.log(`Réponse Boxtal (relecture) pour ${order.id} :`, JSON.stringify(data.content));
         results.push({ orderId: order.id, found: false });
         continue;
       }
