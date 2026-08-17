@@ -128,13 +128,14 @@ function cancellationHtml(order) {
 }
 
 function shipmentSentHtml(order) {
-  let trackingText;
+  // Si le numéro de suivi n'est pas encore disponible, on ne promet pas d'email de relance : le
+  // client attendrait pour rien si la récupération automatique échoue, et contacterait le vendeur
+  // pour demander pourquoi. On se contente de confirmer l'expédition dans ce cas.
+  let trackingText = '';
   if (order.trackingNumber && order.trackingUrl) {
     trackingText = `<p style="margin:0 0 6px;">Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>${buttonHtml(order.trackingUrl, 'Suivre mon colis')}`;
   } else if (order.trackingNumber) {
     trackingText = `<p>Num&eacute;ro de suivi : <strong>${order.trackingNumber}</strong></p>`;
-  } else {
-    trackingText = `<p>Le num&eacute;ro de suivi n'est pas encore attribu&eacute; par le transporteur ; vous recevrez un email d&egrave;s qu'il sera disponible.</p>`;
   }
   return wrapEmailHtml(`
     <p>Bonjour ${order.prenom || ''},</p>
